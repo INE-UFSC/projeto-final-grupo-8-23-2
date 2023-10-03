@@ -1,6 +1,5 @@
 import pygame
-
-
+import utils # adicionando um arquivo com cores e outras coisas que podem ser úteis
 class App:
 
     def __init__(self) -> None:
@@ -30,9 +29,9 @@ class App:
                 if event.type == pygame.QUIT or (event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE):
                     self.__running = False
             # Preenche a tela com uma cor
-            self.__screen.fill('green')
+            self.__screen.fill(utils.green)
             # Desenhando uma forma na tela para representar o Player, apenas para teste
-            pygame.draw.circle(self.__screen, 'red', (self.__screen.get_width() // 2, self.__screen.get_height() // 2), 35)
+            pygame.draw.circle(self.__screen, utils.red, (self.__screen.get_width() // 2, self.__screen.get_height() // 2), 35)
 
             # Atualiza a tela
             pygame.display.flip()

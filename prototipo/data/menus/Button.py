@@ -1,3 +1,5 @@
+import pygame
+
 class Button:
     def __init__(self, height: int, width: int, coordinate_x: int, coordinate_y: int, icon: str):
        self.__height = height
@@ -5,6 +7,20 @@ class Button:
        self.__coordinate_x = coordinate_x
        self.__coordinate_y = coordinate_y
        self.__icon = icon
+       self.__clicked = False
+       self.__rect = self.__icon.get_rect()
+       
+    def click_button(self, surface):
+        action = False
+        pos = pygame.mouse.get_pos()
+        if self.__rect.collidepoint(pos):
+            if pygame.mouse.get_pressed()[0] == 1 and self.__clicked == False:
+                action = True
+                self.__clicked = True
+            if pygame.mouse.get_pressed()[0] == 0:
+                self.__clicked = False
+        surface.blit(self.__icon, (self.__rect.x, self.__rect.y))
+        return action
        
     @property
     def height(self):
@@ -50,6 +66,3 @@ class Button:
     def icon(self, val:str):
         if isinstance(val, str):
             self.__icon = val
-            
-    def click_button():
-        pass

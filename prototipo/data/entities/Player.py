@@ -1,3 +1,6 @@
+from Weapon import Weapon
+
+
 class Player:
     def __init__(self, weapon: Weapon, experience: int, level: int, power_ups: list, score: int):
        self.__weapon = weapon

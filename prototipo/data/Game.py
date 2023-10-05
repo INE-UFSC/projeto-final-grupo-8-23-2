@@ -1,4 +1,4 @@
-import Player, Map, Weapon
+import Player, maps, Weapon
 
 class Game:
     def __init__(self, player:Player, enemy:list, map:Map, powerup: list, score:int, weapon:Weapon):

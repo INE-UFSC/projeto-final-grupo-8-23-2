@@ -1,4 +1,4 @@
-from seekers import Seeker
+from Seeker import Seeker
 
 class WitchSeeker(Seeker):
     def __init__(self):

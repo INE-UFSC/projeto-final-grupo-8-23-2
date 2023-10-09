@@ -1,5 +1,8 @@
 import pygame
+
 import utils # adicionando um arquivo com cores e outras coisas que podem ser úteis
+
+
 class App:
 
     def __init__(self) -> None:
@@ -39,6 +42,5 @@ class App:
             # Define o FPS do jogo
             clock.tick(60)
 
-    @property
-    def screen(self) -> pygame.Surface:
+    def get_screen(self) -> pygame.Surface:
         return self.__screen

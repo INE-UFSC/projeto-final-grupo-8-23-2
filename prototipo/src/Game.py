@@ -1,14 +1,11 @@
-import Player, maps, Weapon
+from data.entities.FightSeeker import FightSeeker
+
 
 class Game:
-    def __init__(self, player:Player, enemy:list, map:Map, powerup: list, score:int, weapon:Weapon):
-        self.__player = player
-        self.__enemy = enemy
-        self.__map = map
-        self.__powerup = powerup
-        self.__score = score
-        self.__weapon = weapon
-    
+
+    def __init__(self):
+        self.__enemy = [FightSeeker]
+
     @property
     def player(self):
         return self.__player
@@ -16,7 +13,7 @@ class Game:
     @player.setter
     def player(self, val):
         self.__player = val
-        
+
     @property
     def enemy(self):
         return self.__enemy
@@ -24,7 +21,7 @@ class Game:
     @enemy.setter
     def enemy(self, val):
         self.__enemy = val
-        
+
     @property
     def map(self):
         return self.__map
@@ -32,7 +29,7 @@ class Game:
     @map.setter
     def map(self, val):
         self.__map = val
-        
+
     @property
     def powerup(self):
         return self.__powerup
@@ -40,7 +37,7 @@ class Game:
     @powerup.setter
     def powerup(self, val):
         self.__powerup = val
-        
+
     @property
     def score(self):
         return self.__score
@@ -48,7 +45,7 @@ class Game:
     @score.setter
     def score(self, val):
         self.__score = val
-        
+
     @property
     def weapon(self):
         return self.__weapon

@@ -9,7 +9,7 @@ class Button:
        self.__icon = icon
        self.__clicked = False
        self.__rect = self.__icon.get_rect()
-       
+
     def click_button(self, surface):
         action = False
         pos = pygame.mouse.get_pos()
@@ -21,7 +21,7 @@ class Button:
                 self.__clicked = False
         surface.blit(self.__icon, (self.__rect.x, self.__rect.y))
         return action
-       
+
     @property
     def height(self):
         return self.__height

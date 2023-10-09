@@ -1,22 +1,23 @@
+import pygame
+
 from abc import abstractmethod, ABC
 
 class Character(ABC):
-    def __init__(self, coordinate_x: int, coordinate_y: int, health: int, damage: int, speed: int, sprite: str, armor: float):
-       self.__coordinate_x = coordinate_x
-       self.__coordinate_y = coordinate_y
-       self.__health = health
-       self.__damage = damage
-       self.__speed = speed
-       self.__sprite = sprite
-       self.__armor = armor
-    @property
-    def coordinate_x(self):
-        return self.__coordinate_x
+    def __init__(self, character_position: pygame.Vector2, health: int, damage: int, speed: int, sprite: str, armor: float):
+        self.__character_position = character_position
+        self.__health = health
+        self.__damage = damage
+        self.__speed = speed
+        self.__sprite = sprite
+        self.__armor = armor
 
-    @coordinate_x.setter
-    def coordinate_x(self, val:int):
-        if isinstance(val, int):
-            self.__coordinate_x = val
+    @abstractmethod
+    def draw_at(self, surface: pygame.Surface) -> None:
+        pass
+
+    @property
+    def character_position(self) -> pygame.Vector2:
+        return self.__character_position
 
     @property
     def coordinate_y(self):

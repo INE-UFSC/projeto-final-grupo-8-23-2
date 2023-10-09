@@ -2,7 +2,7 @@ class Menu:
     def __init__(self, buttons: list, background: str):
        self.__buttons = buttons
        self.__background = background
-       
+
     @property
     def buttons(self):
         return self.__buttons

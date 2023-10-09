@@ -1,6 +1,7 @@
 import pygame
 
 from abc import abstractmethod, ABC
+from constants import game_constants
 
 class Character(ABC):
     def __init__(self, character_position: pygame.Vector2, health: int, damage: int, speed: int, sprite: str, armor: float):
@@ -8,12 +9,13 @@ class Character(ABC):
         self.__health = health
         self.__damage = damage
         self.__speed = speed
-        self.__sprite = sprite
         self.__armor = armor
+        self.__sprite = None
+        self.__rect = self.__sprite.get_rect()
 
     @abstractmethod
-    def draw_at(self, surface: pygame.Surface) -> None:
-        pass
+    def draw_at(self, screen: pygame.Surface) -> None:
+        screen.blit(self.__sprite, self.__rect)
 
     @property
     def character_position(self) -> pygame.Vector2:

@@ -8,9 +8,10 @@ from constants import game_constants
 
 
 class Seeker(Character, ABC):
-    def __init__(self):
-       self.__player_to_chase = None
-       super().__init__(pygame.Vector2(game_constants.screen_width / 2 + 300, game_constants.screen_height / 2 + 300), 300, 20, 50, pygame.draw.circle(game_constants.screen, 'red', (game_constants.screen_width / 2 + 400, game_constants.screen_height / 2 + 400), 20), 30.0)
+
+    def __init__(self, player_reference: Player):
+        self.__player_to_chase = player_reference
+        super().__init__(pygame.Vector2(game_constants.screen_width / 2 + 300, game_constants.screen_height / 2 + 300), 300, 20, 50, pygame.draw.circle())
 
     @property
     def player_to_chase(self):

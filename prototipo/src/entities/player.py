@@ -1,8 +1,7 @@
 from __future__ import annotations
 
 import pygame
-from entities import weapon
-from entities import character
+from entities import weapon, character
 from constants import game_constants
 
 
@@ -14,7 +13,7 @@ class Player(character.Character):
         self.__level = level
         self.__power_ups = power_ups
         self.__score = score
-        #super().__init__(self.__player_position,)
+        #super().__init__(self.__player_position)
 
     def draw_at(self, screen: pygame.Surface) -> None:
         pygame.draw.circle(screen, 'red', self.__player_position, 40)

@@ -94,6 +94,6 @@ class Character(ABC):
     def move() -> None:
         pass
 
-    # @abstractmethod
-    # def attack() -> None:
-    #     pass
+    @abstractmethod
+    def attack() -> None:
+        pass

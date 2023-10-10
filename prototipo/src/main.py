@@ -1,9 +1,9 @@
-from app import App
+from game import Game
 
 
 # Função para rodar o jogo
 def main() -> None:
-    App().run()
+    Game().run()
 
 if __name__ == '__main__':
     main()

@@ -1,6 +1,8 @@
+from __future__ import annotations
 import pygame
 
 import utils # adicionando um arquivo com cores e outras coisas que podem ser úteis
+from entities import Player
 
 
 class App:
@@ -10,8 +12,13 @@ class App:
         # Atributo para saber se o jogo está rodando
         self.__running = True
 
+        self.__player = Player.Player()
+
         # Inicializa o display
         self.__screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
+
+        self.__screen_width = self.__screen.get_width()
+        self.__screen_height = self.__screen.get_height()
 
         # Dá nome a janela do jogo
         pygame.display.set_caption('Soul Seekers')
@@ -34,7 +41,7 @@ class App:
             # Preenche a tela com uma cor
             self.__screen.fill(utils.green)
             # Desenhando uma forma na tela para representar o Player, apenas para teste
-            pygame.draw.circle(self.__screen, utils.red, (self.__screen.get_width() // 2, self.__screen.get_height() // 2), 35)
+            self.__player.draw_at(self.__screen)
 
             # Atualiza a tela
             pygame.display.flip()
@@ -44,3 +51,9 @@ class App:
 
     def get_screen(self) -> pygame.Surface:
         return self.__screen
+
+    def get_screen_width(self) -> int:
+        return self.__screen_width
+
+    def get_screen_heitgh(self) -> int:
+        return self.__screen_height

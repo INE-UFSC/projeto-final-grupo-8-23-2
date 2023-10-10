@@ -1,11 +1,12 @@
+from __future__ import annotations
+
 from abc import ABC, abstractmethod
 
-from Game import Game
 
 # Classe para modelar cada estado do jogo (Menu, Level, GameOver)
 class State(ABC):
     # Recebe uma referencia do jogo
-    def __init__(self, game_reference: Game) -> None:
+    def __init__(self, game_reference) -> None:
         self.__game_reference = game_reference
 
     # Método chamado ao entrar em um estado

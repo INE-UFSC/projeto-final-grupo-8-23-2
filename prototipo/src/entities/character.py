@@ -77,10 +77,10 @@ class Character(ABC):
         if isinstance(val, float):
             self.__armor = val
 
-    # @abstractmethod
-    # def move() -> None:
-    #     pass
-    #
+    @abstractmethod
+    def move() -> None:
+        pass
+
     # @abstractmethod
     # def attack() -> None:
     #     pass

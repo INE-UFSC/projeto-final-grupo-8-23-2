@@ -2,8 +2,8 @@ from abc import abstractmethod, ABC
 import pygame
 import random
 
-from Player import Player
-from Character import Character
+from player import Player
+from character import Character
 from constants import game_constants
 
 

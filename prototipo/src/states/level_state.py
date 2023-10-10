@@ -9,6 +9,7 @@ class LevelState(State):
     def __init__(self, game_ref) -> None:
         self.__player = player.Player()
         self.__game_ref = game_ref
+        self.__player.move()
 
     def entering(self) -> None:
         return super().entering()

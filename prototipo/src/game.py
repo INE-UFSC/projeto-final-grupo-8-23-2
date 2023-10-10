@@ -4,8 +4,8 @@ import pygame
 
 import utils
 from entities import player
-from states import state, game_state
-from constants.game_constants import screen_width, screen_height
+from states import state, level_state
+from constants import game_constants
 
 
 class Game:
@@ -26,7 +26,7 @@ class Game:
         # mas isso não faz sentido no momento
 
         # Estado atual do jogo. No protótipo só existirá o estado do level
-        self.__current_state: state.State = game_state.LevelState(self)
+        self.__current_state: state.State = level_state.LevelState(self)
 
     def run(self) -> None:
         # Inicializa o relógio (clock) do jogo
@@ -41,14 +41,14 @@ class Game:
                     self.__running = False
             # Preenche a tela com uma cor
             self.__screen.fill(utils.green)
-            # Desenhando uma forma na tela para representar o Player, apenas para teste
+            # Renderizando os objetos do estado, no caso, somente o Player, por enquanto
             self.__current_state.render()
 
             # Atualiza a tela
             pygame.display.flip()
 
             # Define o FPS do jogo
-            clock.tick(60)
+            clock.tick(game_constants.FPS)
 
     def get_screen(self) -> pygame.Surface:
         return self.__screen

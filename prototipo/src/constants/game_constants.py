@@ -4,6 +4,8 @@ from tkinter import Tk
 
 # Constantes da tela
 root = Tk()
-screen_width = root.winfo_screenwidth()
-screen_height = root.winfo_screenheight()
-fps = 60
+SCREEN_WIDTH = root.winfo_screenwidth()
+SCREEN_HEIGHT = root.winfo_screenheight()
+FPS = 60
+
+print(SCREEN_WIDTH, SCREEN_HEIGHT)

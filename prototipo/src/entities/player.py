@@ -8,16 +8,28 @@ from constants import game_constants
 
 class Player(character.Character):
     def __init__(self, weapon=None, experience: int=0, level: int=0, power_ups: list=[], score: int=0):
-        self.__player_position = pygame.Vector2(game_constants.screen_width / 2, game_constants.screen_height / 2)
+        self.__player_position = pygame.Vector2(game_constants.SCREEN_WIDTH / 2, game_constants.SCREEN_HEIGHT / 2)
         self.__weapon = weapon
         self.__experience = experience
         self.__level = level
         self.__power_ups = power_ups
         self.__score = score
+        self.move()
         #super().__init__(self.__player_position,)
 
     def draw_at(self, screen: pygame.Surface) -> None:
         pygame.draw.circle(screen, 'red', self.__player_position, 40)
+
+    def move(self) -> None:
+        keys = pygame.key.get_pressed()
+        if keys[pygame.K_w]:
+            self.__player_position.y -= 300
+        if keys[pygame.K_s]:
+            self.__player_position.y += 300
+        if keys[pygame.K_a]:
+            self.__player_position.x -= 300
+        if keys[pygame.K_d]:
+            self.__player_position.x += 300
 
     @property
     def weapon(self):

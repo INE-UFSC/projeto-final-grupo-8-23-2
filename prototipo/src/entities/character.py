@@ -6,7 +6,7 @@ from abc import abstractmethod, ABC
 from constants import game_constants
 
 class Character(ABC):
-    def __init__(self, character_position: pygame.Vector2, health: int, damage: int, speed: int, sprite: str, armor: float):
+    def __init__(self, character_position: pygame.Vector2, health: int, damage: int, speed: int, armor: float, sprite=None):
         self.__character_position = character_position
         self.__health = health
         self.__damage = damage

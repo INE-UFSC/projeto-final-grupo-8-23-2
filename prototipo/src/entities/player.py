@@ -14,7 +14,6 @@ class Player(character.Character):
         self.__level = level
         self.__power_ups = power_ups
         self.__score = score
-        self.move()
         #super().__init__(self.__player_position,)
 
     def draw_at(self, screen: pygame.Surface) -> None:
@@ -22,14 +21,14 @@ class Player(character.Character):
 
     def move(self) -> None:
         keys = pygame.key.get_pressed()
-        if keys[pygame.K_w]:
-            self.__player_position.y -= 300
-        if keys[pygame.K_s]:
-            self.__player_position.y += 300
-        if keys[pygame.K_a]:
-            self.__player_position.x -= 300
-        if keys[pygame.K_d]:
-            self.__player_position.x += 300
+        if keys[pygame.K_w] or keys[pygame.K_UP]:
+            self.__player_position.y -= 15
+        if keys[pygame.K_s] or keys[pygame.K_DOWN]:
+            self.__player_position.y += 15
+        if keys[pygame.K_a] or keys[pygame.K_LEFT]:
+            self.__player_position.x -= 15
+        if keys[pygame.K_d] or keys[pygame.K_RIGHT]:
+            self.__player_position.x += 15
 
     @property
     def weapon(self):

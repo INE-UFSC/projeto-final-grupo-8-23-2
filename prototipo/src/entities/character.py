@@ -5,13 +5,17 @@ import pygame
 from abc import abstractmethod, ABC
 from constants import game_constants
 
+from weapon import Weapon
+
+
 class Character(ABC):
-    def __init__(self, character_position: pygame.Vector2, health: int, damage: int, speed: int, armor: float, sprite=None):
+    def __init__(self, character_position: pygame.Vector2, health: int, damage: int, speed: int, armor: float, weapon: Weapon,sprite=None):
         self.__character_position = character_position
         self.__health = health
         self.__damage = damage
         self.__speed = speed
         self.__armor = armor
+        self.__weapon = weapon
         self.__sprite = sprite
         self.__rect = None
 
@@ -76,6 +80,15 @@ class Character(ABC):
     def armor(self, val:float):
         if isinstance(val, float):
             self.__armor = val
+
+    @property
+    def weapon(self):
+        return self.__weapon
+    
+    @weapon.setter
+    def weapon(self, weapon:Weapon):
+        if isinstance(weapon, Weapon):
+            self.__weapon = weapon
 
     @abstractmethod
     def move() -> None:

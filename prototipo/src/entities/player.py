@@ -19,15 +19,16 @@ class Player(character.Character):
         pygame.draw.circle(screen, 'red', self.__player_position, 40)
 
     def move(self) -> None:
+        vel = 15
         keys = pygame.key.get_pressed()
         if keys[pygame.K_w] or keys[pygame.K_UP]:
-            self.__player_position.y -= 15
+            self.__player_position.y -= vel
         if keys[pygame.K_s] or keys[pygame.K_DOWN]:
-            self.__player_position.y += 15
+            self.__player_position.y += vel
         if keys[pygame.K_a] or keys[pygame.K_LEFT]:
-            self.__player_position.x -= 15
+            self.__player_position.x -= vel
         if keys[pygame.K_d] or keys[pygame.K_RIGHT]:
-            self.__player_position.x += 15
+            self.__player_position.x += vel
 
     @property
     def weapon(self):

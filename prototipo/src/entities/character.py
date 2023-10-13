@@ -9,7 +9,7 @@ from entities.weapon import Weapon
 
 
 class Character(ABC):
-    def __init__(self, character_position: pygame.Vector2, health: int, damage: int, speed: int, armor: float, weapon: Weapon,sprite=None):
+    def __init__(self, character_position: pygame.Vector2, health: int, damage: int, speed: int, armor: float, weapon=None,sprite=None): # por enquanto weapn vai ser none
         self.__character_position = character_position
         self.__health = health
         self.__damage = damage
@@ -94,6 +94,6 @@ class Character(ABC):
     def move() -> None:
         pass
 
-    @abstractmethod
-    def attack() -> None:
-        pass
+    # @abstractmethod
+    # def attack() -> None:
+    #     pass

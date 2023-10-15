@@ -27,16 +27,9 @@ class Seeker(Character, ABC):
 
     def move(self) -> None:
         vel = 10
-        while self.player_to_chase.player_position != self.__seeker_position:
+        while self.player_to_chase.player_position.x != self.__seeker_position.x and self.player_to_chase.player_position.y != self.__seeker_position.y:
             self.__seeker_position.y += ((self.player_to_chase.player_position.y - self.__seeker_position.y)/abs(self.player_to_chase.player_position.y - self.__seeker_position.y)) * vel
             self.__seeker_position.x += ((self.player_to_chase.player_position.x - self.__seeker_position.x)/abs(self.player_to_chase.player_position.x - self.__seeker_position.x)) * vel
-        
-        # player_position = self.player_to_chase.player_position
-        # seeker_position = self.__seeker_position
-        # enquanto as coordenadas dos seekers e dos personagens forem diferentes
-        # pega a velocidade e mutiplica por 1 ou -1 (para saber se precisa ir para frente ou tras / direita ou esquerda)
-        # chego nesse resultado entre 1 ou -1 pela divisao entre a subtracao das distancias dividido pelo modulo da subtracao das distancias
-        # por exemplo, seeker (30, 20) e personagem (30, 40) resultado da divisao vai dar 1
 
     # @abstractmethod
     # def special_ability(self) -> None:

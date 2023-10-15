@@ -8,5 +8,5 @@ class FightSeeker(Seeker):
     def strong_punch(self) -> None:
         pass
 
-    def move() -> None:
-        pass
+    # def move() -> None:
+    #     pass

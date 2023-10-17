@@ -19,18 +19,22 @@ class Player(character.Character):
         super().__init__(self.__player_position, self.__health, self.__speed)
 
     def draw_at(self, screen: pygame.Surface) -> None:
-        pygame.draw.circle(screen, 'blue', self.__player_position, 40)
+        pygame.draw.circle(screen, 'blue', self.__player_position, player_constants.WIDTH)
 
     def move(self) -> None:
         keys = pygame.key.get_pressed()
         if keys[pygame.K_w] or keys[pygame.K_UP]:
-            self.__player_position.y -= self.__speed
+            if self.__player_position.y > player_constants.WIDTH:
+                self.__player_position.y -= self.__speed
         if keys[pygame.K_s] or keys[pygame.K_DOWN]:
-            self.__player_position.y += self.__speed
+            if self.__player_position.y < game_constants.SCREEN_HEIGHT - player_constants.WIDTH:
+                self.__player_position.y += self.__speed
         if keys[pygame.K_a] or keys[pygame.K_LEFT]:
-            self.__player_position.x -= self.__speed
+            if self.__player_position.x > player_constants.WIDTH:
+                self.__player_position.x -= self.__speed
         if keys[pygame.K_d] or keys[pygame.K_RIGHT]:
-            self.__player_position.x += self.__speed
+            if self.__player_position.x < game_constants.SCREEN_WIDTH - player_constants.WIDTH:
+                self.__player_position.x += self.__speed
 
     @property
     def player_position(self) -> pygame.Vector2:

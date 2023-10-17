@@ -19,6 +19,7 @@ class LevelState(State):
         self.__player.draw_at(self.__game_ref.get_screen())
         for seeker in self.__seekers:
             seeker.draw_at(self.__game_ref.get_screen())
+            seeker.move()
         self.__player.move()
 
     def update(self) -> None:

@@ -8,7 +8,7 @@ from constants import game_constants
 
 class Seeker(Character, ABC):
 
-    def __init__(self, player_reference=None):
+    def __init__(self, player_reference: Player):
         self.__player_to_chase = player_reference
         self.__seeker_position = pygame.Vector2(random.randint(0, game_constants.SCREEN_WIDTH), random.randint(0, game_constants.SCREEN_HEIGHT))
         super().__init__(self.__seeker_position, 300, 20, 50, 30.0)

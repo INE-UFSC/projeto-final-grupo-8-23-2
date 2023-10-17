@@ -7,6 +7,7 @@ from constants import game_constants
 
 class Player(character.Character):
     def __init__(self, weapon=None, experience: int=0, level: int=0, power_ups: list=[], score: int=0):
+        self.__alive = True
         self.__player_position = pygame.Vector2(game_constants.SCREEN_WIDTH / 2, game_constants.SCREEN_HEIGHT / 2)
         self.__weapon = weapon
         self.__experience = experience
@@ -29,6 +30,14 @@ class Player(character.Character):
             self.__player_position.x -= vel
         if keys[pygame.K_d] or keys[pygame.K_RIGHT]:
             self.__player_position.x += vel
+
+    @property
+    def player_position(self) -> pygame.Vector2:
+        return self.__player_position
+
+    @player_position.setter
+    def player_position(self, player_position: pygame.Vector2) -> None:
+        self.__player_position = player_position
 
     @property
     def weapon(self):

@@ -1,0 +1,1 @@
+SEEKER_SPEED = 10

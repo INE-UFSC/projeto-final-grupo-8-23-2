@@ -6,10 +6,9 @@ import utils
 from entities import player
 from states import state, level_state
 from constants import game_constants
-# 
+
 
 class Game:
-
     def __init__(self) -> None:
         pygame.init()
         # Atributo para saber se o jogo está rodando

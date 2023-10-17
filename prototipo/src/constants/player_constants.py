@@ -1,3 +1,3 @@
-health = 300
-damage = 30
-speed = 50
+HEALTH = 300
+DAMAGE = 30
+SPEED = 50

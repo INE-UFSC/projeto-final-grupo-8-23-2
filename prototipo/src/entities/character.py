@@ -20,7 +20,7 @@ class Character(ABC):
         self.__rect = None
 
     @abstractmethod
-    def take_damage(self, health_ref: int, damage: int) -> None:
+    def take_damage(self, damage: int) -> None:
         pass
 
     @abstractmethod
@@ -95,9 +95,9 @@ class Character(ABC):
             self.__weapon = weapon
 
     @abstractmethod
-    def move() -> None:
+    def move(self) -> None:
         pass
 
-    # @abstractmethod
-    # def attack() -> None:
-    #     pass
+    @abstractmethod
+    def attack(self) -> None:
+        pass

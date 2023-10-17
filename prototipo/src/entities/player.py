@@ -20,9 +20,18 @@ class Player(character.Character):
         self.__speed = player_constants.SPEED
         super().__init__(self.__player_position, self.__health, self.__speed)
 
+    def attack(self) -> None:
+        pass
+
     def draw_at(self, screen: pygame.Surface) -> None:
         pygame.draw.circle(screen, 'blue', self.__player_position, 40)
         self.__health_bar.draw_at(screen)
+
+    def take_damage(self, damage: int) -> None:
+        if self.__health <= 0:
+            self.__alive = False
+
+        self.__health -= damage
 
     def move(self) -> None:
         keys = pygame.key.get_pressed()

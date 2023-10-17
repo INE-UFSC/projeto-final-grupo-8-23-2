@@ -20,6 +20,10 @@ class Character(ABC):
         self.__rect = None
 
     @abstractmethod
+    def take_damage(self, health_ref: int, damage: int) -> None:
+        pass
+
+    @abstractmethod
     def draw_at(self, screen: pygame.Surface) -> None:
         screen.blit(self.__sprite, self.__rect)
 

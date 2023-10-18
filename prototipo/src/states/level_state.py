@@ -17,13 +17,7 @@ class LevelState(State):
     def render(self) -> None:
         self.__player.draw_at(self.__game_ref.get_screen())
         self.__player.move()
-        for i in range(len(self.__seekers)):
-            next_seeker = None
-            seeker = self.__seekers[i]
-            if i < (len(self.__seekers) - 2):
-                next_seeker = self.__seekers[i+1]
-            if next_seeker != None:
-                seeker.distance_between_seeker(next_seeker)
+        for seeker in self.__seekers:
             seeker.draw_at(self.__game_ref.get_screen())
             seeker.move()
 

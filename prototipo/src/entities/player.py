@@ -32,6 +32,7 @@ class Player(character.Character):
             self.__alive = False
 
         self.__health -= damage
+        self.__health_bar.update_health_bar(self.__health)
 
     def move(self) -> None:
         keys = pygame.key.get_pressed()

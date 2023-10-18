@@ -10,12 +10,16 @@ from constants import seeker_constants
 
 
 class Seeker(Character, ABC):
-
-    def __init__(self, player_reference: Player, seeker_range: int) -> None:
+    def __init__(self, player_reference: Player, seeker_range: int, seeker_damage: int) -> None:
         self.__player_to_chase = player_reference
-        self.__seeker_position = pygame.Vector2(random.randint(0, game_constants.SCREEN_WIDTH), random.randint(0, game_constants.SCREEN_HEIGHT))
         self.__seeker_range = seeker_range
-        super().__init__(self.__seeker_position, 300, 20, 50, 30.0)
+        self.__damage = seeker_damage
+        self.__seeker_position = pygame.Vector2(random.randint(seeker_constants.SPAWN_MARGIN, game_constants.SCREEN_WIDTH - seeker_constants.SPAWN_MARGIN), random.randint(seeker_constants.SPAWN_MARGIN, game_constants.SCREEN_HEIGHT - seeker_constants.SPAWN_MARGIN))
+        print(self.__seeker_position.x, self.__seeker_position.y)
+        super().__init__(self.__seeker_position, seeker_constants.FIGHT_SEEKER_HEALTH, seeker_constants.FIGHT_SEEKER_SPEED, seeker_constants.FIGHT_SEEKER_DAMAGE, seeker_constants.FIGHT_SEEKER_ARMOR)
+
+    def attack(self) -> None:
+        self.__player_to_chase.take_damage(self.__damage)
 
     def draw_at(self, screen: pygame.Surface) -> None:
         pygame.draw.circle(screen, 'purple', self.__seeker_position, 20)
@@ -40,8 +44,8 @@ class Seeker(Character, ABC):
         # o range do seeker em questão, caso seja, o seeker continua andando, caso contrário
         # o seeker não irá se movimentar
         if distance_between_seekers > self.__seeker_range:
-            self.__seeker_position.y += ((seeker_2.seeker_position.x - self.__seeker_position.x) / distance_between_seekers) * seeker_constants.SEEKER_SPEED
-            self.__seeker_position.x += ((seeker_2.seeker_position.x - self.__seeker_position.x) / distance_between_seekers) * seeker_constants.SEEKER_SPEED
+            self.__seeker_position.y += ((seeker_2.seeker_position.x - self.__seeker_position.x) / distance_between_seekers) * seeker_constants.FIGHT_SEEKER_SPEED
+            self.__seeker_position.x += ((seeker_2.seeker_position.x - self.__seeker_position.x) / distance_between_seekers) * seeker_constants.FIGHT_SEEKER_SPEED
         
     def move(self, seeker_2 = None) -> None:
         # Cálculo da distância entre o seeker e o player para saber se o seeker
@@ -52,11 +56,15 @@ class Seeker(Character, ABC):
         # o range do seeker em questão, caso seja, o seeker continua andando, caso contrário
         # o seeker não irá se movimentar
         if distance_between_seeker_and_player > self.__seeker_range:
-            self.__seeker_position.y += ((self.__player_to_chase.player_position.y - self.__seeker_position.y) / distance_between_seeker_and_player) * seeker_constants.SEEKER_SPEED
-            self.__seeker_position.x += ((self.__player_to_chase.player_position.x - self.__seeker_position.x) / distance_between_seeker_and_player) * seeker_constants.SEEKER_SPEED
+            self.__seeker_position.y += ((self.__player_to_chase.player_position.y - self.__seeker_position.y) / distance_between_seeker_and_player) * seeker_constants.FIGHT_SEEKER_SPEED
+            self.__seeker_position.x += ((self.__player_to_chase.player_position.x - self.__seeker_position.x) / distance_between_seeker_and_player) * seeker_constants.FIGHT_SEEKER_SPEED
+        else:
+            self.attack()
             
         if seeker_2 != None:
             self.distance_between_seeker(seeker_2)
+            self.__seeker_position.y += ((self.__player_to_chase.player_position.y - self.__seeker_position.y) / distance_between_seeker_and_player) * seeker_constants.FIGHT_SEEKER_SPEED
+            self.__seeker_position.x += ((self.__player_to_chase.player_position.x - self.__seeker_position.x) / distance_between_seeker_and_player) * seeker_constants.FIGHT_SEEKER_SPEED
 
     # @abstractmethod
     # def special_ability(self) -> None:

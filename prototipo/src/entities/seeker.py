@@ -22,7 +22,7 @@ class Seeker(Character, ABC):
         self.__player_to_chase.take_damage(self.__damage)
 
     def draw_at(self, screen: pygame.Surface) -> None:
-        pygame.draw.circle(screen, 'purple', self.__seeker_position, 20)
+        pygame.draw.circle(screen, 'purple', self.__seeker_position, self.__seeker_range / 2)
         
     @property
     def seeker_position(self):
@@ -37,17 +37,17 @@ class Seeker(Character, ABC):
         if isinstance(player_to_chase, Player):
             self.__player_to_chase = player_to_chase
 
-    def distance_between_seeker(self, seeker_2):
-        distance_between_seekers = math.sqrt((seeker_2.seeker_position.x - self.__seeker_position.x) ** 2 + (seeker_2.seeker_position.y - self.__seeker_position.y) ** 2)
+    def collision_between_seeker_2(self, seeker_2, seeker_1_pos_x, seeker_1_pos_y):
+        distance_between_seekers = math.sqrt((seeker_2.seeker_position.x - seeker_1_pos_x) ** 2 + (seeker_2.seeker_position.y - seeker_1_pos_y) ** 2)
+        return distance_between_seekers <= self.__seeker_range
+    
+    def collision_between_seekers(self, seekers, seeker_1_pos_x, seeker_1_pos_y):
+        for seeker in [x for x in seekers if x != self]:
+            if self.collision_between_seeker_2(seeker, seeker_1_pos_x, seeker_1_pos_y):
+                return True
+        return False
         
-        # Condicional que verifica se a distância entre o player e o seeker é maior que
-        # o range do seeker em questão, caso seja, o seeker continua andando, caso contrário
-        # o seeker não irá se movimentar
-        if distance_between_seekers > self.__seeker_range:
-            self.__seeker_position.y += ((seeker_2.seeker_position.x - self.__seeker_position.x) / distance_between_seekers) * seeker_constants.FIGHT_SEEKER_SPEED
-            self.__seeker_position.x += ((seeker_2.seeker_position.x - self.__seeker_position.x) / distance_between_seekers) * seeker_constants.FIGHT_SEEKER_SPEED
-        
-    def move(self, seeker_2 = None) -> None:
+    def move(self, seekers = None) -> None:
         # Cálculo da distância entre o seeker e o player para saber se o seeker
         # precisa continuar andando ou parar/atacar
         distance_between_seeker_and_player = math.sqrt((self.__player_to_chase.player_position.x - self.__seeker_position.x) ** 2 + (self.__player_to_chase.player_position.y - self.__seeker_position.y) ** 2)
@@ -56,16 +56,17 @@ class Seeker(Character, ABC):
         # o range do seeker em questão, caso seja, o seeker continua andando, caso contrário
         # o seeker não irá se movimentar
         if distance_between_seeker_and_player > self.__seeker_range:
-            self.__seeker_position.y += ((self.__player_to_chase.player_position.y - self.__seeker_position.y) / distance_between_seeker_and_player) * seeker_constants.FIGHT_SEEKER_SPEED
-            self.__seeker_position.x += ((self.__player_to_chase.player_position.x - self.__seeker_position.x) / distance_between_seeker_and_player) * seeker_constants.FIGHT_SEEKER_SPEED
+            seeker_next_position_aux_y = self.__seeker_position.y + ((self.__player_to_chase.player_position.y - self.__seeker_position.y) / distance_between_seeker_and_player) * seeker_constants.FIGHT_SEEKER_SPEED
+            seeker_next_position_aux_x = self.__seeker_position.x + ((self.__player_to_chase.player_position.x - self.__seeker_position.x) / distance_between_seeker_and_player) * seeker_constants.FIGHT_SEEKER_SPEED
+            
+            collision = False
+            if seekers != None:
+                collision = self.collision_between_seekers(seekers, seeker_next_position_aux_x, seeker_next_position_aux_y)
+            if not collision:
+                self.__seeker_position.y = seeker_next_position_aux_y
+                self.__seeker_position.x = seeker_next_position_aux_x                
         else:
             self.attack()
-            
-        if seeker_2 != None:
-            self.distance_between_seeker(seeker_2)
-            self.__seeker_position.y += ((self.__player_to_chase.player_position.y - self.__seeker_position.y) / distance_between_seeker_and_player) * seeker_constants.FIGHT_SEEKER_SPEED
-            self.__seeker_position.x += ((self.__player_to_chase.player_position.x - self.__seeker_position.x) / distance_between_seeker_and_player) * seeker_constants.FIGHT_SEEKER_SPEED
-
     # @abstractmethod
     # def special_ability(self) -> None:
     #     pass

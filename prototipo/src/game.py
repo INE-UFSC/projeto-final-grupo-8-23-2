@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import pygame
 
-import utils
+import utils.utils
 from entities import player
 from states import state, level_state
 from constants import game_constants
@@ -39,7 +39,7 @@ class Game:
                 if event.type == pygame.QUIT or (event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE):
                     self.__running = False
             # Preenche a tela com uma cor
-            self.__screen.fill(utils.green)
+            self.__screen.fill(utils.utils.green)
             # Renderizando os objetos do estado, no caso, somente o Player, por enquanto
             self.__current_state.render()
 

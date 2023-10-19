@@ -3,6 +3,7 @@ from __future__ import annotations
 import pygame
 from entities import weapon, character
 from constants import game_constants, player_constants
+from utils import health_bar
 
 
 class Player(character.Character):
@@ -15,11 +16,23 @@ class Player(character.Character):
         self.__power_ups = power_ups
         self.__score = score
         self.__health = player_constants.HEALTH
+        self.__health_bar = health_bar.HealthBar(self.__player_position, self.__health)
         self.__speed = player_constants.SPEED
         super().__init__(self.__player_position, self.__health, self.__speed)
 
+    def attack(self) -> None:
+        pass
+
     def draw_at(self, screen: pygame.Surface) -> None:
         pygame.draw.circle(screen, 'blue', self.__player_position, player_constants.WIDTH)
+        self.__health_bar.draw_at(screen)
+
+    def take_damage(self, damage: int) -> None:
+        if self.__health <= 0:
+            self.__alive = False
+
+        self.__health -= damage
+        self.__health_bar.update_health_bar(self.__health)
 
     def move(self) -> None:
         keys = pygame.key.get_pressed()

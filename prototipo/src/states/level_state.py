@@ -3,7 +3,7 @@ from __future__ import annotations
 from states.state import State
 from entities import player
 from entities import seeker, fight_seeker
-from powerups import power_up, power_up_health
+from powerups import power_up, power_up_health, power_up_speed
 import math
 
 class LevelState(State):
@@ -11,7 +11,7 @@ class LevelState(State):
         self.__game_ref = game_ref
         self.__player: player.Player = player.Player()
         self.__seekers: list[seeker.Seeker] = [fight_seeker.FightSeeker(self.__player) for _ in range(2)]
-        self.__power_ups: list[power_up.PowerUp] = [power_up_health.PowerUpHealth(self.__player) for _ in range(2)]
+        self.__power_ups: list[power_up.PowerUp] = [power_up_health.PowerUpHealth(self.__player) for _ in range(2)] + [power_up_speed.PowerUpSpeed(self.__player) for _ in range(2)]
 
     def entering(self) -> None:
         return super().entering()

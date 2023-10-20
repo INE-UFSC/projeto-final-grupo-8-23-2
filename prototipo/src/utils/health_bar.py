@@ -16,3 +16,43 @@ class HealthBar:
 
     def update_health_bar(self, health: int) -> None:
         self.__current_health = health
+
+    @property
+    def position(self):
+        return self.__position
+
+    @position.setter
+    def position(self, value):
+        self.__position = value
+
+    @property
+    def width(self):
+        return self.__width
+
+    @width.setter
+    def width(self, value):
+        self.__width = value
+
+    @property
+    def height(self):
+        return self.__height
+
+    @height.setter
+    def height(self, value):
+        self.__height = value
+
+    @property
+    def current_health(self):
+        return self.__current_health
+
+    @current_health.setter
+    def current_health(self, value):
+        self.__current_health = value
+
+    @property
+    def max_health(self):
+        return self.__max_health
+
+    @max_health.setter
+    def max_health(self, value):
+        self.__max_health = value

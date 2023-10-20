@@ -101,3 +101,29 @@ class Player(character.Character):
     def score(self, val:int):
         if isinstance(val, int):
             self.__score = val
+
+    @property
+    def health(self):
+        return self.__health
+    
+    @health.setter
+    def health(self, val):
+        self.__health = val
+
+    @property
+    def health_bar(self):
+        return self.__health_bar
+    
+    @health_bar.setter
+    def health_bar(self, val):
+        self.__health_bar = val
+
+    def get_power_up(self):
+        keys = pygame.key.get_pressed()
+        if keys[pygame.K_q]:
+            for powerup in self.__power_ups:
+                if (powerup.position.x - self.__player_position.x <= player_constants.WIDTH) and (powerup.position.y - self.__player_position.y <= player_constants.WIDTH) and (not powerup.actived):
+                    powerup.activate_power_up()
+                    self.__health_bar.update_health_bar(self.__health)
+
+# falta arrumar o raio de alcançe do personagem em relação ao upgrade (esta mto longo)

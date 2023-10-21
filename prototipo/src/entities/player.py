@@ -2,8 +2,9 @@ from __future__ import annotations
 
 import pygame
 from entities import weapon, character
-from constants import game_constants, player_constants
+from constants import game_constants, player_constants, powerup_constants
 from utils import health_bar
+import math
 
 
 class Player(character.Character):
@@ -101,3 +102,35 @@ class Player(character.Character):
     def score(self, val:int):
         if isinstance(val, int):
             self.__score = val
+
+    @property
+    def health(self):
+        return self.__health
+    
+    @health.setter
+    def health(self, val):
+        self.__health = val
+
+    @property
+    def health_bar(self):
+        return self.__health_bar
+    
+    @health_bar.setter
+    def health_bar(self, val):
+        self.__health_bar = val
+
+    def get_power_up(self):
+        keys = pygame.key.get_pressed()
+        if keys[pygame.K_q]:
+            for powerup in self.__power_ups:
+                # calculo da distancia entre o powerup e o player
+                powerup_x = powerup.position.x
+                powerup_y = powerup.position.y
+                player_x = self.__player_position.x
+                player_y = self.__player_position.y
+                radius_player = player_constants.WIDTH
+                radius_powerup = powerup_constants.width
+                distance_formula = (math.sqrt(((powerup_x - player_x)**2) + ((powerup_y - player_y)**2)))
+                # condição para usar o powerup
+                if (not powerup.actived) and (distance_formula <= (radius_player + radius_powerup)) :
+                    powerup.activate_power_up()

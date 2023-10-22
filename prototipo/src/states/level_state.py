@@ -18,9 +18,6 @@ class LevelState(State):
 
     def render(self) -> None:
         self.__player.draw_at(super().get_game().get_screen())
-        self.__player.move()
-        self.__player.get_power_up()
-        self.__player.attack(self.__game_ref.get_screen())
         for seeker in self.__seekers:
             seeker.draw_at(super().get_game().get_screen())
             seeker.move()
@@ -29,7 +26,9 @@ class LevelState(State):
             powerup.add_power_up_to_list()
 
     def update(self) -> None:
-        return super().update()
+        self.__player.move()
+        self.__player.get_power_up()
+        self.__player.attack(super().get_game().get_screen())
 
     def exiting(self) -> None:
         return super().exiting()

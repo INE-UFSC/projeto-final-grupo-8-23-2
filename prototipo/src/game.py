@@ -42,6 +42,7 @@ class Game:
             self.__screen.fill(utils.utils.green)
             # Renderizando os objetos do estado, no caso, somente o Player, por enquanto
             self.__current_state.render()
+            self.__current_state.update()
 
             # Atualiza a tela
             pygame.display.flip()

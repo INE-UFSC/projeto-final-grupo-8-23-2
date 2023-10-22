@@ -2,7 +2,13 @@ import pygame
 
 
 class HealthBar:
-    def __init__(self, bar_position: pygame.Vector2, max_health: int, width=100, height=15) -> None:
+    def __init__(
+            self,
+            bar_position: pygame.Vector2,
+            max_health: int,
+            width=100,
+            height=15
+        ) -> None:
         self.__position = bar_position
         self.__width = width
         self.__height = height

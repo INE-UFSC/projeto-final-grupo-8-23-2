@@ -16,27 +16,23 @@ class Player(character.Character):
         score: int=0
         ) -> None:
         self.__alive = True
-        self.__player_position = pygame.Vector2(game_constants.SCREEN_WIDTH / 2, game_constants.SCREEN_HEIGHT / 2)
         self.__weapon = weapon.Weapon('Pistol', 10, 400, 'pistol.png')
         self.__experience = experience
         self.__level = level
         self.__power_ups = power_ups
         self.__score = score
-        self.__health = player_constants.HEALTH
-        self.__health_bar = health_bar.HealthBar(self.__player_position, self.__health)
-        self.__speed = player_constants.SPEED
+        self.__health_bar = health_bar.HealthBar(player_constants.PLAYER_SPAWN_POSITION, player_constants.HEALTH)
         self.__attacking = False
-        super().__init__(self.__player_position, self.__health, self.__speed)
-        self.__health_bar = health_bar.HealthBar(self.position, self.health)
+        super().__init__(player_constants.PLAYER_SPAWN_POSITION, player_constants.HEALTH, player_constants.SPEED)
 
     def attack(self, screen) -> None:
         if pygame.mouse.get_pressed()[0]:
             self.__attacking = True
         if self.__attacking and not pygame.mouse.get_pressed()[0]:
-            dy = pygame.mouse.get_pos()[1] - self.__player_position.y
-            dx = pygame.mouse.get_pos()[0] - self.__player_position.x
+            dy = pygame.mouse.get_pos()[1] - super().position.y
+            dx = pygame.mouse.get_pos()[0] - super().position.x
             angle = math.atan2(dy, dx)
-            self.__weapon.shoot(angle, self.__player_position.x, self.__player_position.y)
+            self.__weapon.shoot(angle, super().position.x, super().position.y)
             self.__attacking = False
         self.__weapon.draw(screen)
 
@@ -65,8 +61,8 @@ class Player(character.Character):
             if super().position.x > player_constants.WIDTH:
                 super().position.x -= super().speed
         if keys[pygame.K_d] or keys[pygame.K_RIGHT]:
-            if self.__player_position.x < game_constants.SCREEN_WIDTH - player_constants.WIDTH:
-                self.__player_position.x += self.__speed
+            if super().position.x < game_constants.SCREEN_WIDTH - player_constants.WIDTH:
+                super().position.x += super().speed
 
     def get_power_up(self):
         keys = pygame.key.get_pressed()
@@ -78,7 +74,7 @@ class Player(character.Character):
                 player_x = self.position.x
                 player_y = self.position.y
                 radius_player = player_constants.WIDTH
-                radius_powerup = powerup_constants.width
+                radius_powerup = powerup_constants.WIDTH
                 distance_formula = (math.sqrt(((powerup_x - player_x)**2) + ((powerup_y - player_y)**2)))
                 # condição para usar o powerup
                 if (not powerup.actived) and (distance_formula <= (radius_player + radius_powerup)) :
@@ -87,7 +83,7 @@ class Player(character.Character):
     @property
     def alive(self):
         return self.__alive
-    
+
     @alive.setter
     def alive(self, val:bool):
         if isinstance(val, bool):
@@ -96,7 +92,7 @@ class Player(character.Character):
     @property
     def player_position(self):
         return self.__player_position
-    
+
     @player_position.setter
     def player_position(self, val:pygame.Vector2):
         if isinstance(val, pygame.Vector2):
@@ -105,7 +101,7 @@ class Player(character.Character):
     @property
     def weapon(self):
         return self.__weapon
-    
+
     @weapon.setter
     def weapon(self, val:weapon.Weapon):
         if isinstance(val, weapon.Weapon):
@@ -114,7 +110,7 @@ class Player(character.Character):
     @property
     def experience(self):
         return self.__experience
-    
+
     @experience.setter
     def experience(self, val:int):
         if isinstance(val, int):
@@ -123,7 +119,7 @@ class Player(character.Character):
     @property
     def level(self):
         return self.__level
-    
+
     @level.setter
     def level(self, val:int):
         if isinstance(val, int):
@@ -132,7 +128,7 @@ class Player(character.Character):
     @property
     def power_ups(self):
         return self.__power_ups
-    
+
     @power_ups.setter
     def power_ups(self, val:list):
         if isinstance(val, list):
@@ -141,43 +137,25 @@ class Player(character.Character):
     @property
     def score(self):
         return self.__score
-    
+
     @score.setter
     def score(self, val:int):
         if isinstance(val, int):
             self.__score = val
 
     @property
-    def health(self):
-        return self.__health
-    
-    @health.setter
-    def health(self, val:int):
-        if isinstance(val, int):
-            self.__health = val
-
-    @property
     def health_bar(self):
         return self.__health_bar
-    
+
     @health_bar.setter
     def health_bar(self, val:health_bar.HealthBar):
         if isinstance(val, health_bar.HealthBar):
             self.__health_bar = val
 
     @property
-    def speed(self):
-        return self.__speed
-    
-    @speed.setter
-    def speed(self, val:int):
-        if isinstance(val, int):
-            self.__speed = val
-
-    @property
     def attacking(self):
         return self.__attacking
-    
+
     @attacking.setter
     def attacking(self, val:bool):
         if isinstance(val, bool):

@@ -1,63 +1,69 @@
 from entities.bullet import Bullet
 
 class Weapon:
-    def __init__(self, name: str, damage: int, range: int, sprite: str):
-       self.__name = name
-       self.__damage = damage
-       self.__range = range
-       self.__sprite = sprite
-       self.__bullets = []
-       
+    def __init__(
+            self,
+            name: str,
+            damage: int,
+            range: int,
+            sprite: str
+        ) -> None:
+        self.__name = name
+        self.__damage = damage
+        self.__range = range
+        self.__sprite = sprite
+        self.__bullets = []
+
     @property
-    def name(self):
+    def name(self) -> str:
         return self.__name
 
     @name.setter
-    def name(self, val:str):
+    def name(self, val:str) -> None:
         if isinstance(val, str):
             self.__name = val
 
     @property
-    def damage(self):
+    def damage(self) -> int:
         return self.__damage
 
     @damage.setter
-    def damage(self, val:int):
+    def damage(self, val: int) -> None:
         if isinstance(val, int):
             self.__damage = val
 
     @property
-    def range(self):
+    def range(self) -> int:
         return self.__range
 
     @range.setter
-    def range(self, val:int):
+    def range(self, val:int) -> None:
         if isinstance(val, int):
             self.__range = val
 
     @property
-    def sprite(self):
+    def sprite(self) -> str:
         return self.__sprite
 
     @sprite.setter
-    def sprite(self, val:str):
+    def sprite(self, val: str) -> None:
         if isinstance(val, str):
             self.__sprite = val
 
     @property
-    def bullets(self):
+    def bullets(self) -> list[Bullet]:
         return self.__bullets
-    
+
     @bullets.setter
-    def bullets(self, val:list):
+    def bullets(self, val: list[Bullet]):
         if isinstance(val, list):
             self.__bullets = val
-            
-    def shoot(self, angle, player_x, player_y):
+
+    def shoot(self, angle, player_x, player_y) -> None:
         bullet = Bullet(angle, 10, player_x, player_y, self.__range)
         self.__bullets.append(bullet)
 
-    def draw(self, screen):
+    def draw(self, screen) -> None:
         for bullet in self.__bullets:
             bullet.draw_at(screen)
             bullet.move()

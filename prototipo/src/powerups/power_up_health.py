@@ -1,12 +1,13 @@
-from powerups.power_up import PowerUp
 import pygame
+
+from powerups.power_up import PowerUp
 import constants.player_constants as playerconst
 import constants.powerup_constants as powerconst
 
 
 class PowerUpHealth(PowerUp):
-    def __init__(self, player):
-        super().__init__(player)
+    def __init__(self, player_ref):
+        super().__init__(player_ref)
         self.color = pygame.Color("yellow")
         self.upgrade_value = powerconst.HEALTH
 

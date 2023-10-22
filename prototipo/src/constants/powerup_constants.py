@@ -1,3 +1,3 @@
-width = 10
+WIDTH = 10
 HEALTH = 100
 SPEED = 5

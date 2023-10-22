@@ -3,7 +3,6 @@ from __future__ import annotations
 import pygame
 
 from abc import abstractmethod, ABC
-from constants import game_constants
 
 from entities.weapon import Weapon
 
@@ -47,6 +46,15 @@ class Character(ABC):
     @property
     def position(self) -> pygame.Vector2:
         return self.__position
+
+    @property
+    def coordinate_y(self):
+        return self.__coordinate_y
+
+    @coordinate_y.setter
+    def coordinate_y(self, val:int):
+        if isinstance(val, int):
+            self.__coordinate_y = val
 
     @property
     def damage(self):

@@ -1,19 +1,20 @@
 from abc import ABC, abstractmethod
 import pygame
 import random
+
 import constants.powerup_constants as cons
 import constants.game_constants as gamecons
 
 
 class PowerUp(ABC):
-    def __init__(self, player):
-       self.__player = player
+    def __init__(self, player_ref) -> None:
+       self.__player = player_ref
        self.__upgrade_value = None
        self.__icon = None
        self.__position = pygame.Vector2(random.randint(0, gamecons.SCREEN_WIDTH), random.randint(0, gamecons.SCREEN_HEIGHT))
        self.__color = None
        self.__actived = False
-       self.__width = cons.width
+       self.__width = cons.WIDTH
 
     def add_power_up_to_list(self):
         self.__player.power_ups.append(self)

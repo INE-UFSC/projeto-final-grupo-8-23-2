@@ -10,3 +10,5 @@ class PowerUpSelection:
     def avaliable_power_ups(self, val:list):
         if isinstance(val, list):
             self.__avaliable_power_ups = val
+
+            

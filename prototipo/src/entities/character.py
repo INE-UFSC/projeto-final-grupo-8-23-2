@@ -49,15 +49,6 @@ class Character(ABC):
         return self.__position
 
     @property
-    def coordinate_y(self):
-        return self.__coordinate_y
-
-    @coordinate_y.setter
-    def coordinate_y(self, val:int):
-        if isinstance(val, int):
-            self.__coordinate_y = val
-
-    @property
     def damage(self):
         return self.__damage
 

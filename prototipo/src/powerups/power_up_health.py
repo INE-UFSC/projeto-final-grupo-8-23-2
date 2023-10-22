@@ -1,4 +1,3 @@
-from abc import ABC, abstractmethod
 from powerups.power_up import PowerUp
 import pygame
 import constants.player_constants as playerconst

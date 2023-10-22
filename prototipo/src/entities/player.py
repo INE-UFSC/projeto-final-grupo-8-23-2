@@ -8,7 +8,13 @@ import math
 
 
 class Player(character.Character):
-    def __init__(self, experience: int=0, level: int=0, power_ups: list=[], score: int=0):
+    def __init__(
+        self,
+        experience: int=0,
+        level: int=0,
+        power_ups: list=[],
+        score: int=0
+        ) -> None:
         self.__alive = True
         self.__player_position = pygame.Vector2(game_constants.SCREEN_WIDTH / 2, game_constants.SCREEN_HEIGHT / 2)
         self.__weapon = weapon.Weapon('Pistol', 10, 400, 'pistol.png')
@@ -21,6 +27,7 @@ class Player(character.Character):
         self.__speed = player_constants.SPEED
         self.__attacking = False
         super().__init__(self.__player_position, self.__health, self.__speed)
+        self.__health_bar = health_bar.HealthBar(self.position, self.health)
 
     def attack(self, screen) -> None:
         if pygame.mouse.get_pressed()[0]:
@@ -34,27 +41,29 @@ class Player(character.Character):
         self.__weapon.draw(screen)
 
     def draw_at(self, screen: pygame.Surface) -> None:
-        pygame.draw.circle(screen, 'blue', self.__player_position, player_constants.WIDTH)
+        pygame.draw.circle(screen, 'blue', super().position, player_constants.WIDTH)
         self.__health_bar.draw_at(screen)
 
     def take_damage(self, damage: int) -> None:
-        if self.__health <= 0:
+        if self.health <= 0:
             self.__alive = False
+            print('morreu')
 
-        self.__health -= damage
-        self.__health_bar.update_health_bar(self.__health)
+        self.health -= damage
+        self.__health_bar.update_health_bar(self.health)
+        print(self.health)
 
     def move(self) -> None:
         keys = pygame.key.get_pressed()
         if keys[pygame.K_w] or keys[pygame.K_UP]:
-            if self.__player_position.y > player_constants.WIDTH:
-                self.__player_position.y -= self.__speed
+            if super().position.y > player_constants.WIDTH:
+                super().position.y -= super().speed
         if keys[pygame.K_s] or keys[pygame.K_DOWN]:
-            if self.__player_position.y < game_constants.SCREEN_HEIGHT - player_constants.WIDTH:
-                self.__player_position.y += self.__speed
+            if super().position.y < game_constants.SCREEN_HEIGHT - player_constants.WIDTH:
+                super().position.y += super().speed
         if keys[pygame.K_a] or keys[pygame.K_LEFT]:
-            if self.__player_position.x > player_constants.WIDTH:
-                self.__player_position.x -= self.__speed
+            if super().position.x > player_constants.WIDTH:
+                super().position.x -= super().speed
         if keys[pygame.K_d] or keys[pygame.K_RIGHT]:
             if self.__player_position.x < game_constants.SCREEN_WIDTH - player_constants.WIDTH:
                 self.__player_position.x += self.__speed
@@ -66,8 +75,8 @@ class Player(character.Character):
                 # calculo da distancia entre o powerup e o player
                 powerup_x = powerup.position.x
                 powerup_y = powerup.position.y
-                player_x = self.__player_position.x
-                player_y = self.__player_position.y
+                player_x = self.position.x
+                player_y = self.position.y
                 radius_player = player_constants.WIDTH
                 radius_powerup = powerup_constants.width
                 distance_formula = (math.sqrt(((powerup_x - player_x)**2) + ((powerup_y - player_y)**2)))

@@ -9,8 +9,17 @@ from entities.weapon import Weapon
 
 
 class Character(ABC):
-    def __init__(self, character_position: pygame.Vector2, health: int, speed: int, damage=5, armor=0, weapon=None,sprite=None): # por enquanto weapn vai ser none
-        self.__character_position = character_position
+    def __init__(
+            self,
+            position: pygame.Vector2,
+            health: int,
+            speed: int,
+            damage=5,
+            armor=0,
+            weapon=None,
+            sprite=None
+        ) -> None:
+        self.__position = position
         self.__health = health
         self.__damage = damage
         self.__speed = speed
@@ -18,6 +27,14 @@ class Character(ABC):
         self.__weapon = weapon
         self.__sprite = sprite
         self.__rect = None
+
+    @property
+    def health(self) -> int:
+        return self.__health
+
+    @health.setter
+    def health(self, health: int) -> None:
+        self.__health += health
 
     @abstractmethod
     def take_damage(self, damage: int) -> None:
@@ -28,8 +45,8 @@ class Character(ABC):
         screen.blit(self.__sprite, self.__rect)
 
     @property
-    def character_position(self) -> pygame.Vector2:
-        return self.__character_position
+    def position(self) -> pygame.Vector2:
+        return self.__position
 
     @property
     def coordinate_y(self):
@@ -39,15 +56,6 @@ class Character(ABC):
     def coordinate_y(self, val:int):
         if isinstance(val, int):
             self.__coordinate_y = val
-
-    @property
-    def health(self):
-        return self.__health
-
-    @health.setter
-    def health(self, val:int):
-        if isinstance(val, int):
-            self.__health = val
 
     @property
     def damage(self):
@@ -88,7 +96,7 @@ class Character(ABC):
     @property
     def weapon(self):
         return self.__weapon
-    
+
     @weapon.setter
     def weapon(self, weapon:Weapon):
         if isinstance(weapon, Weapon):

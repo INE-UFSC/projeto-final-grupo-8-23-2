@@ -3,11 +3,13 @@ import math
 from constants import game_constants
 
 class Bullet:
-    def __init__(self, direction, speed) -> None:
-        self.__rect = pygame.Rect(0, 0, 10, 10)
+    def __init__(self, direction, speed, x, y, range) -> None:
         self.__speed = speed
+        self.__position = [x, y]
         self.__direction = direction
         self.__color = 'red'
+        self.__moving = True
+        self.__range = range
 
     @property
     def rect(self):
@@ -45,10 +47,17 @@ class Bullet:
         if isinstance(val, str):
             self.__color = val
 
+    @property
+    def moving(self):
+        return self.__moving
+
     def draw_at(self, screen:pygame.Surface) -> None:
-        pygame.draw.rect(screen, self.__color, self.__rect)
+        pygame.draw.circle(screen, self.__color, self.__position, 5)
 
     def move(self) -> None:
         # calculos para que se mova na direção do mouse
-        self.__rect.x += math.cos(self.__direction) * self.__speed
-        self.__rect.y += math.sin(self.__direction) * self.__speed
+        self.__position[0] += math.cos(self.__direction) * self.__speed
+        self.__position[1] += math.sin(self.__direction) * self.__speed
+        self.__range -= 1*self.__speed
+        if self.__range <= 0:
+            self.__moving = False

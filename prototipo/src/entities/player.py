@@ -8,10 +8,10 @@ import math
 
 
 class Player(character.Character):
-    def __init__(self, weapon=None, experience: int=0, level: int=0, power_ups: list=[], score: int=0):
+    def __init__(self, experience: int=0, level: int=0, power_ups: list=[], score: int=0):
         self.__alive = True
         self.__player_position = pygame.Vector2(game_constants.SCREEN_WIDTH / 2, game_constants.SCREEN_HEIGHT / 2)
-        self.__weapon = weapon
+        self.__weapon = weapon.Weapon('Pistol', 10, 400, 'pistol.png')
         self.__experience = experience
         self.__level = level
         self.__power_ups = power_ups
@@ -19,10 +19,19 @@ class Player(character.Character):
         self.__health = player_constants.HEALTH
         self.__health_bar = health_bar.HealthBar(self.__player_position, self.__health)
         self.__speed = player_constants.SPEED
+        self.__attacking = False
         super().__init__(self.__player_position, self.__health, self.__speed)
 
-    def attack(self) -> None:
-        pass
+    def attack(self, screen) -> None:
+        if pygame.mouse.get_pressed()[0]:
+            self.__attacking = True
+        if self.__attacking and not pygame.mouse.get_pressed()[0]:
+            dy = pygame.mouse.get_pos()[1] - self.__player_position.y
+            dx = pygame.mouse.get_pos()[0] - self.__player_position.x
+            angle = math.atan2(dy, dx)
+            self.__weapon.shoot(angle, self.__player_position.x, self.__player_position.y)
+            self.__attacking = False
+        self.__weapon.draw(screen)
 
     def draw_at(self, screen: pygame.Surface) -> None:
         pygame.draw.circle(screen, 'blue', self.__player_position, player_constants.WIDTH)

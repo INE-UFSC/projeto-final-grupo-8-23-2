@@ -20,6 +20,7 @@ class LevelState(State):
         self.__player.draw_at(self.__game_ref.get_screen())
         self.__player.move()
         self.__player.get_power_up()
+        self.__player.attack(self.__game_ref.get_screen())
         for seeker in self.__seekers:
             seeker.draw_at(self.__game_ref.get_screen())
             seeker.move()

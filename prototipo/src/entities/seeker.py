@@ -15,7 +15,7 @@ class Seeker(Character, ABC):
         self.__seeker_range = seeker_range
         self.__damage = seeker_damage
         self.__seeker_position = pygame.Vector2(random.randint(seeker_constants.SPAWN_MARGIN, game_constants.SCREEN_WIDTH - seeker_constants.SPAWN_MARGIN), random.randint(seeker_constants.SPAWN_MARGIN, game_constants.SCREEN_HEIGHT - seeker_constants.SPAWN_MARGIN))
-        print(self.__seeker_position.x, self.__seeker_position.y)
+        #print(self.__seeker_position.x, self.__seeker_position.y)
         super().__init__(self.__seeker_position, seeker_constants.FIGHT_SEEKER_HEALTH, seeker_constants.FIGHT_SEEKER_SPEED, seeker_constants.FIGHT_SEEKER_DAMAGE, seeker_constants.FIGHT_SEEKER_ARMOR)
 
     def attack(self) -> None:

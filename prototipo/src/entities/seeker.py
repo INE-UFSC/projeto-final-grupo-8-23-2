@@ -14,15 +14,61 @@ class Seeker(Character, ABC):
         self.__player_to_chase = player_reference
         self.__seeker_range = seeker_range
         self.__damage = seeker_damage
-        self.__seeker_position = pygame.Vector2(random.randint(seeker_constants.SPAWN_MARGIN, game_constants.SCREEN_WIDTH - seeker_constants.SPAWN_MARGIN), random.randint(seeker_constants.SPAWN_MARGIN, game_constants.SCREEN_HEIGHT - seeker_constants.SPAWN_MARGIN))
+        self.__alive = True
+        self.__radius = 20
+        self.__seeker_position = pygame.Vector2(random.randint(seeker_constants.SPAWN_MARGIN, game_constants.SCREEN_WIDTH - seeker_constants.SPAWN_MARGIN), 
+                                                random.randint(seeker_constants.SPAWN_MARGIN, game_constants.SCREEN_HEIGHT - seeker_constants.SPAWN_MARGIN))
         #print(self.__seeker_position.x, self.__seeker_position.y)
-        super().__init__(self.__seeker_position, seeker_constants.FIGHT_SEEKER_HEALTH, seeker_constants.FIGHT_SEEKER_SPEED, seeker_constants.FIGHT_SEEKER_DAMAGE, seeker_constants.FIGHT_SEEKER_ARMOR)
+        super().__init__(self.__seeker_position, seeker_constants.FIGHT_SEEKER_HEALTH, seeker_constants.FIGHT_SEEKER_SPEED, seeker_constants.FIGHT_SEEKER_DAMAGE, 
+                         seeker_constants.FIGHT_SEEKER_ARMOR)
 
     def attack(self) -> None:
         self.__player_to_chase.take_damage(self.__damage)
 
     def draw_at(self, screen: pygame.Surface) -> None:
-        pygame.draw.circle(screen, 'purple', self.__seeker_position, 20)
+        pygame.draw.circle(screen, 'purple', self.__seeker_position, self.__radius)
+
+    def take_damage(self, damage: int):
+        if self.health <= 0:
+            self.__alive = False
+
+        self.health -= damage
+
+    @property
+    def damage(self):
+        return self.__damage
+    
+    @damage.setter
+    def damage(self, val:int):
+        if isinstance(val, int):
+            self.__damage = val
+
+    @property
+    def seeker_range(self):
+        return self.__seeker_range
+    
+    @seeker_range.setter
+    def seeker_range(self, val:int):
+        if isinstance(val, int):
+            self.__seeker_range = val
+
+    @property
+    def radius(self):
+        return self.__radius
+    
+    @radius.setter
+    def radius(self, val:int):
+        if isinstance(val, int):
+            self.__radius = val
+
+    @property
+    def alive(self):
+        return self.__alive
+    
+    @alive.setter
+    def alive(self, val:bool):
+        if isinstance(val, bool):
+            self.__alive = val
         
     @property
     def seeker_position(self):

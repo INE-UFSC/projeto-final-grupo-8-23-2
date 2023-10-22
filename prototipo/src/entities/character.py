@@ -34,7 +34,7 @@ class Character(ABC):
 
     @health.setter
     def health(self, health: int) -> None:
-        self.__health += health
+        self.__health = health
 
     @abstractmethod
     def take_damage(self, damage: int) -> None:

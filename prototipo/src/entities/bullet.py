@@ -12,13 +12,31 @@ class Bullet:
         self.__range = range
 
     @property
-    def rect(self):
-        return self.__rect
+    def moving(self):
+        return self.__moving
     
-    @rect.setter
-    def rect(self, val:pygame.Rect):
-        if isinstance(val, pygame.Rect):
-            self.__rect = val
+    @moving.setter
+    def moving(self, val:bool):
+        if isinstance(val, bool):
+            self.__moving = val
+
+    @property
+    def position(self):
+        return self.__position
+    
+    @position.setter
+    def position(self, val:list):
+        if isinstance(val, list):
+            self.__position = val
+
+    @property
+    def direction(self):
+        return self.__direction
+    
+    @direction.setter
+    def direction(self, val:int):
+        if isinstance(val, int):
+            self.__direction = val
 
     @property
     def speed(self):
@@ -30,26 +48,13 @@ class Bullet:
             self.__speed = val
 
     @property
-    def direction(self):
-        return self.__direction
+    def range(self):
+        return self.__range
     
-    @direction.setter
-    def direction(self, val:pygame.Vector2):
-        if isinstance(val, pygame.Vector2):
-            self.__direction = val
-
-    @property
-    def color(self):
-        return self.__color
-    
-    @color.setter
-    def color(self, val:str):
-        if isinstance(val, str):
-            self.__color = val
-
-    @property
-    def moving(self):
-        return self.__moving
+    @range.setter
+    def range(self, val:int):
+        if isinstance(val, int):
+            self.__range = val
 
     def draw_at(self, screen:pygame.Surface) -> None:
         pygame.draw.circle(screen, self.__color, self.__position, 5)

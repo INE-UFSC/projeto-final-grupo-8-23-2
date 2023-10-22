@@ -59,75 +59,6 @@ class Player(character.Character):
             if self.__player_position.x < game_constants.SCREEN_WIDTH - player_constants.WIDTH:
                 self.__player_position.x += self.__speed
 
-    @property
-    def player_position(self) -> pygame.Vector2:
-        return self.__player_position
-
-    @player_position.setter
-    def player_position(self, player_position: pygame.Vector2) -> None:
-        self.__player_position = player_position
-
-    @property
-    def weapon(self):
-        return self.__weapon
-
-    @weapon.setter
-    def weapon(self, val: weapon.Weapon):
-        if isinstance(val, weapon.Weapon):
-            self.__weapon = val
-
-    @property
-    def experience(self):
-        return self.__experience
-
-    @experience.setter
-    def experience(self, val:int):
-        if isinstance(val, int):
-            self.__experience = val
-
-    @property
-    def level(self):
-        return self.__level
-
-    @level.setter
-    def level(self, val:int):
-        if isinstance(val, int):
-            self.__level = val
-
-    @property
-    def power_ups(self):
-        return self.__power_ups
-
-    @power_ups.setter
-    def power_ups(self, val:list):
-        if isinstance(val, list):
-            self.__power_ups = val
-
-    @property
-    def score(self):
-        return self.__score
-
-    @score.setter
-    def score(self, val:int):
-        if isinstance(val, int):
-            self.__score = val
-
-    @property
-    def health(self):
-        return self.__health
-    
-    @health.setter
-    def health(self, val):
-        self.__health = val
-
-    @property
-    def health_bar(self):
-        return self.__health_bar
-    
-    @health_bar.setter
-    def health_bar(self, val):
-        self.__health_bar = val
-
     def get_power_up(self):
         keys = pygame.key.get_pressed()
         if keys[pygame.K_q]:
@@ -143,3 +74,102 @@ class Player(character.Character):
                 # condição para usar o powerup
                 if (not powerup.actived) and (distance_formula <= (radius_player + radius_powerup)) :
                     powerup.activate_power_up()
+
+    @property
+    def alive(self):
+        return self.__alive
+    
+    @alive.setter
+    def alive(self, val:bool):
+        if isinstance(val, bool):
+            self.__alive = val
+
+    @property
+    def player_position(self):
+        return self.__player_position
+    
+    @player_position.setter
+    def player_position(self, val:pygame.Vector2):
+        if isinstance(val, pygame.Vector2):
+            self.__player_position = val
+
+    @property
+    def weapon(self):
+        return self.__weapon
+    
+    @weapon.setter
+    def weapon(self, val:weapon.Weapon):
+        if isinstance(val, weapon.Weapon):
+            self.__weapon = val
+
+    @property
+    def experience(self):
+        return self.__experience
+    
+    @experience.setter
+    def experience(self, val:int):
+        if isinstance(val, int):
+            self.__experience = val
+
+    @property
+    def level(self):
+        return self.__level
+    
+    @level.setter
+    def level(self, val:int):
+        if isinstance(val, int):
+            self.__level = val
+
+    @property
+    def power_ups(self):
+        return self.__power_ups
+    
+    @power_ups.setter
+    def power_ups(self, val:list):
+        if isinstance(val, list):
+            self.__power_ups = val
+
+    @property
+    def score(self):
+        return self.__score
+    
+    @score.setter
+    def score(self, val:int):
+        if isinstance(val, int):
+            self.__score = val
+
+    @property
+    def health(self):
+        return self.__health
+    
+    @health.setter
+    def health(self, val:int):
+        if isinstance(val, int):
+            self.__health = val
+
+    @property
+    def health_bar(self):
+        return self.__health_bar
+    
+    @health_bar.setter
+    def health_bar(self, val:health_bar.HealthBar):
+        if isinstance(val, health_bar.HealthBar):
+            self.__health_bar = val
+
+    @property
+    def speed(self):
+        return self.__speed
+    
+    @speed.setter
+    def speed(self, val:int):
+        if isinstance(val, int):
+            self.__speed = val
+
+    @property
+    def attacking(self):
+        return self.__attacking
+    
+    @attacking.setter
+    def attacking(self, val:bool):
+        if isinstance(val, bool):
+            self.__attacking = val

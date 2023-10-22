@@ -43,6 +43,15 @@ class Weapon:
     def sprite(self, val:str):
         if isinstance(val, str):
             self.__sprite = val
+
+    @property
+    def bullets(self):
+        return self.__bullets
+    
+    @bullets.setter
+    def bullets(self, val:list):
+        if isinstance(val, list):
+            self.__bullets = val
             
     def shoot(self, angle, player_x, player_y):
         bullet = Bullet(angle, 10, player_x, player_y, self.__range)

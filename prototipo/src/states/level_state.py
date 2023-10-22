@@ -19,7 +19,14 @@ class LevelState(State):
     def render(self) -> None:
         self.__player.draw_at(super().get_game().get_screen())
         for seeker in self.__seekers:
-            seeker.draw_at(super().get_game().get_screen())
+            for bullet in self.__player.weapon.bullets:
+                if seeker.seeker_position[0] - seeker.radius <= bullet.position[0] <= seeker.seeker_position[0] + seeker.radius and seeker.seeker_position[1] - seeker.radius <= bullet.position[1] <= seeker.seeker_position[1] + seeker.radius:
+                    print(seeker.health)
+                    seeker.take_damage(self.__player.weapon.damage)
+                    bullet.moving = False
+            if not seeker.alive:
+                self.__seekers.remove(seeker)
+            seeker.draw_at(self.__game_ref.get_screen())
             seeker.move()
         for powerup in self.__power_ups:
             powerup.draw_at(super().get_game().get_screen())

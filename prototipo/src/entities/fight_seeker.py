@@ -10,8 +10,9 @@ class FightSeeker(Seeker):
             seeker_constants.FIGHT_SEEKER_DAMAGE
         )
 
-    def take_damage(self, damage: int) -> None:
-        pass
+    # metodo implementado na classe pai, porem pode sofrer alteracoes
+    #def take_damage(self, damage: int) -> None:
+    #    pass
 
     def strong_punch(self) -> None:
         pass

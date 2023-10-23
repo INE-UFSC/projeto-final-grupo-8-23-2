@@ -43,11 +43,9 @@ class Player(character.Character):
     def take_damage(self, damage: int) -> None:
         if self.health <= 0:
             self.__alive = False
-            print('morreu')
 
         self.health -= damage
         self.__health_bar.update_health_bar(self.health)
-        print(self.health)
 
     def move(self) -> None:
         keys = pygame.key.get_pressed()

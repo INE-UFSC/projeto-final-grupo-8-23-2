@@ -21,7 +21,6 @@ class LevelState(State):
         for seeker in self.__seekers:
             for bullet in self.__player.weapon.bullets:
                 if seeker.position[0] - seeker.radius <= bullet.position[0] <= seeker.position[0] + seeker.radius and seeker.position[1] - seeker.radius <= bullet.position[1] <= seeker.position[1] + seeker.radius:
-                    print(seeker.health)
                     seeker.take_damage(self.__player.weapon.damage)
                     bullet.moving = False
             if not seeker.alive:

@@ -1,6 +1,7 @@
-from entities.bullet import Bullet
+from abc import ABC, abstractmethod
 
-class Weapon:
+
+class Weapon(ABC):
     def __init__(
             self,
             name: str,
@@ -12,7 +13,6 @@ class Weapon:
         self.__damage = damage
         self.__range = range
         self.__sprite = sprite
-        self.__bullets = []
 
     @property
     def name(self) -> str:
@@ -50,22 +50,10 @@ class Weapon:
         if isinstance(val, str):
             self.__sprite = val
 
-    @property
-    def bullets(self) -> list[Bullet]:
-        return self.__bullets
+    @abstractmethod
+    def attack(self):
+        pass
 
-    @bullets.setter
-    def bullets(self, val: list[Bullet]):
-        if isinstance(val, list):
-            self.__bullets = val
-
-    def shoot(self, angle, player_x, player_y) -> None:
-        bullet = Bullet(angle, 10, player_x, player_y, self.__range)
-        self.__bullets.append(bullet)
-
-    def draw(self, screen) -> None:
-        for bullet in self.__bullets:
-            bullet.draw_at(screen)
-            bullet.move()
-            if not bullet.moving:
-                self.__bullets.remove(bullet)
+    @abstractmethod
+    def draw(self):
+        pass

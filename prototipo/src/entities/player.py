@@ -1,10 +1,14 @@
 from __future__ import annotations
 
-import pygame
-from entities import weapon, character
-from constants import game_constants, player_constants, powerup_constants
-from utils import health_bar
 import math
+import pygame
+
+from weapons.weapon import Weapon
+from entities import character
+from constants import game_constants, player_constants, powerup_constants
+from weapons.weapon import Weapon
+from utils import health_bar
+from weapons.pistol import Pistol
 
 
 class Player(character.Character):
@@ -16,7 +20,7 @@ class Player(character.Character):
         score: int=0
         ) -> None:
         self.__alive = True
-        self.__weapon = weapon.Weapon('Pistol', 10, 400, 'pistol.png')
+        self.__weapon = Pistol("standart", 10, 400, "pistol.png")
         self.__experience = experience
         self.__level = level
         self.__power_ups = power_ups
@@ -26,15 +30,7 @@ class Player(character.Character):
         super().__init__(player_constants.PLAYER_SPAWN_POSITION, player_constants.HEALTH, player_constants.SPEED)
 
     def attack(self, screen) -> None:
-        if pygame.mouse.get_pressed()[0]:
-            self.__attacking = True
-        if self.__attacking and not pygame.mouse.get_pressed()[0]:
-            dy = pygame.mouse.get_pos()[1] - super().position.y
-            dx = pygame.mouse.get_pos()[0] - super().position.x
-            angle = math.atan2(dy, dx)
-            self.__weapon.shoot(angle, super().position.x, super().position.y)
-            self.__attacking = False
-        self.__weapon.draw(screen)
+        self.__weapon.attack(screen)
 
     def draw_at(self, screen: pygame.Surface) -> None:
         pygame.draw.circle(screen, 'blue', super().position, player_constants.WIDTH)
@@ -101,8 +97,8 @@ class Player(character.Character):
         return self.__weapon
 
     @weapon.setter
-    def weapon(self, val:weapon.Weapon):
-        if isinstance(val, weapon.Weapon):
+    def weapon(self, val:Weapon):
+        if isinstance(val, Weapon):
             self.__weapon = val
 
     @property

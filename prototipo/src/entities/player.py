@@ -1,10 +1,12 @@
 from __future__ import annotations
 
 import pygame
-from entities import weapon, character
+from entities import character
 from constants import game_constants, player_constants, powerup_constants
 from utils import health_bar
 import math
+
+from weapon.gun import Gun
 
 
 class Player(character.Character):
@@ -16,7 +18,7 @@ class Player(character.Character):
         score: int=0
         ) -> None:
         self.__alive = True
-        self.__weapon = weapon.Weapon('Pistol', 10, 400, 'pistol.png')
+        self.__weapon = Gun('Pistol', 10, 400, 'pistol.png', [])
         self.__experience = experience
         self.__level = level
         self.__power_ups = power_ups
@@ -32,7 +34,7 @@ class Player(character.Character):
             dy = pygame.mouse.get_pos()[1] - super().position.y
             dx = pygame.mouse.get_pos()[0] - super().position.x
             angle = math.atan2(dy, dx)
-            self.__weapon.shoot(angle, super().position.x, super().position.y)
+            self.__weapon.attack(angle, super().position.x, super().position.y)
             self.__attacking = False
         self.__weapon.draw(screen)
 
@@ -101,8 +103,8 @@ class Player(character.Character):
         return self.__weapon
 
     @weapon.setter
-    def weapon(self, val:weapon.Weapon):
-        if isinstance(val, weapon.Weapon):
+    def weapon(self, val:gun.Weapon):
+        if isinstance(val, gun.Weapon):
             self.__weapon = val
 
     @property

@@ -24,13 +24,21 @@ class Seeker(Character, ABC):
         self.__damage = seeker_damage
         self.__alive = True
         self.__radius = 20
-        self.__seeker_position = pygame.Vector2(random.randint(seeker_constants.SPAWN_MARGIN, game_constants.SCREEN_WIDTH - seeker_constants.SPAWN_MARGIN),
-                                                random.randint(seeker_constants.SPAWN_MARGIN, game_constants.SCREEN_HEIGHT - seeker_constants.SPAWN_MARGIN))
+        self.__seeker_position = self.define_spawn_position()
         super().__init__(self.__seeker_position, seeker_health, seeker_speed, seeker_damage, seeker_armor)
-        print('seeker criado')
 
     def attack(self) -> None:
         self.__player_to_chase.take_damage(self.__damage)
+
+    def define_spawn_position(self) -> pygame.Vector2:
+        vertical_or_horizontal = random.choice(['vertical', 'horizontal'])
+        if vertical_or_horizontal == 'horizontal':
+            x = random.choice([0, game_constants.SCREEN_WIDTH])
+            y = random.choice(list(range(0, game_constants.SCREEN_HEIGHT, self.__radius * 2)))
+        elif vertical_or_horizontal == 'vertical':
+            x = random.choice(list(range(0, game_constants.SCREEN_WIDTH, self.__radius * 2)))
+            y = random.choice([0, game_constants.SCREEN_HEIGHT])
+        return pygame.Vector2(x, y)
 
     def draw_at(self, screen: pygame.Surface) -> None:
         pygame.draw.circle(screen, 'purple', self.__seeker_position, self.__radius)

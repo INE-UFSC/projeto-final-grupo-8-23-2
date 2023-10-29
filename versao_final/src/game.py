@@ -36,17 +36,15 @@ class Game:
         while self.__running:
             # for para capturar os eventos do jogo, inicialmente pensado para detectar as teclas pressionadas pelo
             # jogador, mas não sei ao certo como isso funciona, vamos descobrindo pelo caminho
-            for event in pygame.event.get():
+            self.__current_state.update()
+            for event in pygame.event.get([pygame.KEYDOWN, pygame.QUIT]):
                 if event.type == pygame.QUIT or (event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE):
                     self.__running = False
-            # Preenche a tela com uma cor
-            self.__screen.fill(utils.utils.green)
-            # Renderizando os objetos do estado, no caso, somente o Player, por enquanto
-            self.__current_state.render()
-            self.__current_state.update()
 
-            # Atualiza a tela
+            # Renderização
+            self.__current_state.render()
             pygame.display.flip()
+            self.__screen.fill(utils.utils.green)
 
             # Define o FPS do jogo
             clock.tick(game_constants.FPS)

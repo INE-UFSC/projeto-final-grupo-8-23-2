@@ -4,7 +4,7 @@ import pygame
 
 from states.state import State
 from entities import player
-from entities import seeker, fight_seeker
+from entities import seeker
 from powerups import power_up, power_up_health, power_up_speed
 from utils import seeker_spawner
 from subjects import seeker_timer_subject
@@ -14,6 +14,8 @@ class LevelState(State):
     def __init__(self, game_ref: game.Game) -> None:
         self.__player: player.Player = player.Player()
 
+        #TODO: toda vez que um seeker é eliminado os outros piscam na tela
+        # tentar descobrir o motivo.
         self.__seekers: list[seeker.Seeker] = []
 
         self.__power_ups: list[power_up.PowerUp] = [power_up_health.PowerUpHealth(self.__player) for _ in range(2)] + [power_up_speed.PowerUpSpeed(self.__player) for _ in range(2)]

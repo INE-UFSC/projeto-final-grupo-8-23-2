@@ -4,6 +4,8 @@ from states.state import State
 from entities import player
 from entities import seeker, fight_seeker
 from powerups import power_up, power_up_health, power_up_speed
+from weapon.gun import Gun
+from weapon.bullet import Bullet
 import game
 
 class LevelState(State):

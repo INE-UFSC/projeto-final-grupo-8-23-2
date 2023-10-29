@@ -5,7 +5,7 @@ from weapon.weapon import Weapon
 
 
 class Gun(Weapon):
-    def __init__(self, name: str, range: int, damage: int, sprite: str, bullets: list[Bullet]) -> None:
+    def __init__(self, name: str, range: int, damage: int, sprite: str, bullets: list[Bullet]=[]) -> None:
         super().__init__(name, range, damage, sprite)
         self.__name = name
         self.__range = range

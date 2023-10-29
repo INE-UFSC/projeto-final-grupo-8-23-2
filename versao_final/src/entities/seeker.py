@@ -27,6 +27,7 @@ class Seeker(Character, ABC):
         self.__seeker_position = pygame.Vector2(random.randint(seeker_constants.SPAWN_MARGIN, game_constants.SCREEN_WIDTH - seeker_constants.SPAWN_MARGIN),
                                                 random.randint(seeker_constants.SPAWN_MARGIN, game_constants.SCREEN_HEIGHT - seeker_constants.SPAWN_MARGIN))
         super().__init__(self.__seeker_position, seeker_health, seeker_speed, seeker_damage, seeker_armor)
+        print('seeker criado')
 
     def attack(self) -> None:
         self.__player_to_chase.take_damage(self.__damage)

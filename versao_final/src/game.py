@@ -26,6 +26,7 @@ class Game:
 
         # Estado atual do jogo. No protótipo só existirá o estado do level
         self.__current_state: state.State = level_state.LevelState(self)
+        self.__current_state.entering()
 
     def run(self) -> None:
         # Inicializa o relógio (clock) do jogo

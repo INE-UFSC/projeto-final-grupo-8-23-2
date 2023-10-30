@@ -8,12 +8,10 @@ from constants import seeker_constants
 
 class SeekerTimerSubject(subject.Subject):
     def __init__(self) -> None:
-
         self.__event_type = pygame.USEREVENT + 1
         pygame.time.set_timer(self.__event_type, seeker_constants.SEEKER_SPAWN_COOLDOWN)
 
         super().__init__(self.__event_type)
-
 
     def notify_all(self) -> None:
         for callback in super().get_observers():

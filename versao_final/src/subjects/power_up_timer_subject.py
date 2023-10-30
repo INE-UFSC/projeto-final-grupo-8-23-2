@@ -22,3 +22,4 @@ class PowerUpTimerSubject(subject.Subject):
 
         for _ in range(len(power_up_time_events)):
             self.notify_all()
+

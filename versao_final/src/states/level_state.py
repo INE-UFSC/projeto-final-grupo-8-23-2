@@ -7,7 +7,7 @@ from entities import player
 from entities import seeker
 from powerups import power_up, power_up_health, power_up_speed
 from utils import seeker_spawner
-from subjects import seeker_timer_subject
+from subjects import seeker_timer_subject, power_up_timer_subject
 import game
 
 class LevelState(State):
@@ -18,10 +18,11 @@ class LevelState(State):
         # tentar descobrir o motivo.
         self.__seekers: list[seeker.Seeker] = []
 
-        self.__power_ups: list[power_up.PowerUp] = [power_up_health.PowerUpHealth(self.__player) for _ in range(2)] + [power_up_speed.PowerUpSpeed(self.__player) for _ in range(2)]
+        self.__power_ups: list[power_up.PowerUp] = []
 
         self.__seeker_spawner = seeker_spawner.SeekerSpawner(self.__seekers, self.__player)
         self.__seeker_time_listener = seeker_timer_subject.SeekerTimerSubject()
+        self.__power_up_time_listener = power_up_timer_subject.PowerUpTimerSubject()
 
         super().__init__(game_ref)
 
@@ -31,6 +32,7 @@ class LevelState(State):
         pygame.event.set_blocked(None)
         pygame.event.set_allowed(
             [
+                self.__power_up_time_listener.get_event_type(),
                 self.__seeker_time_listener.get_event_type(),
                 pygame.KEYDOWN
             ]
@@ -43,8 +45,6 @@ class LevelState(State):
                 if seeker.position[0] - seeker.radius <= bullet.position[0] <= seeker.position[0] + seeker.radius and seeker.position[1] - seeker.radius <= bullet.position[1] <= seeker.position[1] + seeker.radius:
                     seeker.take_damage(self.__player.weapon.damage)
                     bullet.moving = False
-            if not seeker.alive:
-                self.__seekers.remove(seeker)
             seeker.draw_at(super().get_game().get_screen())
             seeker.move()
         for powerup in self.__power_ups:
@@ -52,7 +52,15 @@ class LevelState(State):
             powerup.add_power_up_to_list()
 
     def update(self) -> None:
+        dead_seekers = []
+        for seeker in self.__seekers:
+            if not seeker.alive:
+                dead_seekers.append(seeker)
+        for seeker in dead_seekers:
+            self.__seekers.remove(seeker)
+
         self.__seeker_time_listener.handle_events()
+        self.__power_up_time_listener.handle_events()
 
         self.__player.move()
         self.__player.get_power_up()

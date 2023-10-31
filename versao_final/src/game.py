@@ -34,7 +34,13 @@ class Game:
         #self.__current_state: state.State = level_state.LevelState(self) 
         self.__current_state.entering()
 
+    def run_bg_music(self) -> None:
+        pygame.mixer.init()
+        pygame.mixer.music.load('./resources/sounds/background_music.mp3')
+        pygame.mixer.music.play()
+        
     def run(self) -> None:
+        self.run_bg_music()
         # Inicializa o relógio (clock) do jogo
         clock = pygame.time.Clock()
 

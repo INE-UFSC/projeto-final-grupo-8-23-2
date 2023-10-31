@@ -12,7 +12,7 @@ class FightSeeker(Seeker):
             seeker_constants.FIGHT_SEEKER_SPEED,
             seeker_constants.FIGHT_SEEKER_DAMAGE,
             seeker_constants.FIGHT_SEEKER_ARMOR,
-            'versao_final/resources/ghost.webp'
+            '../resources/ghost.webp'
         )
 
     # metodo implementado na classe pai, porem pode sofrer alteracoes

@@ -2,13 +2,18 @@ from __future__ import annotations
 
 from abc import ABC, abstractmethod
 import game
-
+from utils import mouse
 
 # Classe para modelar cada estado do jogo (Menu, Level, GameOver)
 class State(ABC):
     # Recebe uma referencia do jogo
     def __init__(self, game_reference: game.Game) -> None:
         self.__game_reference = game_reference
+        self.__mouse = mouse.Mouse()
+        
+    @property
+    def mouse(self):
+        return self.__mouse
 
     # Método chamado ao entrar em um estado
     @abstractmethod

@@ -56,6 +56,7 @@ class LevelState(State):
         for powerup in self.__power_ups:
             powerup.draw_at(super().get_game().get_screen())
             powerup.add_power_up_to_list()
+        super().mouse.show_mouse(super().get_game().get_screen())
 
     def update(self) -> None:
         dead_seekers = []

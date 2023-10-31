@@ -117,6 +117,7 @@ class Seeker(Character, ABC):
             self.__player_to_chase = player_to_chase
 
     def move(self) -> None:
+        self.invert()
         # Cálculo da distância entre o seeker e o player para saber se o seeker
         # precisa continuar andando ou parar/atacar
         distance_between_seeker_and_player = math.sqrt((self.__player_to_chase.position.x - super().position.x) ** 2 + (self.__player_to_chase.position.y - super().position.y) ** 2)
@@ -124,15 +125,18 @@ class Seeker(Character, ABC):
         # Condicional que verifica se a distância entre o player e o seeker é maior que
         # o range do seeker em questão, caso seja, o seeker continua andando, caso contrário
         # o seeker não irá se movimentar
-        if self.__inverted == False and super().position.x <= self.__player_to_chase.position.x:
-            self.__image = pygame.transform.flip(self.__image, True, False)
-            self.__inverted = True
-        elif self.__inverted == True and super().position.x > self.__player_to_chase.position.x:
-            self.__image = pygame.transform.flip(self.__image, True, False)
-            self.__inverted = False 
+        
         if distance_between_seeker_and_player > self.__seeker_range:
             super().position.y += ((self.__player_to_chase.position.y - super().position.y) / distance_between_seeker_and_player) * seeker_constants.FIGHT_SEEKER_SPEED
             super().position.x += ((self.__player_to_chase.position.x - super().position.x) / distance_between_seeker_and_player) * seeker_constants.FIGHT_SEEKER_SPEED
         else:
             self.attack()
             self.attack()
+
+    def invert(self):
+        if self.__inverted == False and super().position.x <= self.__player_to_chase.position.x:
+            self.__image = pygame.transform.flip(self.__image, True, False)
+            self.__inverted = True
+        elif self.__inverted == True and super().position.x > self.__player_to_chase.position.x:
+            self.__image = pygame.transform.flip(self.__image, True, False)
+            self.__inverted = False 

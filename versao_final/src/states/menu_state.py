@@ -12,7 +12,7 @@ class MenuState(State):
     def __init__(self, game_ref: game.Game) -> None:
         self.__background = pygame.transform.scale(pygame.image.load('versao_final/resources/menubackground.jpg'),
                                                    (game_constants.SCREEN_WIDTH, game_constants.SCREEN_HEIGHT))
-        self.__buttons = [button.Button('iniciar'), button.Button('tutorial'), button.Button('sair')]
+        self.__buttons = [button.Button('iniciar', 'level_state'), button.Button('tutorial', 'tutorial'), button.Button('sair', 'sair')]
         self.__font = pygame.font.Font('versao_final/resources/NightsideDemoRegular.ttf', 96)
         self.__render = self.__font.render("SOUL SEEKERS", True, (255, 255, 255))
         super().__init__(game_ref)

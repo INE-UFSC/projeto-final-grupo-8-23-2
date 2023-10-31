@@ -30,7 +30,6 @@ class Seeker(Character, ABC):
         self.__seeker_position = self.define_spawn_position()
         self.__inverted = False
         super().__init__(self.__seeker_position, seeker_health, seeker_speed, seeker_damage, seeker_armor)
-        print(super().position.x, super().position.y)
         if super().position.x <= self.__player_to_chase.position.x:
             self.__image = pygame.transform.flip(self.__image, True, False)
             self.__inverted = True
@@ -57,7 +56,6 @@ class Seeker(Character, ABC):
             self.__alive = False
 
         self.health -= damage
-        print(f'tomou dano vida atual: {super().health}')
 
     @property
     def damage(self):

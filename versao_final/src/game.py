@@ -30,8 +30,8 @@ class Game:
         # mas isso não faz sentido no momento
 
         # Estado atual do jogo. No protótipo só existirá o estado do level
-        #self.__current_state: state.State = menu_state.MenuState(self)
-        self.__current_state: state.State = level_state.LevelState(self) 
+        self.__current_state: state.State = menu_state.MenuState(self)
+        #self.__current_state: state.State = level_state.LevelState(self) 
         self.__current_state.entering()
 
     def run(self) -> None:
@@ -57,3 +57,11 @@ class Game:
             
     def get_screen(self) -> pygame.Surface:
         return self.__screen
+    
+    @property 
+    def current_state(self):
+        return self.__current_state
+    
+    @current_state.setter
+    def current_state(self, state):
+        self.__current_state = state

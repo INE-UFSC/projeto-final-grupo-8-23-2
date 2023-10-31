@@ -4,17 +4,23 @@ import random
 
 import constants.powerup_constants as cons
 import constants.game_constants as gamecons
+from entities import player
 
 
 class PowerUp(ABC):
-    def __init__(self, player_ref) -> None:
+    def __init__(self, player_ref: player.Player) -> None:
        self.__player = player_ref
        self.__upgrade_value = None
        self.__icon = None
-       self.__position = pygame.Vector2(random.randint(0, gamecons.SCREEN_WIDTH), random.randint(0, gamecons.SCREEN_HEIGHT))
+       self.__position = self.define_power_up_position()
        self.__color = None
        self.__actived = False
        self.__width = cons.WIDTH
+
+    def define_power_up_position(self) -> pygame.Vector2:
+        x = random.randint(cons.WIDTH, gamecons.SCREEN_WIDTH - cons.WIDTH)
+        y = random.randint(cons.WIDTH, gamecons.SCREEN_HEIGHT - cons.WIDTH)
+        return pygame.Vector2(x, y)
 
     def add_power_up_to_list(self):
         self.__player.power_ups.append(self)

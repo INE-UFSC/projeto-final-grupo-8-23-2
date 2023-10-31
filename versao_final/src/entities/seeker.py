@@ -14,38 +14,55 @@ class Seeker(Character, ABC):
         self,
         player_reference: Player,
         seeker_range: int,
-        seeker_damage: int
+        seeker_health: int,
+        seeker_speed: int,
+        seeker_damage: int,
+        seeker_armor: int,
+        image: str
         ) -> None:
+        self.__image = pygame.transform.scale(pygame.image.load(image),
+                                              (seeker_constants.SEEKER_HEIGHT, seeker_constants.SEEKER_WIDTH)) #image
         self.__player_to_chase = player_reference
         self.__seeker_range = seeker_range
         self.__damage = seeker_damage
         self.__alive = True
         self.__radius = 20
-        self.__seeker_position = pygame.Vector2(random.randint(seeker_constants.SPAWN_MARGIN, game_constants.SCREEN_WIDTH - seeker_constants.SPAWN_MARGIN), 
-                                                random.randint(seeker_constants.SPAWN_MARGIN, game_constants.SCREEN_HEIGHT - seeker_constants.SPAWN_MARGIN))
-        #print(self.__seeker_position.x, self.__seeker_position.y)
-        super().__init__(self.__seeker_position, seeker_constants.FIGHT_SEEKER_HEALTH, seeker_constants.FIGHT_SEEKER_SPEED, seeker_constants.FIGHT_SEEKER_DAMAGE, 
-                         seeker_constants.FIGHT_SEEKER_ARMOR)
+        self.__seeker_position = self.define_spawn_position()
+        self.__inverted = False
+        super().__init__(self.__seeker_position, seeker_health, seeker_speed, seeker_damage, seeker_armor)
+        print(super().position.x, super().position.y)
+        if super().position.x <= self.__player_to_chase.position.x:
+            self.__image = pygame.transform.flip(self.__image, True, False)
+            self.__inverted = True
 
     def attack(self) -> None:
         self.__player_to_chase.take_damage(self.__damage)
 
+    def define_spawn_position(self) -> pygame.Vector2:
+        vertical_or_horizontal = random.choice(['vertical', 'horizontal'])
+        if vertical_or_horizontal == 'horizontal':
+            x = random.choice([0, game_constants.SCREEN_WIDTH])
+            y = random.choice(list(range(0, game_constants.SCREEN_HEIGHT, self.__radius * 2)))
+        elif vertical_or_horizontal == 'vertical':
+            x = random.choice(list(range(0, game_constants.SCREEN_WIDTH, self.__radius * 2)))
+            y = random.choice([0, game_constants.SCREEN_HEIGHT])
+        return pygame.Vector2(x, y)
+
     def draw_at(self, screen: pygame.Surface) -> None:
-<<<<<<< HEAD
-        pygame.draw.circle(screen, 'purple', self.__seeker_position, self.__seeker_range / 2)
-=======
-        pygame.draw.circle(screen, 'purple', self.__seeker_position, self.__radius)
+        pygame.Surface.blit(screen, self.__image, self.__seeker_position)
+        #pygame.draw.circle(screen, 'purple', self.__seeker_position, self.__radius)
 
     def take_damage(self, damage: int):
         if self.health <= 0:
             self.__alive = False
 
         self.health -= damage
+        print(f'tomou dano vida atual: {super().health}')
 
     @property
     def damage(self):
         return self.__damage
-    
+
     @damage.setter
     def damage(self, val:int):
         if isinstance(val, int):
@@ -54,7 +71,7 @@ class Seeker(Character, ABC):
     @property
     def seeker_range(self):
         return self.__seeker_range
-    
+
     @seeker_range.setter
     def seeker_range(self, val:int):
         if isinstance(val, int):
@@ -63,7 +80,7 @@ class Seeker(Character, ABC):
     @property
     def radius(self):
         return self.__radius
-    
+
     @radius.setter
     def radius(self, val:int):
         if isinstance(val, int):
@@ -72,13 +89,12 @@ class Seeker(Character, ABC):
     @property
     def alive(self):
         return self.__alive
-    
+
     @alive.setter
     def alive(self, val:bool):
         if isinstance(val, bool):
             self.__alive = val
->>>>>>> 41f632ab5797c26721f8acbd39c6ae4c91079189
-        
+
     @property
     def position(self):
         return super().position
@@ -86,27 +102,22 @@ class Seeker(Character, ABC):
     @property
     def player_to_chase(self) -> Player:
         return self.__player_to_chase
+    
+    @property
+    def image(self):
+        return self.__image
+    
+    @image.setter
+    def image(self, img):
+        self.__image = img
 
     @player_to_chase.setter
     def player_to_chase(self, player_to_chase: Player) -> None:
         if isinstance(player_to_chase, Player):
             self.__player_to_chase = player_to_chase
 
-<<<<<<< HEAD
-    def collision_between_seeker_2(self, seeker_2, seeker_1_pos_x, seeker_1_pos_y):
-        distance_between_seekers = math.sqrt((seeker_2.seeker_position.x - seeker_1_pos_x) ** 2 + (seeker_2.seeker_position.y - seeker_1_pos_y) ** 2)
-        return distance_between_seekers <= self.__seeker_range
-    
-    def collision_between_seekers(self, seekers, seeker_1_pos_x, seeker_1_pos_y):
-        for seeker in [x for x in seekers if x != self]:
-            if self.collision_between_seeker_2(seeker, seeker_1_pos_x, seeker_1_pos_y):
-                return True
-        return False
-        
-    def move(self, seekers = None) -> None:
-=======
     def move(self) -> None:
->>>>>>> 41f632ab5797c26721f8acbd39c6ae4c91079189
+        self.invert()
         # Cálculo da distância entre o seeker e o player para saber se o seeker
         # precisa continuar andando ou parar/atacar
         distance_between_seeker_and_player = math.sqrt((self.__player_to_chase.position.x - super().position.x) ** 2 + (self.__player_to_chase.position.y - super().position.y) ** 2)
@@ -114,26 +125,18 @@ class Seeker(Character, ABC):
         # Condicional que verifica se a distância entre o player e o seeker é maior que
         # o range do seeker em questão, caso seja, o seeker continua andando, caso contrário
         # o seeker não irá se movimentar
+        
         if distance_between_seeker_and_player > self.__seeker_range:
-<<<<<<< HEAD
-            seeker_next_position_aux_y = self.__seeker_position.y + ((self.__player_to_chase.player_position.y - self.__seeker_position.y) / distance_between_seeker_and_player) * seeker_constants.FIGHT_SEEKER_SPEED
-            seeker_next_position_aux_x = self.__seeker_position.x + ((self.__player_to_chase.player_position.x - self.__seeker_position.x) / distance_between_seeker_and_player) * seeker_constants.FIGHT_SEEKER_SPEED
-            
-            collision = False
-            if seekers != None:
-                collision = self.collision_between_seekers(seekers, seeker_next_position_aux_x, seeker_next_position_aux_y)
-            if not collision:
-                self.__seeker_position.y = seeker_next_position_aux_y
-                self.__seeker_position.x = seeker_next_position_aux_x                
-        else:
-            self.attack()
-    # @abstractmethod
-    # def special_ability(self) -> None:
-    #     pass
-=======
             super().position.y += ((self.__player_to_chase.position.y - super().position.y) / distance_between_seeker_and_player) * seeker_constants.FIGHT_SEEKER_SPEED
             super().position.x += ((self.__player_to_chase.position.x - super().position.x) / distance_between_seeker_and_player) * seeker_constants.FIGHT_SEEKER_SPEED
         else:
             self.attack()
             self.attack()
->>>>>>> 41f632ab5797c26721f8acbd39c6ae4c91079189
+
+    def invert(self):
+        if self.__inverted == False and super().position.x <= self.__player_to_chase.position.x:
+            self.__image = pygame.transform.flip(self.__image, True, False)
+            self.__inverted = True
+        elif self.__inverted == True and super().position.x > self.__player_to_chase.position.x:
+            self.__image = pygame.transform.flip(self.__image, True, False)
+            self.__inverted = False 

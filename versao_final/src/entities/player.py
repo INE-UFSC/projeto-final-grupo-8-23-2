@@ -25,7 +25,7 @@ class Player(character.Character):
         self.__attacking = False
         super().__init__(player_constants.PLAYER_SPAWN_POSITION, player_constants.HEALTH, player_constants.SPEED)
 
-    def attack(self, screen) -> None:
+    def attack(self, screen: pygame.Surface) -> None:
         if pygame.mouse.get_pressed()[0]:
             self.__attacking = True
         if self.__attacking and not pygame.mouse.get_pressed()[0]:
@@ -34,11 +34,11 @@ class Player(character.Character):
             angle = math.atan2(dy, dx)
             self.__weapon.shoot(angle, super().position.x, super().position.y)
             self.__attacking = False
-        self.__weapon.draw(screen)
 
     def draw_at(self, screen: pygame.Surface) -> None:
         pygame.draw.circle(screen, 'blue', super().position, player_constants.WIDTH)
         self.__health_bar.draw_at(screen)
+        self.__weapon.draw(screen)
 
     def take_damage(self, damage: int) -> None:
         if self.health <= 0:
@@ -64,7 +64,7 @@ class Player(character.Character):
 
     def get_power_up(self):
         keys = pygame.key.get_pressed()
-        if keys[pygame.K_q]:
+        if keys[pygame.K_q] or keys[pygame.K_p]:
             for powerup in self.__power_ups:
                 # calculo da distancia entre o powerup e o player
                 powerup_x = powerup.position.x

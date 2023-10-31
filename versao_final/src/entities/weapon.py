@@ -1,4 +1,7 @@
+import pygame
+
 from entities.bullet import Bullet
+
 
 class Weapon:
     def __init__(
@@ -13,6 +16,17 @@ class Weapon:
         self.__range = range
         self.__sprite = sprite
         self.__bullets = []
+
+    def shoot(self, angle, player_x, player_y) -> None:
+        bullet = Bullet(angle, 10, player_x, player_y, self.__range)
+        self.__bullets.append(bullet)
+
+    def draw(self, screen: pygame.Surface) -> None:
+        for bullet in self.__bullets:
+            bullet.draw_at(screen)
+            bullet.move()
+            if not bullet.moving:
+                self.__bullets.remove(bullet)
 
     @property
     def name(self) -> str:
@@ -59,13 +73,3 @@ class Weapon:
         if isinstance(val, list):
             self.__bullets = val
 
-    def shoot(self, angle, player_x, player_y) -> None:
-        bullet = Bullet(angle, 10, player_x, player_y, self.__range)
-        self.__bullets.append(bullet)
-
-    def draw(self, screen) -> None:
-        for bullet in self.__bullets:
-            bullet.draw_at(screen)
-            bullet.move()
-            if not bullet.moving:
-                self.__bullets.remove(bullet)

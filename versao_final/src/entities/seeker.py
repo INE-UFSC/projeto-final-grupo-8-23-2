@@ -17,15 +17,23 @@ class Seeker(Character, ABC):
         seeker_health: int,
         seeker_speed: int,
         seeker_damage: int,
-        seeker_armor: int
+        seeker_armor: int,
+        image: str
         ) -> None:
+        self.__image = pygame.transform.scale(pygame.image.load(image),
+                                              (seeker_constants.SEEKER_HEIGHT, seeker_constants.SEEKER_WIDTH)) #image
         self.__player_to_chase = player_reference
         self.__seeker_range = seeker_range
         self.__damage = seeker_damage
         self.__alive = True
         self.__radius = 20
         self.__seeker_position = self.define_spawn_position()
+        self.__inverted = False
         super().__init__(self.__seeker_position, seeker_health, seeker_speed, seeker_damage, seeker_armor)
+        print(super().position.x, super().position.y)
+        if super().position.x <= self.__player_to_chase.position.x:
+            self.__image = pygame.transform.flip(self.__image, True, False)
+            self.__inverted = True
 
     def attack(self) -> None:
         self.__player_to_chase.take_damage(self.__damage)
@@ -41,7 +49,8 @@ class Seeker(Character, ABC):
         return pygame.Vector2(x, y)
 
     def draw_at(self, screen: pygame.Surface) -> None:
-        pygame.draw.circle(screen, 'purple', self.__seeker_position, self.__radius)
+        pygame.Surface.blit(screen, self.__image, self.__seeker_position)
+        #pygame.draw.circle(screen, 'purple', self.__seeker_position, self.__radius)
 
     def take_damage(self, damage: int):
         if self.health <= 0:
@@ -93,6 +102,14 @@ class Seeker(Character, ABC):
     @property
     def player_to_chase(self) -> Player:
         return self.__player_to_chase
+    
+    @property
+    def image(self):
+        return self.__image
+    
+    @image.setter
+    def image(self, img):
+        self.__image = img
 
     @player_to_chase.setter
     def player_to_chase(self, player_to_chase: Player) -> None:
@@ -107,6 +124,12 @@ class Seeker(Character, ABC):
         # Condicional que verifica se a distância entre o player e o seeker é maior que
         # o range do seeker em questão, caso seja, o seeker continua andando, caso contrário
         # o seeker não irá se movimentar
+        if self.__inverted == False and super().position.x <= self.__player_to_chase.position.x:
+            self.__image = pygame.transform.flip(self.__image, True, False)
+            self.__inverted = True
+        elif self.__inverted == True and super().position.x > self.__player_to_chase.position.x:
+            self.__image = pygame.transform.flip(self.__image, True, False)
+            self.__inverted = False 
         if distance_between_seeker_and_player > self.__seeker_range:
             super().position.y += ((self.__player_to_chase.position.y - super().position.y) / distance_between_seeker_and_player) * seeker_constants.FIGHT_SEEKER_SPEED
             super().position.x += ((self.__player_to_chase.position.x - super().position.x) / distance_between_seeker_and_player) * seeker_constants.FIGHT_SEEKER_SPEED

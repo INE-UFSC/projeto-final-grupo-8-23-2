@@ -64,7 +64,7 @@ class Player(character.Character):
 
     def get_power_up(self):
         keys = pygame.key.get_pressed()
-        if keys[pygame.K_q]:
+        if keys[pygame.K_q] or keys[pygame.K_p]:
             for powerup in self.__power_ups:
                 # calculo da distancia entre o powerup e o player
                 powerup_x = powerup.position.x

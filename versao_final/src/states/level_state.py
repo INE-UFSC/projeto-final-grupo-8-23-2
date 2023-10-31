@@ -9,6 +9,7 @@ from entities import seeker
 from powerups import power_up
 from utils import seeker_spawner, power_up_generator
 from subjects import seeker_timer_subject, power_up_timer_subject
+from map import map
 
 
 class LevelState(State):
@@ -24,6 +25,8 @@ class LevelState(State):
 
         self.__power_up_generator = power_up_generator.PowerUpGenerator(self.__power_ups, self.__player)
         self.__power_up_time_listener = power_up_timer_subject.PowerUpTimerSubject()
+        
+        self.__map = map.Map()
 
         super().__init__(game_ref)
 
@@ -41,6 +44,7 @@ class LevelState(State):
         )
 
     def render(self) -> None:
+        self.__map.draw_background(super().get_game().get_screen())
         self.__player.draw_at(super().get_game().get_screen())
         for seeker in self.__seekers:
             for bullet in self.__player.weapon.bullets:

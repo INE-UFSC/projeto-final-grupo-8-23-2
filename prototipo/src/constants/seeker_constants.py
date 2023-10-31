@@ -1,6 +1,6 @@
 from constants import game_constants
 
-SPAWN_MARGIN = (30 / 100) * game_constants.SCREEN_HEIGHT
+SPAWN_MARGIN = (30 // 100) * game_constants.SCREEN_HEIGHT
 
 # constantes do fight_seeker
 FIGHT_SEEKER_RANGE = 60

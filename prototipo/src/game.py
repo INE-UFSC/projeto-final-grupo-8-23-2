@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import pygame
-
+from pygame import mixer
 import utils.utils
 from entities import player
 from states import state, level_state
@@ -26,11 +26,17 @@ class Game:
 
         # Estado atual do jogo. No protótipo só existirá o estado do level
         self.__current_state: state.State = level_state.LevelState(self)
+        
+    def run_sound(self) -> None:
+        mixer.init()
+        mixer.music.load('./resources/sounds/background_music_game.mp3')
+        mixer.music.play()
 
     def run(self) -> None:
         # Inicializa o relógio (clock) do jogo
         clock = pygame.time.Clock()
 
+        self.run_sound()
         # MainLoop do jogo
         while self.__running:
             # for para capturar os eventos do jogo, inicialmente pensado para detectar as teclas pressionadas pelo

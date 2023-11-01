@@ -4,7 +4,7 @@ import pygame
 
 import utils.utils
 from entities import player
-from states import state, level_state, menu_state
+from states import state, level_state, menu_state, game_over
 from constants import game_constants
 from utils import mouse
 
@@ -32,7 +32,8 @@ class Game:
 
         self.__states = {
             'level_state': level_state.LevelState(self),
-            'menu_state': menu_state.MenuState(self)
+            'menu_state': menu_state.MenuState(self),
+            'game_over': game_over.GameOverState(self)
         }
         # Estado atual do jogo. No protótipo só existirá o estado do level
         self.__current_state: state.State = self.__states['menu_state']

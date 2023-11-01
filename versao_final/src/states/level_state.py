@@ -72,6 +72,9 @@ class LevelState(State):
         self.__player.move()
         self.__player.get_power_up()
         self.__player.attack(super().get_game().get_screen())
+        
+        if not self.__player.alive:
+            super().game.current_state = super().game.states["game_over"]
 
     def exiting(self) -> None:
         self.__power_up_time_listener.unsubscribe(self.__power_up_generator.generate)

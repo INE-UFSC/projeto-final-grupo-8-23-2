@@ -44,7 +44,8 @@ class Player(character.Character):
         if self.health <= 0:
             self.__alive = False
 
-        self.health -= damage
+        if self.__alive:
+            self.health -= damage
         self.__health_bar.update_health_bar(self.health)
 
     def move(self) -> None:

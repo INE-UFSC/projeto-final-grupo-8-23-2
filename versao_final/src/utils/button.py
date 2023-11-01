@@ -5,7 +5,7 @@ class Button():
     def __init__(self, text, state):
         self.__text = text
         self.__clicked = False
-        self.__font = pygame.font.Font('versao_final/resources/NightsideDemoRegular.ttf', 36)
+        self.__font = pygame.font.Font('../resources/NightsideDemoRegular.ttf', 36)
         self.__render = self.__font.render(self.__text, True, (255, 255, 255))
         self.__rect = self.__render.get_rect()
         self.__next_state = state

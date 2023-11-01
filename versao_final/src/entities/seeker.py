@@ -10,16 +10,8 @@ from constants import seeker_constants
 
 
 class Seeker(Character, ABC):
-    def __init__(
-        self,
-        player_reference: Player,
-        seeker_range: int,
-        seeker_health: int,
-        seeker_speed: int,
-        seeker_damage: int,
-        seeker_armor: int,
-        image: str
-        ) -> None:
+    def __init__(self, player_reference: Player, seeker_range: int, seeker_health: int,
+                 seeker_speed: int, seeker_damage: int, seeker_armor: int, image: str ) -> None:
         self.__image = pygame.transform.scale(pygame.image.load(image),
                                               (seeker_constants.SEEKER_HEIGHT, seeker_constants.SEEKER_WIDTH)) #image
         self.__player_to_chase = player_reference

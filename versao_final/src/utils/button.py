@@ -33,6 +33,9 @@ class Button:
         surface.blit(self.__render, self.__rect.topleft)
         return action
 
+    def get_clicked(self) -> bool:
+        return self.__clicked
+
     @property
     def next_state(self):
         return self.__next_state

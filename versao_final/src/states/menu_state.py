@@ -4,6 +4,7 @@ import pygame
 
 import game
 from states.state import State
+from states import level_state
 from constants import game_constants
 from utils.utils import get_file_path
 from utils import button
@@ -16,6 +17,9 @@ class MenuState(State):
         (game_constants.SCREEN_WIDTH, game_constants.SCREEN_HEIGHT))
 
         self.__buttons = [button.Button('iniciar', 'level_state'), button.Button('tutorial', 'tutorial'), button.Button('sair', 'sair')]
+
+        self.__play_button = self.__buttons[0]
+
         self.__font = pygame.font.Font(f'{resources_path}/fonts/NightsideDemoRegular.ttf', 96)
         self.__render = self.__font.render("SOUL SEEKERS", True, (255, 255, 255))
 
@@ -37,7 +41,8 @@ class MenuState(State):
 
 
     def update(self) -> None:
-        pass
+        if self.__play_button.get_clicked() == True:
+            super().get_game().set_state(level_state.LevelState(super().get_game()))
 
     def exiting(self) -> None:
         return super().exiting()

@@ -20,13 +20,13 @@ class Button():
         pos = pygame.mouse.get_pos()
         if self.__rect.collidepoint(pos):
             if pygame.mouse.get_pressed()[0] == 1 and not self.__clicked:
-                action = True
                 self.__clicked = True
                 self.__render = self.__font.render(self.__text, True, (utils.utils.pink))
                 # depois opinem sobre esse ""
-            if pygame.mouse.get_pressed()[0] == 0:
-                self.__clicked = False
-                self.__render = self.__font.render(self.__text, True, (255, 255, 255))
+        if pygame.mouse.get_pressed()[0] == 0 and self.__clicked:
+            self.__clicked = False
+            action = True
+            self.__render = self.__font.render(self.__text, True, (255, 255, 255))
         surface.blit(self.__render, self.__rect.topleft)
         return action
 

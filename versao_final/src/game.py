@@ -11,6 +11,7 @@ from utils import mouse
 
 class Game:
     def __init__(self) -> None:
+        
         pygame.init()
         pygame.font.init()
         # Atributo para saber se o jogo está rodando
@@ -29,10 +30,13 @@ class Game:
         # estado atual do jogo e ícone da janela, por exemplo
         # mas isso não faz sentido no momento
 
+        self.__states = {
+            'level_state': level_state.LevelState(self),
+            'menu_state': menu_state.MenuState(self)
+        }
         # Estado atual do jogo. No protótipo só existirá o estado do level
-        self.__current_state: state.State = menu_state.MenuState(self)
+        self.__current_state: state.State = self.__states['menu_state']
         #self.__current_state: state.State = level_state.LevelState(self) 
-        self.__current_state.entering()
 
     def run_bg_music(self) -> None:
         pygame.mixer.init()
@@ -40,14 +44,16 @@ class Game:
         pygame.mixer.music.play()
         
     def run(self) -> None:
-        self.run_bg_music()
+        #self.run_bg_music()
         # Inicializa o relógio (clock) do jogo
         clock = pygame.time.Clock()
-
         # MainLoop do jogo
         while self.__running:
             # for para capturar os eventos do jogo, inicialmente pensado para detectar as teclas pressionadas pelo
             # jogador, mas não sei ao certo como isso funciona, vamos descobrindo pelo caminho
+            if not self.__current_state.entered:
+                self.__current_state.entering()
+                self.__current_state.entered = True
             self.__current_state.update()
             for event in pygame.event.get([pygame.KEYDOWN, pygame.QUIT]):
                 if event.type == pygame.QUIT or (event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE):
@@ -71,3 +77,7 @@ class Game:
     @current_state.setter
     def current_state(self, state):
         self.__current_state = state
+        
+    @property
+    def states(self):
+        return self.__states

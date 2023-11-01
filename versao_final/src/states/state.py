@@ -10,10 +10,23 @@ class State(ABC):
     def __init__(self, game_reference: game.Game) -> None:
         self.__game_reference = game_reference
         self.__mouse = mouse.Mouse()
+        self.__entered = False
+        
+    @property
+    def entered(self):
+        return self.__entered
+    
+    @entered.setter
+    def entered(self, value):
+        self.__entered = value
         
     @property
     def mouse(self):
         return self.__mouse
+    
+    @property
+    def game(self):
+        return self.__game_reference
 
     # Método chamado ao entrar em um estado
     @abstractmethod
@@ -37,3 +50,4 @@ class State(ABC):
 
     def get_game(self) -> game.Game:
         return self.__game_reference
+

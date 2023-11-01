@@ -5,7 +5,7 @@ from constants import game_constants
 class Map:
     def __init__(self) -> None:
         self.__size = 150
-        self.__image = pygame.transform.scale(pygame.image.load('../resources/purplegrass.webp'), (self.__size, self.__size))
+        self.__image = pygame.transform.scale(pygame.image.load('versao_final/resources/purplegrass.webp'), (self.__size, self.__size))
         self.__width = game_constants.SCREEN_WIDTH
         self.__height = game_constants.SCREEN_HEIGHT
         

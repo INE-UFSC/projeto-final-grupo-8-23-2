@@ -7,7 +7,7 @@ class Mouse:
     def __init__(self) -> None:
         resources_path = get_file_path(__file__)
 
-        self.__image = pygame.transform.scale(pygame.image.load(f'{resources_path}/cursors/cursor.webp'), (20, 20))
+        self.__image = pygame.transform.scale(pygame.image.load(f'{resources_path}/cursors/white_cursor.webp'), (18, 18))
         self.__cursor_rect = self.__image.get_rect()
 
         pygame.mouse.set_visible(False)

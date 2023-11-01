@@ -35,7 +35,6 @@ class GameOverState(State):
                 super().game.current_state = super().game.states[button.next_state]
         super().mouse.show_mouse(super().get_game().get_screen())
 
-
     def update(self) -> None:
         pass
 

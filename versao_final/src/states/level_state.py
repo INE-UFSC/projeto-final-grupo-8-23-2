@@ -25,7 +25,7 @@ class LevelState(State):
 
         self.__power_up_generator = power_up_generator.PowerUpGenerator(self.__power_ups, self.__player)
         self.__power_up_time_listener = power_up_timer_subject.PowerUpTimerSubject()
-        
+
         self.__map = map.Map()
 
         super().__init__(game_ref)
@@ -74,4 +74,6 @@ class LevelState(State):
         self.__player.attack(super().get_game().get_screen())
 
     def exiting(self) -> None:
+        self.__power_up_time_listener.unsubscribe(self.__power_up_generator.generate)
+        self.__seeker_time_listener.unsubscribe(self.__seeker_spawner.spawn)
         return super().exiting()

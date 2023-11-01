@@ -30,6 +30,7 @@ class Game:
         # estado atual do jogo e ícone da janela, por exemplo
         # mas isso não faz sentido no momento
 
+
         self.__states = {
             'level_state': level_state.LevelState(self),
             'menu_state': menu_state.MenuState(self),

@@ -7,6 +7,7 @@ from entities import player
 from states import state, level_state, menu_state
 from constants import game_constants
 from utils import mouse
+from utils.utils import get_file_path
 
 
 class Game:
@@ -38,13 +39,14 @@ class Game:
         self.__current_state: state.State = self.__states['menu_state']
         #self.__current_state: state.State = level_state.LevelState(self) 
 
-   # def run_bg_music(self) -> None:
-   #     pygame.mixer.init()
-   #     pygame.mixer.music.load('./resources/sounds/background_music.mp3')
-   #     pygame.mixer.music.play()
+    def run_bg_music(self) -> None:
+        path = get_file_path(__file__)
+        pygame.mixer.init()
+        pygame.mixer.music.load(f'{path}/sounds/background_music.mp3')
+        pygame.mixer.music.play()
 
     def run(self) -> None:
-       # #self.run_bg_music()
+        self.run_bg_music()
         # Inicializa o relógio (clock) do jogo
         clock = pygame.time.Clock()
         # MainLoop do jogo

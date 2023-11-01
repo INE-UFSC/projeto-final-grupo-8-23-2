@@ -7,13 +7,12 @@ from entities import player
 from states import state, level_state, menu_state, game_over
 from constants import game_constants
 from utils import mouse
+from utils.utils import get_file_path
 
 
 class Game:
     def __init__(self) -> None:
-        
         pygame.init()
-       # pygame.font.init()
         # Atributo para saber se o jogo está rodando
         self.__running = True
 
@@ -37,16 +36,17 @@ class Game:
             'game_over': game_over.GameOverState(self)
         }
         # Estado atual do jogo. No protótipo só existirá o estado do level
-        self.__current_state: state.State = self.__states['menu_state']
-        #self.__current_state: state.State = level_state.LevelState(self) 
+        self.__current_state: state.State = menu_state.MenuState(self)
+        #self.__current_state: state.State = level_state.LevelState(self)
 
-   # def run_bg_music(self) -> None:
-   #     pygame.mixer.init()
-   #     pygame.mixer.music.load('./resources/sounds/background_music.mp3')
-   #     pygame.mixer.music.play()
+    def run_bg_music(self) -> None:
+        path = get_file_path(__file__)
+        pygame.mixer.init()
+        pygame.mixer.music.load(f'{path}/sounds/background_music.mp3')
+        pygame.mixer.music.play()
 
     def run(self) -> None:
-       # #self.run_bg_music()
+        self.run_bg_music()
         # Inicializa o relógio (clock) do jogo
         clock = pygame.time.Clock()
         # MainLoop do jogo
@@ -64,10 +64,12 @@ class Game:
             # Renderização
             self.__current_state.render()
             pygame.display.flip()
-            #self.__screen.fill(utils.utils.green)
 
             # Define o FPS do jogo
             clock.tick(game_constants.FPS)
+
+    def set_state(self, new_state: state.State) -> None:
+        self.__current_state = new_state
 
     def get_screen(self) -> pygame.Surface:
         return self.__screen
@@ -79,7 +81,7 @@ class Game:
     @current_state.setter
     def current_state(self, state):
         self.__current_state = state
-        
+
     @property
     def states(self):
         return self.__states

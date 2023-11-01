@@ -11,19 +11,19 @@ class State(ABC):
         self.__game_reference = game_reference
         self.__mouse = mouse.Mouse()
         self.__entered = False
-        
+
     @property
     def entered(self):
         return self.__entered
-    
+
     @entered.setter
     def entered(self, value):
         self.__entered = value
-        
+
     @property
     def mouse(self):
         return self.__mouse
-    
+
     @property
     def game(self):
         return self.__game_reference

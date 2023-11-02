@@ -1,10 +1,13 @@
 from __future__ import annotations
+import random
 
 import pygame
 from entities import weapon, character
 from constants import game_constants, player_constants, powerup_constants
 from utils import health_bar
 import math
+from utils.utils import get_file_path
+from PIL import Image
 
 
 class Player(character.Character):
@@ -21,8 +24,16 @@ class Player(character.Character):
         self.__level = level
         self.__power_ups = power_ups
         self.__score = score
+        self.__radius = 20
+        pos_aux = pygame.Vector2(player_constants.PLAYER_SPAWN_POSITION.x - 40, player_constants.PLAYER_SPAWN_POSITION.y + 80)
+        
         self.__health_bar = health_bar.HealthBar(player_constants.PLAYER_SPAWN_POSITION, player_constants.HEALTH)
         self.__attacking = False
+        img = f'{get_file_path(__file__)}/components/capa_vermelha.png'
+        img_transform = pygame.transform.scale(pygame.image.load(img),
+                                              (80, 140)) #image
+        self.__image = pygame.transform.flip(img_transform, True, False)
+        
         super().__init__(player_constants.PLAYER_SPAWN_POSITION, player_constants.HEALTH, player_constants.SPEED)
 
     def attack(self, screen: pygame.Surface) -> None:
@@ -35,8 +46,19 @@ class Player(character.Character):
             self.__weapon.shoot(angle, super().position.x, super().position.y)
             self.__attacking = False
 
+    def pil_to_game(self, img):
+        FORMAT = 'RGBA'
+        data = img.tobytes("raw", FORMAT)
+        return pygame.image.fromstring(data, img.size, FORMAT)
+
+    def get_gif_frame(self, img, frame):
+        FORMAT = 'RGBA'
+        img.seek(frame)
+        return  img.convert(FORMAT)
+    
     def draw_at(self, screen: pygame.Surface) -> None:
-        pygame.draw.circle(screen, 'blue', super().position, player_constants.WIDTH)
+        pygame.Surface.blit(screen, self.__image, super().position)
+        # pygame.draw.circle(screen, 'blue', super().position, player_constants.WIDTH)
         self.__health_bar.draw_at(screen)
         self.__weapon.draw(screen)
 

@@ -3,7 +3,7 @@ from __future__ import annotations
 import pygame
 
 import game
-from states.state import State
+from states import state, game_over_state
 from entities import player
 from entities import seeker
 from powerups import power_up
@@ -12,8 +12,10 @@ from subjects import seeker_timer_subject, power_up_timer_subject
 from map import map
 
 
-class LevelState(State):
+class LevelState(state.State):
     def __init__(self, game_ref: game.Game) -> None:
+        # TODO: Quando o usuário morre, vai para o menu_state e clica em jogar novamente
+        # o Player está nascendo no mesmo local em que morreu na partida passada.
         self.__player: player.Player = player.Player()
 
         self.__seekers: list[seeker.Seeker] = []
@@ -72,11 +74,10 @@ class LevelState(State):
         self.__player.move()
         self.__player.get_power_up()
         self.__player.attack(super().get_game().get_screen())
-        
+
         if not self.__player.alive:
-            super().game.current_state = super().game.states["game_over"]
+            super().get_game().set_state(game_over_state.GameOverState(super().get_game()))
 
     def exiting(self) -> None:
         self.__power_up_time_listener.unsubscribe(self.__power_up_generator.generate)
         self.__seeker_time_listener.unsubscribe(self.__seeker_spawner.spawn)
-        return super().exiting()

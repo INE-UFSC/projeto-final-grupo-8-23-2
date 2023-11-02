@@ -10,15 +10,6 @@ class State(ABC):
     def __init__(self, game_reference: game.Game) -> None:
         self.__game_reference = game_reference
         self.__mouse = mouse.Mouse()
-        self.__entered = False
-
-    @property
-    def entered(self):
-        return self.__entered
-
-    @entered.setter
-    def entered(self, value):
-        self.__entered = value
 
     @property
     def mouse(self):

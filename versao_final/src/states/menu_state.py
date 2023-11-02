@@ -36,7 +36,8 @@ class MenuState(State):
         for button in self.__buttons:
             base += 75
             if button.draw_at(super().get_game().get_screen(), (game_constants.SCREEN_WIDTH - button.width)//2, base):
-                super().game.current_state = super().game.states[button.next_state]
+                #super().game.current_state = super().game.states[button.next_state]
+                pass
         super().mouse.show_mouse(super().get_game().get_screen())
 
 

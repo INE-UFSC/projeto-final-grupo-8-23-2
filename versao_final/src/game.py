@@ -34,14 +34,13 @@ class Game:
 
         self.__current_state.entering()
 
-    def run_bg_music(self) -> None:
-        path = get_file_path(__file__)
-        pygame.mixer.init()
-        pygame.mixer.music.load(f'{path}/sounds/background_music.mp3')
-        pygame.mixer.music.play()
+    # def run_bg_music(self) -> None:
+    #     path = get_file_path(__file__)
+    #     pygame.mixer.init()
+    #     pygame.mixer.music.load(f'{path}/sounds/background_music.mp3')
+    #     pygame.mixer.music.play()
 
     def run(self) -> None:
-        self.run_bg_music()
         # Inicializa o relógio (clock) do jogo
         clock = pygame.time.Clock()
         # MainLoop do jogo

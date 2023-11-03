@@ -23,7 +23,8 @@ class MenuState(State):
         self.__font = pygame.font.Font(f'{resources_path}/fonts/NightsideDemoRegular.ttf', 96)
         self.__render = self.__font.render("SOUL SEEKERS", True, (255, 255, 255))
 
-        super().__init__(game_ref)
+        path_sound = f'{get_file_path(__file__)}/sounds/menu_sound.mp3'
+        super().__init__(game_ref, path_sound)
 
     def entering(self) -> None:
         pass

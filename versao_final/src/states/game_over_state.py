@@ -21,8 +21,8 @@ class GameOverState(state.State):
 
         self.__font = pygame.font.Font(f'{resources_path}/fonts/Kemco Pixel Bold.ttf', 96)
         self.__render = self.__font.render("GAME OVER", True, (255, 0, 0))
-
-        super().__init__(game_ref)
+        path_sound = f'{get_file_path(__file__)}/sounds/game_over_menu_sound.mp3'
+        super().__init__(game_ref, path_sound)
 
     def entering(self) -> None:
         pass

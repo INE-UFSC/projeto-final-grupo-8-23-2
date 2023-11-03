@@ -12,7 +12,7 @@ from subjects import seeker_timer_subject, power_up_timer_subject
 from map import map
 from datetime import datetime
 from datetime import timedelta
-
+from utils.utils import get_file_path
 
 class LevelState(state.State):
     def __init__(self, game_ref: game.Game) -> None:
@@ -34,8 +34,9 @@ class LevelState(state.State):
         
         self.__date_death_state = datetime.min
         self.__date_death_state_increment = self.__date_death_state
-
-        super().__init__(game_ref)
+        
+        path_sound = f'{get_file_path(__file__)}/sounds/game_sound.mp3'
+        super().__init__(game_ref, path_sound, 0.1)
 
     def entering(self) -> None:
         self.__power_up_time_listener.subscribe(self.__power_up_generator.generate)
@@ -49,6 +50,13 @@ class LevelState(state.State):
                 pygame.KEYDOWN
             ]
         )
+        
+    def run_death_music(self):
+        pygame.mixer.music.pause()
+        pygame.mixer.init()
+        pygame.mixer.music.set_volume(1)
+        pygame.mixer.music.load(f"{get_file_path(__file__)}/sounds/death_player.mp3")
+        pygame.mixer.music.play()
 
     def render(self) -> None:
         self.__map.draw_background(super().get_game().get_screen())
@@ -57,6 +65,7 @@ class LevelState(state.State):
         else:
             self.__player.draw_at_death(super().get_game().get_screen())
             if self.__date_death_state == datetime.min:
+                self.run_death_music()
                 self.__date_death_state = datetime.now()
                 self.__date_death_state_increment = self.__date_death_state
             
@@ -92,11 +101,11 @@ class LevelState(state.State):
         date_sec = self.__date_death_state + timedelta(seconds=100)
         if not self.__player.alive:
             if self.__date_death_state_increment == date_sec:
-                
+                pygame.mixer.music.pause()
                 super().get_game().set_state(game_over_state.GameOverState(super().get_game()))
             else:
                 self.__date_death_state_increment = self.__date_death_state_increment + timedelta(seconds=1)
-
+        
     def exiting(self) -> None:
         self.__power_up_time_listener.unsubscribe(self.__power_up_generator.generate)
         self.__seeker_time_listener.unsubscribe(self.__seeker_spawner.spawn)

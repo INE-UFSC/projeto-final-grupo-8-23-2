@@ -10,7 +10,8 @@ from powerups import power_up
 from utils import seeker_spawner, power_up_generator
 from subjects import seeker_timer_subject, power_up_timer_subject
 from map import map
-
+from datetime import datetime
+from datetime import timedelta
 
 class LevelState(State):
     def __init__(self, game_ref: game.Game) -> None:
@@ -27,6 +28,9 @@ class LevelState(State):
         self.__power_up_time_listener = power_up_timer_subject.PowerUpTimerSubject()
 
         self.__map = map.Map()
+        
+        self.__date_death_state = datetime.min
+        self.__date_death_state_increment = self.__date_death_state
 
         super().__init__(game_ref)
 
@@ -45,7 +49,14 @@ class LevelState(State):
 
     def render(self) -> None:
         self.__map.draw_background(super().get_game().get_screen())
-        self.__player.draw_at(super().get_game().get_screen())
+        if self.__player.alive:
+            self.__player.draw_at(super().get_game().get_screen())
+        else:
+            self.__player.draw_at_death(super().get_game().get_screen())
+            if self.__date_death_state == datetime.min:
+                self.__date_death_state = datetime.now()
+                self.__date_death_state_increment = self.__date_death_state
+            
         for seeker in self.__seekers:
             for bullet in self.__player.weapon.bullets:
                 if seeker.position[0] - seeker.radius <= bullet.position[0] <= seeker.position[0] + seeker.radius and seeker.position[1] - seeker.radius <= bullet.position[1] <= seeker.position[1] + seeker.radius:
@@ -69,12 +80,18 @@ class LevelState(State):
         self.__seeker_time_listener.handle_events()
         self.__power_up_time_listener.handle_events()
 
-        self.__player.move()
+        if self.__player.alive:
+            self.__player.move()
+            
         self.__player.get_power_up()
         self.__player.attack(super().get_game().get_screen())
         
+        date_sec = self.__date_death_state + timedelta(seconds=100)
         if not self.__player.alive:
-            super().game.current_state = super().game.states["game_over"]
+            if self.__date_death_state_increment == date_sec:
+                super().game.current_state = super().game.states["game_over"]
+            else:
+                self.__date_death_state_increment = self.__date_death_state_increment + timedelta(seconds=1)
 
     def exiting(self) -> None:
         self.__power_up_time_listener.unsubscribe(self.__power_up_generator.generate)

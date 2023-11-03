@@ -3,12 +3,14 @@ import random
 
 import pygame
 from entities import weapon, character
-from constants import game_constants, player_constants, powerup_constants
+from constants import game_constants, player_constants, powerup_constants, direction_constants
 from utils import health_bar
 import math
 from utils.utils import get_file_path
 from PIL import Image
-
+import base64
+import io
+import urllib.parse
 
 class Player(character.Character):
     def __init__(
@@ -25,17 +27,31 @@ class Player(character.Character):
         self.__power_ups = power_ups
         self.__score = score
         self.__radius = 20
+        self.__death_player_draw = False
+        self.__current_direction = None
         pos_aux = pygame.Vector2(player_constants.PLAYER_SPAWN_POSITION.x - 40, player_constants.PLAYER_SPAWN_POSITION.y + 80)
         
         self.__health_bar = health_bar.HealthBar(player_constants.PLAYER_SPAWN_POSITION, player_constants.HEALTH)
         self.__attacking = False
-        img = f'{get_file_path(__file__)}/components/capa_vermelha.png'
+        img = f'{get_file_path(__file__)}/player/player.png'
         img_transform = pygame.transform.scale(pygame.image.load(img),
-                                              (80, 140)) #image
-        self.__image = pygame.transform.flip(img_transform, True, False)
+                                              (51, 75)) #image
+        self.__image = pygame.transform.flip(img_transform, False, False)
         
         super().__init__(player_constants.PLAYER_SPAWN_POSITION, player_constants.HEALTH, player_constants.SPEED)
 
+    @property
+    def current_direction(self):
+        return self.__current_direction
+    
+    @current_direction.setter
+    def direction(self, val):
+        self.__current_direction = val
+        
+    @property
+    def death_player_draw(self):
+        return self.__death_player_draw
+    
     def attack(self, screen: pygame.Surface) -> None:
         if pygame.mouse.get_pressed()[0]:
             self.__attacking = True
@@ -56,11 +72,45 @@ class Player(character.Character):
         img.seek(frame)
         return  img.convert(FORMAT)
     
-    def draw_at(self, screen: pygame.Surface) -> None:
-        pygame.Surface.blit(screen, self.__image, super().position)
-        # pygame.draw.circle(screen, 'blue', super().position, player_constants.WIDTH)
+    def draw_at(self, screen: pygame.Surface, position = None) -> None:
+        if self.alive:
+            self.set_img_by_direction()
+        pos = super().position if position == None else position
+        pygame.Surface.blit(screen, self.__image, pos)
         self.__health_bar.draw_at(screen)
         self.__weapon.draw(screen)
+        
+    def set_img_by_direction(self):
+        match self.__current_direction:
+            case direction_constants.LEFT:
+                self.set_img_draw_left()
+            case direction_constants.RIGHT:
+                self.set_img_draw_right()
+            case _:
+                return
+        
+    def set_img_draw_right(self):
+        img = f'{get_file_path(__file__)}/player/player_run.png'
+        img_transform = pygame.transform.scale(pygame.image.load(img),
+                                              (51, 70)) #image
+        self.__image = pygame.transform.flip(img_transform, False, False)
+        
+    def set_img_draw_left(self):
+        img = f'{get_file_path(__file__)}/player/player_run.png'
+        img_transform = pygame.transform.scale(pygame.image.load(img),
+                                              (51, 70)) #image
+        self.__image = pygame.transform.flip(img_transform, True, False)
+        
+    def draw_at_death(self, screen: pygame.Surface):
+        img = f'{get_file_path(__file__)}/player/death_player.png'
+        img_transform = pygame.transform.scale(pygame.image.load(img),
+                                              (70, 35)) #image
+        is_left = self.__current_direction == 'LEFT'
+        self.__image = pygame.transform.flip(img_transform, is_left, False)
+        position = pygame.Vector2(super().position.x, super().position.y + 35)
+        
+        self.draw_at(screen, position=position)
+        self.__death_player_draw = True
 
     def take_damage(self, damage: int) -> None:
         if self.health <= 0:
@@ -70,20 +120,28 @@ class Player(character.Character):
             self.health -= damage
         self.__health_bar.update_health_bar(self.health)
 
-    def move(self) -> None:
+    def move(self):
         keys = pygame.key.get_pressed()
+        direction = None
         if keys[pygame.K_w] or keys[pygame.K_UP]:
+            direction = 'UP'
             if super().position.y > player_constants.WIDTH:
                 super().position.y -= super().speed
         if keys[pygame.K_s] or keys[pygame.K_DOWN]:
+            direction = 'DOWN'
             if super().position.y < game_constants.SCREEN_HEIGHT - player_constants.WIDTH:
                 super().position.y += super().speed
         if keys[pygame.K_a] or keys[pygame.K_LEFT]:
+            direction = 'LEFT'
             if super().position.x > player_constants.WIDTH:
                 super().position.x -= super().speed
         if keys[pygame.K_d] or keys[pygame.K_RIGHT]:
+            direction = 'RIGHT'
             if super().position.x < game_constants.SCREEN_WIDTH - player_constants.WIDTH:
                 super().position.x += super().speed
+                
+        if direction != None:
+            self.__current_direction = direction
 
     def get_power_up(self):
         keys = pygame.key.get_pressed()

@@ -27,9 +27,9 @@ class PowerUp(ABC):
         self.__player.power_ups.append(self)
 
     def draw_at(self, screen: pygame.Surface) -> None:
-        img = f'{get_file_path(__file__)}/components/moeda.webp'
+        img = f'{get_file_path(__file__)}/components/coin.webp'
         img_transform = pygame.transform.scale(pygame.image.load(img),
-                                              (40, 40)) #image
+                                              (25, 25)) #image
         image = pygame.transform.flip(img_transform, True, False)
         
         pygame.Surface.blit(screen, image, self.__position)

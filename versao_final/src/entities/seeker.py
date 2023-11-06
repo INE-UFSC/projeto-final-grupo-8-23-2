@@ -51,6 +51,7 @@ class Seeker(Character, ABC):
         self.__alpha_draw -= 10
         self.__image.set_alpha(self.__alpha_draw)
         
+        
     @property
     def damage(self):
         return self.__damage

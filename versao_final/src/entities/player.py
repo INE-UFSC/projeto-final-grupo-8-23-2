@@ -7,10 +7,6 @@ from constants import game_constants, player_constants, powerup_constants, direc
 from utils import health_bar
 import math
 from utils.utils import get_file_path
-from PIL import Image
-import base64
-import io
-import urllib.parse
 
 class Player(character.Character):
     def __init__(
@@ -62,16 +58,6 @@ class Player(character.Character):
             self.__weapon.shoot(angle, super().position.x, super().position.y)
             self.__attacking = False
 
-    def pil_to_game(self, img):
-        FORMAT = 'RGBA'
-        data = img.tobytes("raw", FORMAT)
-        return pygame.image.fromstring(data, img.size, FORMAT)
-
-    def get_gif_frame(self, img, frame):
-        FORMAT = 'RGBA'
-        img.seek(frame)
-        return  img.convert(FORMAT)
-    
     def draw_at(self, screen: pygame.Surface, position = None) -> None:
         if self.alive:
             self.set_img_by_direction()

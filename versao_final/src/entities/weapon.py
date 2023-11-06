@@ -2,7 +2,6 @@ import pygame
 
 from entities.bullet import Bullet
 
-
 class Weapon:
     def __init__(
             self,
@@ -18,7 +17,7 @@ class Weapon:
         self.__bullets = []
 
     def shoot(self, angle, player_x, player_y) -> None:
-        bullet = Bullet(angle, 10, player_x, player_y, self.__range)
+        bullet = Bullet(angle, 10, player_x + 45, player_y + 30, self.__range)
         self.__bullets.append(bullet)
 
     def draw(self, screen: pygame.Surface) -> None:

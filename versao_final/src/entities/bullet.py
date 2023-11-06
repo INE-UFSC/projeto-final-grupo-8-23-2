@@ -1,6 +1,6 @@
 import pygame
 import math
-
+from utils.utils import get_file_path
 
 class Bullet:
     def __init__(
@@ -17,6 +17,12 @@ class Bullet:
         self.__color = 'red'
         self.__moving = True
         self.__range = range
+        
+        img = f'{get_file_path(__file__)}/bullet/fireball.png'
+        img_transform = pygame.transform.scale(pygame.image.load(img),
+                                              (15, 15)) #image
+        self.__image = pygame.transform.flip(img_transform, True, False)
+        self.__image = pygame.transform.rotate(self.__image, 45)
 
     @property
     def moving(self):
@@ -64,7 +70,8 @@ class Bullet:
             self.__range = val
 
     def draw_at(self, screen:pygame.Surface) -> None:
-        pygame.draw.circle(screen, self.__color, self.__position, 5)
+        pygame.Surface.blit(screen, self.__image, self.__position)
+        # pygame.draw.circle(screen, self.__color, self.__position, 5)
 
     def move(self) -> None:
         # calculos para que se mova na direção do mouse

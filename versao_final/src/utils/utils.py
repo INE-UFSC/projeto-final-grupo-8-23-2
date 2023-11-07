@@ -8,10 +8,10 @@ brown = (150, 75, 0)
 pink = (206, 53, 137) # #DE4083
 
 
-if sys.platform == 'linux':
-    separator = '/'
-else:
+if sys.platform == 'windows':
     separator = '\\'
+else:
+    separator = '/'
 
 def get_file_path(file_path):
     current_path = os.path.dirname(file_path).split(separator)

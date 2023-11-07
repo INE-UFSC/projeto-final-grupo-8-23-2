@@ -93,6 +93,10 @@ class LevelState(state.State):
         for seeker in dead_seekers:
             self.__seekers.remove(seeker)
 
+        for powerup in self.__power_ups:
+            if powerup.actived:
+                self.__power_ups.remove(powerup)
+
         self.__seeker_time_listener.handle_events()
         self.__power_up_time_listener.handle_events()
 
@@ -109,6 +113,7 @@ class LevelState(state.State):
                 super().get_game().set_state(game_over_state.GameOverState(super().get_game()))
             else:
                 self.__date_death_state_increment = self.__date_death_state_increment + timedelta(seconds=1)
+
         
     def exiting(self) -> None:
         self.__power_up_time_listener.unsubscribe(self.__power_up_generator.generate)

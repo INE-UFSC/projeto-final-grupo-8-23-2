@@ -34,11 +34,6 @@ class Game:
 
         self.__current_state.entering()
 
-    # def run_bg_music(self) -> None:
-    #     path = get_file_path(__file__)
-    #     pygame.mixer.init()
-    #     pygame.mixer.music.load(f'{path}/sounds/background_music.mp3')
-    #     pygame.mixer.music.play()
 
     def run(self) -> None:
         # Inicializa o relógio (clock) do jogo
@@ -51,6 +46,8 @@ class Game:
             for event in pygame.event.get([pygame.KEYDOWN, pygame.QUIT]):
                 if event.type == pygame.QUIT or (event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE):
                     self.__running = False
+                if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
+                    self.__current_state.space_pressed()
 
             # Renderização
             self.__current_state.render()

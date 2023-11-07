@@ -5,12 +5,12 @@ from utils import utils, button
 
 
 class TextButton(button.Button):
-    def __init__(self, text: str, state) -> None:
+    def __init__(self, text: str, state, font_size = 36) -> None:
         self.__text = text
         
         # Encontra o caminho até a pasta resources
         resources_path = get_file_path(__file__)
-        self.__font = pygame.font.Font(f'{resources_path}/fonts/NightsideDemoRegular.ttf', 36)
+        self.__font = pygame.font.Font(f'{resources_path}/fonts/NightsideDemoRegular.ttf', font_size)
 
         self.__render = self.__font.render(self.__text, True, (255, 255, 255))
         self.__rect = self.__render.get_rect()

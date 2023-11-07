@@ -3,22 +3,21 @@ from __future__ import annotations
 import pygame
 
 import game
-from states import state, game_over_state, pause_state
+from states import state, game_over_state
 from entities import player
 from entities import seeker
 from powerups import power_up
-from utils import seeker_spawner, power_up_generator
+from utils import seeker_spawner, power_up_generator, pause
 from subjects import seeker_timer_subject, power_up_timer_subject
 from map import map
 from datetime import datetime
 from datetime import timedelta
 from utils.utils import get_file_path
 from utils.img_button import ImgButton
+from constants import game_constants
 
 class LevelState(state.State):
     def __init__(self, game_ref: game.Game) -> None:
-        # TODO: Quando o usuário morre, vai para o menu_state e clica em jogar novamente
-        # o Player está nascendo no mesmo local em que morreu na partida passada.
         self.__player: player.Player = player.Player()
 
         self.__seekers: list[seeker.Seeker] = []
@@ -37,6 +36,9 @@ class LevelState(state.State):
         self.__date_death_state_increment = self.__date_death_state
         
         path_sound = f'{get_file_path(__file__)}/sounds/game_sound.mp3'
+        
+        self.__pausebt = pause.Pause()
+        self.__paused = False
         
         super().__init__(game_ref, path_sound, 0.7)
 
@@ -71,54 +73,70 @@ class LevelState(state.State):
                 self.run_death_music()
                 self.__date_death_state = datetime.now()
                 self.__date_death_state_increment = self.__date_death_state
-            
-        for seeker in self.__seekers:
+        for seeker in self.__seekers: # TODO - refazer isso tudo
             for bullet in self.__player.weapon.bullets:
-                if seeker.position[0] - seeker.radius <= bullet.position[0] <= seeker.position[0] + seeker.radius and seeker.position[1] - seeker.radius <= bullet.position[1] <= seeker.position[1] + seeker.radius:
+                if seeker.position[0] - seeker.radius <= bullet.position[0] <= seeker.position[0] + seeker.radius and \
+                        seeker.position[1] - seeker.radius <= bullet.position[1] <= seeker.position[1] + seeker.radius:
                     seeker.take_damage(self.__player.weapon.damage)
                     bullet.moving = False
             seeker.draw_at(super().get_game().get_screen())
-            seeker.move()
+            if not self.__paused:
+                seeker.move()
         for powerup in self.__power_ups:
             powerup.draw_at(super().get_game().get_screen())
             powerup.add_power_up_to_list()
+        if self.__paused:
+            self.pause()
+
         super().mouse.show_mouse(super().get_game().get_screen())
 
-
     def update(self) -> None:
-        dead_seekers = []
-        for seeker in self.__seekers:
-            if not seeker.alive:
-                dead_seekers.append(seeker)
-        for seeker in dead_seekers:
-            self.__seekers.remove(seeker)
+        if not self.__paused:
+            dead_seekers = []
+            for seeker in self.__seekers:
+                if not seeker.alive:
+                    dead_seekers.append(seeker)
+            for seeker in dead_seekers:
+                self.__seekers.remove(seeker)
 
-        for powerup in self.__power_ups:
-            if powerup.actived:
-                self.__power_ups.remove(powerup)
+            for powerup in self.__power_ups:
+                if powerup.actived:
+                    self.__power_ups.remove(powerup)
 
-        self.__seeker_time_listener.handle_events()
-        self.__power_up_time_listener.handle_events()
+            self.__seeker_time_listener.handle_events()
+            self.__power_up_time_listener.handle_events()
 
-        if self.__player.alive:
-            self.__player.move()
+            if self.__player.alive:
+                self.__player.move()
+                
+            self.__player.get_power_up()
+            self.__player.attack(super().get_game().get_screen())
             
-        self.__player.get_power_up()
-        self.__player.attack(super().get_game().get_screen())
-        
-        date_sec = self.__date_death_state + timedelta(seconds=100)
-        if not self.__player.alive:
-            if self.__date_death_state_increment == date_sec:
-                pygame.mixer.music.pause()
-                super().get_game().set_state(game_over_state.GameOverState(super().get_game()))
-            else:
-                self.__date_death_state_increment = self.__date_death_state_increment + timedelta(seconds=1)
-
-        
-        for event in pygame.event.get(pygame.KEYDOWN):
-            if event.key == pygame.K_ESCAPE:
-                super().get_game().set_state(pause_state.PauseState(super().get_game()))
+            date_sec = self.__date_death_state + timedelta(seconds=100)
+            if not self.__player.alive:
+                if self.__date_death_state_increment == date_sec:
+                    pygame.mixer.music.pause()
+                    super().get_game().set_state(game_over_state.GameOverState(super().get_game()))
+                else:
+                    self.__date_death_state_increment = self.__date_death_state_increment + timedelta(seconds=1)
         
     def exiting(self) -> None:
         self.__power_up_time_listener.unsubscribe(self.__power_up_generator.generate)
         self.__seeker_time_listener.unsubscribe(self.__seeker_spawner.spawn)
+
+    def pause(self):
+        height = self.__pausebt.buttons[0].height
+        base = base = (game_constants.SCREEN_HEIGHT - (height * len(self.__pausebt.buttons))) / 2
+        
+        # arrumar isso aqui depois
+        color = (0, 0, 0, 127)
+        surface = pygame.Surface(self.__pausebt.bg_rect.size, pygame.SRCALPHA)
+        pygame.draw.rect(surface, color, surface.get_rect())
+        super().get_game().get_screen().blit(surface, self.__pausebt.bg_rect.topleft)
+        
+        for button in self.__pausebt.buttons:
+            button.draw_at(super().get_game().get_screen(), (game_constants.SCREEN_WIDTH - button.width)//2, base)
+            base += self.__pausebt.spacing
+            
+    def space_pressed(self) -> None:
+        self.__paused = not self.__paused

@@ -33,7 +33,6 @@ class Player(character.Character):
         self.__image = pygame.transform.flip(img_transform, False, False)
         
         super().__init__(self.__spawn_position, player_constants.HEALTH, player_constants.SPEED)
-        print(player_constants.PLAYER_SPAWN_POSITION)
 
     @property
     def current_direction(self):

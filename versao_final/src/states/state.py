@@ -52,3 +52,5 @@ class State(ABC):
     def get_game(self) -> game.Game:
         return self.__game_reference
 
+    def space_pressed(self) -> None:
+        pass

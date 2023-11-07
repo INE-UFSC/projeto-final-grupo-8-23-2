@@ -8,7 +8,7 @@ brown = (150, 75, 0)
 pink = (206, 53, 137) # #DE4083
 
 
-if sys.platform == 'windows':
+if sys.platform == 'win32':
     separator = '\\'
 else:
     separator = '/'

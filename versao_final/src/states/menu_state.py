@@ -7,7 +7,7 @@ from states.state import State
 from states import level_state
 from constants import game_constants
 from utils.utils import get_file_path
-from utils import button
+from utils import button, text_button
 
 
 class MenuState(State):
@@ -16,7 +16,7 @@ class MenuState(State):
         self.__background = pygame.transform.scale(pygame.image.load(f'{resources_path}/backgrounds/menu_background.jpg'),
         (game_constants.SCREEN_WIDTH, game_constants.SCREEN_HEIGHT))
 
-        self.__buttons = [button.Button('iniciar', 'level_state'), button.Button('tutorial', 'tutorial'), button.Button('sair', 'sair')]
+        self.__buttons = [text_button.TextButton('iniciar', 'level_state'), text_button.TextButton('tutorial', 'tutorial'), text_button.TextButton('sair', 'sair')]
 
         self.__play_button = self.__buttons[0]
 
@@ -27,7 +27,7 @@ class MenuState(State):
         super().__init__(game_ref, path_sound)
 
     def entering(self) -> None:
-        pass
+        super().run_bg_sound()
 
     def render(self) -> None:
         base = game_constants.SCREEN_HEIGHT / 2 - 100
@@ -43,7 +43,7 @@ class MenuState(State):
 
 
     def update(self) -> None:
-        if self.__play_button.get_clicked() == True:
+        if self.__play_button.clicked == True:
             super().get_game().set_state(level_state.LevelState(super().get_game()))
 
     def exiting(self) -> None:

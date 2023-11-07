@@ -12,17 +12,15 @@ class State(ABC):
     def __init__(self, game_reference: game.Game, path_sound=None, volumn_sound=1) -> None:
         self.__game_reference = game_reference
         self.__mouse = mouse.Mouse()
-        self.__volumn_sound = volumn_sound
         self.__path_sound = path_sound
-        if path_sound != None:
-            self.run_bg_sound()
+        self.__sound_volume = volumn_sound
         
     def run_bg_sound(self) -> None:
         pygame.mixer.init()
-        pygame.mixer.music.set_volume(self.__volumn_sound)
+        pygame.mixer.music.set_volume(self.__sound_volume)
         pygame.mixer.music.load(self.__path_sound)
         pygame.mixer.music.play()
-        
+    
     @property
     def mouse(self):
         return self.__mouse

@@ -22,19 +22,18 @@ class Player(character.Character):
         self.__level = level
         self.__power_ups = power_ups
         self.__score = score
-        self.__radius = 20
         self.__death_player_draw = False
         self.__current_direction = None
-        pos_aux = pygame.Vector2(player_constants.PLAYER_SPAWN_POSITION.x - 40, player_constants.PLAYER_SPAWN_POSITION.y + 80)
-        
-        self.__health_bar = health_bar.HealthBar(player_constants.PLAYER_SPAWN_POSITION, player_constants.HEALTH)
+        self.__spawn_position = pygame.Vector2(player_constants.PLAYER_SPAWN_POSITION)
+        self.__health_bar = health_bar.HealthBar(self.__spawn_position, player_constants.HEALTH)
         self.__attacking = False
         img = f'{get_file_path(__file__)}/player/player.png'
         img_transform = pygame.transform.scale(pygame.image.load(img),
                                               (51, 75)) #image
         self.__image = pygame.transform.flip(img_transform, False, False)
         
-        super().__init__(player_constants.PLAYER_SPAWN_POSITION, player_constants.HEALTH, player_constants.SPEED)
+        super().__init__(self.__spawn_position, player_constants.HEALTH, player_constants.SPEED)
+        print(player_constants.PLAYER_SPAWN_POSITION)
 
     @property
     def current_direction(self):

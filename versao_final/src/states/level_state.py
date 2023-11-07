@@ -13,6 +13,7 @@ from map import map
 from datetime import datetime
 from datetime import timedelta
 from utils.utils import get_file_path
+from utils.img_button import ImgButton
 
 class LevelState(state.State):
     def __init__(self, game_ref: game.Game) -> None:
@@ -36,9 +37,11 @@ class LevelState(state.State):
         self.__date_death_state_increment = self.__date_death_state
         
         path_sound = f'{get_file_path(__file__)}/sounds/game_sound.mp3'
-        super().__init__(game_ref, path_sound, 0.1)
+        
+        super().__init__(game_ref, path_sound, 0.7)
 
     def entering(self) -> None:
+        super().run_bg_sound()
         self.__power_up_time_listener.subscribe(self.__power_up_generator.generate)
         self.__seeker_time_listener.subscribe(self.__seeker_spawner.spawn)
 
@@ -80,6 +83,7 @@ class LevelState(state.State):
             powerup.draw_at(super().get_game().get_screen())
             powerup.add_power_up_to_list()
         super().mouse.show_mouse(super().get_game().get_screen())
+
 
     def update(self) -> None:
         dead_seekers = []

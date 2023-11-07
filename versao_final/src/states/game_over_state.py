@@ -6,7 +6,7 @@ import game
 from states import state, menu_state
 from constants import game_constants
 from utils.utils import get_file_path
-from utils import button
+from utils import text_button
 
 
 class GameOverState(state.State):
@@ -15,7 +15,7 @@ class GameOverState(state.State):
         self.__background = pygame.transform.scale(pygame.image.load(f'{resources_path}/backgrounds/bg_game_over_2.jpg'),
         (game_constants.SCREEN_WIDTH, game_constants.SCREEN_HEIGHT))
 
-        self.__buttons = [button.Button('Voltar ao menu', 'menu_state')]
+        self.__buttons = [text_button.TextButton('Voltar ao menu', menu_state.MenuState(game_ref))]
 
         self.__back_to_menu_button = self.__buttons[0]
 
@@ -25,7 +25,7 @@ class GameOverState(state.State):
         super().__init__(game_ref, path_sound, volumn_sound=0.4)
 
     def entering(self) -> None:
-        pass
+        super().run_bg_sound()
 
     def render(self) -> None:
         base = game_constants.SCREEN_HEIGHT / 2 - 10
@@ -40,7 +40,7 @@ class GameOverState(state.State):
         super().mouse.show_mouse(super().get_game().get_screen())
 
     def update(self) -> None:
-        if self.__back_to_menu_button.get_clicked():
+        if self.__back_to_menu_button.clicked:
             super().get_game().set_state(menu_state.MenuState(super().get_game()))
         pass
 

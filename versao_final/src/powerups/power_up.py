@@ -5,6 +5,7 @@ import random
 import constants.powerup_constants as cons
 import constants.game_constants as gamecons
 from entities import player
+from utils.utils import get_file_path
 
 
 class PowerUp(ABC):
@@ -26,7 +27,13 @@ class PowerUp(ABC):
         self.__player.power_ups.append(self)
 
     def draw_at(self, screen: pygame.Surface) -> None:
-        pygame.draw.circle(screen, self.__color, self.__position, self.__width)
+        img = f'{get_file_path(__file__)}/components/coin.webp'
+        img_transform = pygame.transform.scale(pygame.image.load(img),
+                                              (25, 25)) #image
+        image = pygame.transform.flip(img_transform, True, False)
+        
+        pygame.Surface.blit(screen, image, self.__position)
+        # pygame.draw.circle(screen, self.__color, self.__position, self.__width)
 
     def activate_power_up(self) -> None:
         self.__actived = True

@@ -21,6 +21,7 @@ class Seeker(Character, ABC):
         self.__radius = 20
         self.__seeker_position = self.define_spawn_position()
         self.__inverted = False
+        self.__alpha_draw = 100
         super().__init__(self.__seeker_position, seeker_health, seeker_speed, seeker_damage, seeker_armor)
         if super().position.x <= self.__player_to_chase.position.x:
             self.__image = pygame.transform.flip(self.__image, True, False)
@@ -46,9 +47,11 @@ class Seeker(Character, ABC):
     def take_damage(self, damage: int):
         if self.health <= 0:
             self.__alive = False
-
         self.health -= damage
-
+        self.__alpha_draw -= 10
+        self.__image.set_alpha(self.__alpha_draw)
+        
+        
     @property
     def damage(self):
         return self.__damage

@@ -23,7 +23,8 @@ class MenuState(State):
         self.__font = pygame.font.Font(f'{resources_path}/fonts/NightsideDemoRegular.ttf', 96)
         self.__render = self.__font.render("SOUL SEEKERS", True, (255, 255, 255))
 
-        super().__init__(game_ref)
+        path_sound = f'{get_file_path(__file__)}/sounds/game_over_menu_sound.mp3'
+        super().__init__(game_ref, path_sound)
 
     def entering(self) -> None:
         pass
@@ -36,7 +37,8 @@ class MenuState(State):
         for button in self.__buttons:
             base += 75
             if button.draw_at(super().get_game().get_screen(), (game_constants.SCREEN_WIDTH - button.width)//2, base):
-                super().game.current_state = super().game.states[button.next_state]
+                #super().game.current_state = super().game.states[button.next_state]
+                pass
         super().mouse.show_mouse(super().get_game().get_screen())
 
 

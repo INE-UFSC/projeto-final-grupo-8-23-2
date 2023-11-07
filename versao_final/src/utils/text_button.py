@@ -16,6 +16,7 @@ class TextButton(button.Button):
         self.__rect = self.__render.get_rect()
         
         self.__width = self.__rect.width
+        self.__height = self.__rect.height
 
         super().__init__(state)
 
@@ -38,3 +39,7 @@ class TextButton(button.Button):
     @property
     def width(self):
         return self.__width
+    
+    @property  
+    def height(self):
+        return self.__height

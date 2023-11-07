@@ -3,7 +3,7 @@ from __future__ import annotations
 import pygame
 
 import game
-from states import state, game_over_state
+from states import state, game_over_state, pause_state
 from entities import player
 from entities import seeker
 from powerups import power_up
@@ -109,6 +109,10 @@ class LevelState(state.State):
                 super().get_game().set_state(game_over_state.GameOverState(super().get_game()))
             else:
                 self.__date_death_state_increment = self.__date_death_state_increment + timedelta(seconds=1)
+        
+        for event in pygame.event.get(pygame.KEYDOWN):
+            if event.key == pygame.K_ESCAPE:
+                super().get_game().set_state(pause_state.PauseState(super().get_game()))
         
     def exiting(self) -> None:
         self.__power_up_time_listener.unsubscribe(self.__power_up_generator.generate)

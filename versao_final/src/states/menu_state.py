@@ -42,9 +42,11 @@ class MenuState(State):
         super().mouse.show_mouse(super().get_game().get_screen())
 
 
-    def update(self) -> None:
-        if self.__play_button.clicked == True:
+    def update(self) -> None: # precisamos mudar isso para nao ficar só com if
+        if self.__play_button.clicked:
             super().get_game().set_state(level_state.LevelState(super().get_game()))
+        if self.__buttons[2].clicked:
+            pygame.quit() # achar outro jeito, assim aparece mensagem de erro
 
     def exiting(self) -> None:
         return super().exiting()

@@ -27,7 +27,7 @@ class Player(character.Character):
         self.__spawn_position = pygame.Vector2(player_constants.PLAYER_SPAWN_POSITION)
         self.__health_bar = health_bar.HealthBar(self.__spawn_position, player_constants.HEALTH)
         self.__attacking = False
-        img = f'{get_file_path(__file__)}/player/player.png'
+        img = f'{get_file_path(__file__)}/player/player.webp'
         img_transform = pygame.transform.scale(pygame.image.load(img),
                                               (51, 75)) #image
         self.__image = pygame.transform.flip(img_transform, False, False)

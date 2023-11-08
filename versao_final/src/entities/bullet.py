@@ -18,7 +18,7 @@ class Bullet:
         self.__moving = True
         self.__range = range
         
-        img = f'{get_file_path(__file__)}/bullet/fireball.png'
+        img = f'{get_file_path(__file__)}/bullet/fireball.webp'
         img_transform = pygame.transform.scale(pygame.image.load(img),
                                               (15, 15)) #image
         self.__image = pygame.transform.flip(img_transform, True, False)

@@ -133,6 +133,7 @@ class Player(character.Character):
         coin_sound.set_volume(0.5)
         coin_sound.play()
         
+        
     def get_power_up(self):
         keys = pygame.key.get_pressed()
         if keys[pygame.K_q] or keys[pygame.K_p]:

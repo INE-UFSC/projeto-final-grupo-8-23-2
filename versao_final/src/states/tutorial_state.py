@@ -7,8 +7,6 @@ from states import state, menu_state
 from constants import game_constants
 from utils.utils import get_file_path
 from utils import text_button
-
-
 class TutorialState(state.State):
     def __init__(self, game_ref: game.Game) -> None:
         resources_path = get_file_path(__file__)

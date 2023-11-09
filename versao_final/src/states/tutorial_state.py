@@ -10,7 +10,7 @@ from utils import text_button
 class TutorialState(state.State):
     def __init__(self, game_ref: game.Game) -> None:
         resources_path = get_file_path(__file__)
-        self.__background = pygame.transform.scale(pygame.image.load(f'{resources_path}/backgrounds/tutorial_page_2.png'),
+        self.__background = pygame.transform.scale(pygame.image.load(f'{resources_path}/backgrounds/tutorial_page3.png'),
         (game_constants.SCREEN_WIDTH, game_constants.SCREEN_HEIGHT))
 
         self.__buttons = [text_button.TextButton('Voltar ao menu', menu_state.MenuState(game_ref))]

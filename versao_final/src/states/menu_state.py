@@ -4,7 +4,7 @@ import pygame
 
 import game
 from states.state import State
-from states import level_state
+from states import level_state, tutorial_state
 from constants import game_constants
 from utils.utils import get_file_path
 from utils import button, text_button
@@ -16,9 +16,10 @@ class MenuState(State):
         self.__background = pygame.transform.scale(pygame.image.load(f'{resources_path}/backgrounds/menu_background.jpg'),
         (game_constants.SCREEN_WIDTH, game_constants.SCREEN_HEIGHT))
 
-        self.__buttons = [text_button.TextButton('iniciar', 'level_state'), text_button.TextButton('tutorial', 'tutorial'), text_button.TextButton('sair', 'sair')]
+        self.__buttons = [text_button.TextButton('iniciar', 'level_state'), text_button.TextButton('tutorial', 'tutorial_state'), text_button.TextButton('sair', 'sair')]
 
         self.__play_button = self.__buttons[0]
+        self.__tutorial_button = self.__buttons[1]
 
         self.__font = pygame.font.Font(f'{resources_path}/fonts/NightsideDemoRegular.ttf', 96)
         self.__render = self.__font.render("SOUL SEEKERS", True, (255, 255, 255))
@@ -44,6 +45,8 @@ class MenuState(State):
     def update(self) -> None: # precisamos mudar isso para nao ficar só com if
         if self.__play_button.clicked:
             super().get_game().set_state(level_state.LevelState(super().get_game()))
+        if self.__tutorial_button.clicked:
+            super().get_game().set_state(tutorial_state.TutorialState(super().get_game()))
         if self.__buttons[2].clicked:
             pygame.quit() # achar outro jeito, assim aparece mensagem de erro
 

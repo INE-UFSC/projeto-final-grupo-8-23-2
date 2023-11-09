@@ -1,7 +1,7 @@
 import pygame
 import math
 from utils.utils import get_file_path
-
+from time import sleep
 class Bullet:
     def __init__(
             self,
@@ -80,3 +80,4 @@ class Bullet:
         self.__range -= 1 * self.__speed
         if self.__range <= 0:
             self.__moving = False
+        

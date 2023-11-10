@@ -39,7 +39,6 @@ class TutorialState(state.State):
     def update(self) -> None:
         if self.__back_to_menu_button.clicked:
             super().get_game().set_state(menu_state.MenuState(super().get_game()))
-        pass
 
     def exiting(self) -> None:
         return super().exiting()

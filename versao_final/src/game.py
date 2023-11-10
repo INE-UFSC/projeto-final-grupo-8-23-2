@@ -34,6 +34,11 @@ class Game:
 
         self.__current_state.entering()
 
+    # Método de contém todas as chamadas relacionadas a renderização da tela
+    def render(self) -> None:
+        self.__current_state.render()
+        pygame.display.flip()
+
 
     def run(self) -> None:
         # Inicializa o relógio (clock) do jogo
@@ -49,9 +54,7 @@ class Game:
                 if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
                     self.__current_state.space_pressed()
 
-            # Renderização
-            self.__current_state.render()
-            pygame.display.flip()
+            self.render()
 
             # Define o FPS do jogo
             clock.tick(game_constants.FPS)

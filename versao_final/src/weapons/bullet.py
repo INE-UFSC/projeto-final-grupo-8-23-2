@@ -1,7 +1,10 @@
 import pygame
 import math
-from utils.utils import get_file_path
 from time import sleep
+
+from utils.utils import get_file_path
+
+
 class Bullet:
     def __init__(
             self,

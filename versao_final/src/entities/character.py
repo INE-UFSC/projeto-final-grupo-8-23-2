@@ -4,9 +4,6 @@ import pygame
 
 from abc import abstractmethod, ABC
 
-from entities.weapon import Weapon
-
-
 class Character(ABC):
     def __init__(
             self,
@@ -97,9 +94,8 @@ class Character(ABC):
         return self.__weapon
 
     @weapon.setter
-    def weapon(self, weapon:Weapon):
-        if isinstance(weapon, Weapon):
-            self.__weapon = weapon
+    def weapon(self, val):
+        self.__weapon = val
 
     @abstractmethod
     def move(self) -> None:

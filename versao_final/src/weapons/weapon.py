@@ -1,31 +1,25 @@
 import pygame
+from abc import ABC, abstractmethod
 
-from entities.bullet import Bullet
 
-class Weapon:
-    def __init__(
-            self,
-            name: str,
-            damage: int,
-            range: int,
-            sprite: str
-        ) -> None:
+class Weapon(ABC):
+    def __init__(self, name, damage, range, sprite):
         self.__name = name
         self.__damage = damage
         self.__range = range
         self.__sprite = sprite
-        self.__bullets = []
 
-    def shoot(self, angle, player_x, player_y) -> None:
-        bullet = Bullet(angle, 10, player_x + 45, player_y + 30, self.__range)
-        self.__bullets.append(bullet)
+    @abstractmethod
+    def attack(self):
+        pass
 
-    def draw(self, screen: pygame.Surface) -> None:
-        for bullet in self.__bullets:
-            bullet.draw_at(screen)
-            bullet.move()
-            if not bullet.moving:
-                self.__bullets.remove(bullet)
+    @abstractmethod
+    def draw(self):
+        pass
+
+    @abstractmethod
+    def check_target(self):
+        pass
 
     @property
     def name(self) -> str:
@@ -62,13 +56,3 @@ class Weapon:
     def sprite(self, val: str) -> None:
         if isinstance(val, str):
             self.__sprite = val
-
-    @property
-    def bullets(self) -> list[Bullet]:
-        return self.__bullets
-
-    @bullets.setter
-    def bullets(self, val: list[Bullet]):
-        if isinstance(val, list):
-            self.__bullets = val
-

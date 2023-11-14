@@ -3,19 +3,13 @@ import math
 from time import sleep
 
 from utils.utils import get_file_path
+from weapons.ammo import Ammo
 
 
-class Bullet:
-    def __init__(
-            self,
-            direction,
-            speed,
-            x,
-            y,
-            range
-        ) -> None:
+class Bullet(Ammo):
+    def __init__(self, x, y, range, speed, direction) -> None:
+        super().__init__(x, y, range)
         self.__speed = speed
-        self.__position = [x, y]
         self.__direction = direction
         self.__color = 'red'
         self.__moving = True
@@ -37,15 +31,6 @@ class Bullet:
             self.__moving = val
 
     @property
-    def position(self):
-        return self.__position
-
-    @position.setter
-    def position(self, val:list):
-        if isinstance(val, list):
-            self.__position = val
-
-    @property
     def direction(self):
         return self.__direction
 
@@ -63,23 +48,14 @@ class Bullet:
         if isinstance(val, int):
             self.__speed = val
 
-    @property
-    def range(self):
-        return self.__range
-
-    @range.setter
-    def range(self, val:int):
-        if isinstance(val, int):
-            self.__range = val
-
     def draw_at(self, screen:pygame.Surface) -> None:
         pygame.Surface.blit(screen, self.__image, self.__position)
         # pygame.draw.circle(screen, self.__color, self.__position, 5)
 
     def move(self) -> None:
         # calculos para que se mova na direção do mouse
-        self.__position[0] += math.cos(self.__direction) * self.__speed
-        self.__position[1] += math.sin(self.__direction) * self.__speed
+        super().__position[0] += math.cos(self.__direction) * self.__speed
+        super().__position[1] += math.sin(self.__direction) * self.__speed
         self.__range -= 1 * self.__speed
         if self.__range <= 0:
             self.__moving = False

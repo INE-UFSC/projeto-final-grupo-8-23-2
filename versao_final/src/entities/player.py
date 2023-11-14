@@ -7,6 +7,7 @@ from constants import game_constants, player_constants, powerup_constants, direc
 from utils import health_bar
 import math
 from utils.utils import get_file_path
+import pygame
 
 class Player(character.Character):
     def __init__(
@@ -34,6 +35,18 @@ class Player(character.Character):
         
         super().__init__(self.__spawn_position, player_constants.HEALTH, player_constants.SPEED)
 
+    @property
+    def current_direction(self):
+        return self.__current_direction
+    
+    @current_direction.setter
+    def direction(self, val):
+        self.__current_direction = val
+        
+    @property
+    def death_player_draw(self):
+        return self.__death_player_draw
+    
     def attack(self, screen: pygame.Surface) -> None:
         if pygame.mouse.get_pressed()[0]:
             self.__attacking = True
@@ -115,6 +128,12 @@ class Player(character.Character):
         if direction != None:
             self.__current_direction = direction
 
+    def run_coin_sound(self) -> None:
+        coin_sound = pygame.mixer.Sound(f'{get_file_path(__file__)}/sounds/coin_effect.mp3')
+        coin_sound.set_volume(0.5)
+        coin_sound.play()
+        
+        
     def get_power_up(self):
         keys = pygame.key.get_pressed()
         if keys[pygame.K_q] or keys[pygame.K_p]:
@@ -130,8 +149,13 @@ class Player(character.Character):
                 # condição para usar o powerup
                 if (not powerup.actived) and (distance_formula <= (radius_player + radius_powerup)) :
                     powerup.activate_power_up()
-                    
+                    self.run_coin_sound()        
+                                
     # Getters and Setters
+        
+    @property
+    def death_player_draw(self):
+        return self.__death_player_draw
 
     @property
     def alive(self):

@@ -50,12 +50,12 @@ class State(ABC):
         return self.__mouse
 
     @property
-    def game(self):
+    def game_reference(self):
         return self.__game_reference
-
-    @property
-    def game(self) -> game.Game:
-        return self.__game_reference
+    
+    @game_reference.setter
+    def game_reference(self, game_reference):
+        self.__game_reference = game_reference
     
     # Funcao generica para evitar erros
 

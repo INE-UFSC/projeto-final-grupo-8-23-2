@@ -6,6 +6,7 @@ import math
 
 from entities import character
 from weapons.gun import Gun
+from weapons.earthquaker import Earthquaker
 from constants import game_constants, player_constants, powerup_constants, direction_constants
 from utils import health_bar
 from utils.utils import get_file_path
@@ -20,7 +21,8 @@ class Player(character.Character):
         score: int=0
         ) -> None:
         self.__alive = True
-        self.__weapon = Gun('Pistol', 10, 400, 'pistol.png')
+        # self.__weapon = Gun('Pistol', 10, 400, 'pistol.png')
+        self.__weapon = Earthquaker("Earthquake", 10, 400, None)
         self.__experience = experience
         self.__level = level
         self.__power_ups = power_ups
@@ -145,6 +147,7 @@ class Player(character.Character):
                 if (not powerup.actived) and (distance_formula <= (radius_player + radius_powerup)) :
                     powerup.activate_power_up()
                     self.run_coin_sound()
+
     @property
     def alive(self):
         return self.__alive

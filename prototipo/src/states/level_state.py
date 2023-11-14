@@ -17,7 +17,7 @@ class LevelState(State):
         return super().entering()
 
     def render(self) -> None:
-        self.__player.draw_at(super().get_game().get_screen())
+        self.__player.draw_at(super().game.screen)
         for seeker in self.__seekers:
             for bullet in self.__player.weapon.bullets:
                 if seeker.position[0] - seeker.radius <= bullet.position[0] <= seeker.position[0] + seeker.radius and seeker.position[1] - seeker.radius <= bullet.position[1] <= seeker.position[1] + seeker.radius:
@@ -25,16 +25,16 @@ class LevelState(State):
                     bullet.moving = False
             if not seeker.alive:
                 self.__seekers.remove(seeker)
-            seeker.draw_at(super().get_game().get_screen())
+            seeker.draw_at(super().game.screen)
             seeker.move()
         for powerup in self.__power_ups:
-            powerup.draw_at(super().get_game().get_screen())
+            powerup.draw_at(super().game.screen)
             powerup.add_power_up_to_list()
 
     def update(self) -> None:
         self.__player.move()
         self.__player.get_power_up()
-        self.__player.attack(super().get_game().get_screen())
+        self.__player.attack(super().game.screen)
 
     def exiting(self) -> None:
         return super().exiting()

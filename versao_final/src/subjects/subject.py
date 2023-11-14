@@ -21,6 +21,8 @@ class Subject(ABC):
     # Método para desinscrever um observador do subject em questão
     def unsubscribe(self, observer_callback: Callable) -> None:
         self.__observers.remove(observer_callback)
+        
+    # Abstract Methods
 
     # Método abstrato para notificar os inscritos que ocorreu um evento
     @abstractmethod
@@ -31,9 +33,13 @@ class Subject(ABC):
     @abstractmethod
     def handle_events(self) -> None:
         pass
-
-    def get_observers(self) -> list[Callable]:
+    
+    # Getters and Setters
+    
+    @property
+    def observers(self) -> list[Callable]:
         return self.__observers
-
-    def get_event_type(self) -> int:
+    
+    @property
+    def event_type(self) -> int:
         return self.__event_type

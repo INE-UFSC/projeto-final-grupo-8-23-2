@@ -29,6 +29,9 @@ class State(ABC):
     @abstractmethod
     def exiting(self) -> None:
         pass
-
-    def get_game(self) -> game.Game:
+    
+    # Getters and Setters
+    
+    @property
+    def game(self) -> game.Game:
         return self.__game_reference

@@ -64,5 +64,5 @@ class State(ABC):
     
     # Funcao generica para evitar erros
 
-    def space_pressed(self) -> None:
+    def key_pressed(self) -> None:
         pass

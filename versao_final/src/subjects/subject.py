@@ -13,6 +13,7 @@ class Subject(ABC):
         # Lista dos observadores desse assunto/subject
         # Esta será uma lista de callables, ou seja, funções
         self.__observers: list[Callable] = []
+        self.__paused = False
 
     # Método para inscrever um observador no subject em questão
     def subscribe(self, observer_callback: Callable) -> None:
@@ -43,3 +44,12 @@ class Subject(ABC):
     @property
     def event_type(self) -> int:
         return self.__event_type
+    
+    @property
+    def paused(self) -> bool:
+        return self.__paused
+
+    @paused.setter
+    def paused(self, paused: bool) -> None:
+        if isinstance(paused, bool):
+            self.__paused = paused

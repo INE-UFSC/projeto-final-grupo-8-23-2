@@ -40,7 +40,7 @@ class LevelState(state.State):
         self.__pausebt = pause.Pause()
         self.__paused = False
         
-        super().__init__(game_ref, path_sound, 0.7)
+        super().__init__(game_ref, path_sound, 0.7, using_esc=True)
 
     def entering(self) -> None:
         super().run_bg_sound()
@@ -134,5 +134,5 @@ class LevelState(state.State):
             button.draw_at(super().game_reference.screen, (game_constants.SCREEN_WIDTH - button.width)//2, base)
             base += self.__pausebt.spacing
             
-    def space_pressed(self) -> None:
+    def key_pressed(self) -> None:
         self.__paused = not self.__paused

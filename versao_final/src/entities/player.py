@@ -146,17 +146,14 @@ class Player(character.Character):
                 # condição para usar o powerup
                 if (not powerup.actived) and (distance_formula <= (radius_player + radius_powerup)) :
                     powerup.activate_power_up()
-<<<<<<< HEAD
                     self.run_coin_sound()        
+
                                 
     # Getters and Setters
         
     @property
     def death_player_draw(self):
         return self.__death_player_draw
-=======
-                    self.run_coin_sound()
->>>>>>> a4e2b39359f2d8e969226f21c24c681c27cdb449
 
     @property
     def alive(self):

@@ -146,14 +146,7 @@ class Player(character.Character):
                 # condição para usar o powerup
                 if (not powerup.actived) and (distance_formula <= (radius_player + radius_powerup)) :
                     powerup.activate_power_up()
-                    self.run_coin_sound()        
-
-                                
-    # Getters and Setters
-        
-    @property
-    def death_player_draw(self):
-        return self.__death_player_draw
+                    self.run_coin_sound()
 
     @property
     def alive(self):
@@ -234,16 +227,3 @@ class Player(character.Character):
     def attacking(self, val:bool):
         if isinstance(val, bool):
             self.__attacking = val
-
-    @property
-    def current_direction(self):
-        return self.__current_direction
-    
-    @current_direction.setter
-    def direction(self, val):
-        if isinstance(val, str):
-            self.__current_direction = val
-        
-    @property
-    def death_player_draw(self):
-        return self.__death_player_draw

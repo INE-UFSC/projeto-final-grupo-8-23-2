@@ -4,9 +4,6 @@ import pygame
 
 from abc import abstractmethod, ABC
 
-from entities.weapon import Weapon
-
-
 class Character(ABC):
     def __init__(
             self,
@@ -26,16 +23,14 @@ class Character(ABC):
         self.__weapon = weapon
         self.__sprite = sprite
         self.__rect = None
-        
-    # Abstract Methods
-        
-    @abstractmethod
-    def move(self) -> None:
-        pass
 
-    @abstractmethod
-    def attack(self) -> None:
-        pass
+    @property
+    def health(self) -> int:
+        return self.__health
+
+    @health.setter
+    def health(self, health: int) -> None:
+        self.__health = health
 
     @abstractmethod
     def take_damage(self, damage: int) -> None:
@@ -44,17 +39,6 @@ class Character(ABC):
     @abstractmethod
     def draw_at(self, screen: pygame.Surface) -> None:
         screen.blit(self.__sprite, self.__rect)
-        
-    # Getters and Setters
-    
-    @property
-    def health(self) -> int:
-        return self.__health
-
-    @health.setter
-    def health(self, health: int) -> None:
-        if isinstance(health, int):
-            self.__health = health
 
     @property
     def position(self) -> pygame.Vector2:
@@ -110,7 +94,13 @@ class Character(ABC):
         return self.__weapon
 
     @weapon.setter
-    def weapon(self, weapon:Weapon):
-        if isinstance(weapon, Weapon):
-            self.__weapon = weapon
+    def weapon(self, val):
+        self.__weapon = val
 
+    @abstractmethod
+    def move(self) -> None:
+        pass
+
+    @abstractmethod
+    def attack(self) -> None:
+        pass

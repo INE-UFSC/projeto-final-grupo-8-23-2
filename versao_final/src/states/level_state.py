@@ -39,6 +39,8 @@ class LevelState(state.State):
         
         self.__pausebt = pause.Pause()
         self.__paused = False
+
+        self.__collisions = pygame.sprite.groupcollide(self.__player.weapon.bullets, self.__seekers, True, False)
         
         super().__init__(game_ref, path_sound, 0.7)
 

@@ -8,6 +8,7 @@ class Weapon(ABC):
         self.__damage = damage
         self.__range = range
         self.__sprite = sprite
+        self.bullets = []
 
     @abstractmethod
     def attack(self):
@@ -56,3 +57,7 @@ class Weapon(ABC):
     def sprite(self, val: str) -> None:
         if isinstance(val, str):
             self.__sprite = val
+
+    @property
+    def bullets(self):
+        return self.__bullets

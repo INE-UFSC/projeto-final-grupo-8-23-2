@@ -4,7 +4,7 @@ import pygame
 
 from abc import abstractmethod, ABC
 
-class Character(ABC):
+class Character(ABC, pygame.sprite.Sprite):
     def __init__(
             self,
             position: pygame.Vector2,

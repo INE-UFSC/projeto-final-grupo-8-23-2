@@ -5,7 +5,7 @@ from time import sleep
 from utils.utils import get_file_path
 
 
-class Bullet:
+class Bullet(pygame.sprite.Sprite):
     def __init__(
             self,
             direction,

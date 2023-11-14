@@ -132,21 +132,19 @@ class Player(character.Character):
         
         
     def get_power_up(self):
-        keys = pygame.key.get_pressed()
-        if keys[pygame.K_q] or keys[pygame.K_p]:
-            for powerup in self.__power_ups:
-                # calculo da distancia entre o powerup e o player
-                powerup_x = powerup.position.x
-                powerup_y = powerup.position.y
-                player_x = self.position.x
-                player_y = self.position.y
-                radius_player = player_constants.WIDTH
-                radius_powerup = powerup_constants.WIDTH
-                distance_formula = (math.sqrt(((powerup_x - player_x)**2) + ((powerup_y - player_y)**2)))
-                # condição para usar o powerup
-                if (not powerup.actived) and (distance_formula <= (radius_player + radius_powerup)) :
-                    powerup.activate_power_up()
-                    self.run_coin_sound()
+        for powerup in self.__power_ups:
+            # calculo da distancia entre o powerup e o player
+            powerup_x = powerup.position.x
+            powerup_y = powerup.position.y
+            player_x = self.position.x
+            player_y = self.position.y
+            radius_player = player_constants.WIDTH
+            radius_powerup = powerup_constants.WIDTH
+            distance_formula = (math.sqrt(((powerup_x - player_x)**2) + ((powerup_y - player_y)**2)))
+            # condição para usar o powerup
+            if (not powerup.actived) and (distance_formula <= (radius_player + radius_powerup)) :
+                powerup.activate_power_up()
+                self.run_coin_sound()
 
     @property
     def alive(self):

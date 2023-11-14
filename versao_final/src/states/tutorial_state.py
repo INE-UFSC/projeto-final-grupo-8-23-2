@@ -20,7 +20,7 @@ class TutorialState(state.State):
         self.__font = pygame.font.Font(f'{resources_path}/fonts/Kemco Pixel Bold.ttf', 96)
         self.__render = self.__font.render("", True, (255, 0, 0))
         path_sound = f'{get_file_path(__file__)}/sounds/tutorial_sound.mp3'
-        super().__init__(game_ref, path_sound, volumn_sound=0.4)
+        super().__init__(game_ref, path_sound, volumn_sound=0.4, using_esc=True)
 
     def entering(self) -> None:
         super().run_bg_sound()
@@ -37,7 +37,7 @@ class TutorialState(state.State):
         super().mouse.show_mouse(super().game_reference.screen)
 
     def update(self) -> None:
-        if self.__back_to_menu_button.clicked:
+        if self.__back_to_menu_button.clicked or pygame.key.get_pressed()[pygame.K_ESCAPE]:
             super().game_reference.set_state(menu_state.MenuState(super().game_reference))
         pass
 

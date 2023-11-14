@@ -15,10 +15,11 @@ class Earthquaker(Weapon):
             self.shake(player_ref)
             player_ref.attacking = False
 
-    def check_target(self, seeker):
-        if self.__earthquake != None:
-            if ((seeker.position.x - self.__earthquake[0])**2) + ((seeker.position.y - self.__earthquake[1])**2) <= (self.__earthquake[2])**2:
-                seeker.take_damage(super().damage)
+    def check_target(self, seekers):
+        for seeker in seekers:
+            if self.__earthquake != None:
+                if ((seeker.position.x - self.__earthquake[0])**2) + ((seeker.position.y - self.__earthquake[1])**2) <= (self.__earthquake[2])**2:
+                    seeker.take_damage(super().damage)
         self.__earthquake = None
 
     def shake(self, player_ref):

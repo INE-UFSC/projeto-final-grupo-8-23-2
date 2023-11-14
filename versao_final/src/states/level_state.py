@@ -75,9 +75,9 @@ class LevelState(state.State):
                 self.__date_death_state_increment = self.__date_death_state
         for seeker in self.__seekers:
             seeker.draw_at(super().game_reference.screen)
-            self.__player.weapon.check_target(seeker)
             if not self.__paused:
                 seeker.move()
+        self.__player.weapon.check_target(self.__seekers)
         for powerup in self.__power_ups:
             powerup.draw_at(super().game_reference.screen)
             powerup.add_power_up_to_list()

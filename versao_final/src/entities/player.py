@@ -39,17 +39,6 @@ class Player(character.Character):
         
         super().__init__(self.__spawn_position, player_constants.HEALTH, player_constants.SPEED)
 
-    @property
-    def current_direction(self):
-        return self.__current_direction
-    
-    @current_direction.setter
-    def direction(self, val):
-        self.__current_direction = val
-        
-    @property
-    def death_player_draw(self):
-        return self.__death_player_draw
     
     def attack(self, screen: pygame.Surface) -> None:
         self.__weapon.attack(self)
@@ -225,3 +214,16 @@ class Player(character.Character):
     def attacking(self, val:bool):
         if isinstance(val, bool):
             self.__attacking = val
+            
+    @property
+    def current_direction(self):
+        return self.__current_direction
+    
+    @current_direction.setter
+    def direction(self, val):
+        if isinstance(val, str):
+            self.__current_direction = val
+        
+    @property
+    def death_player_draw(self):
+        return self.__death_player_draw

@@ -93,6 +93,7 @@ class LevelState(state.State):
                 if not seeker.alive:
                     dead_seekers.append(seeker)
             for seeker in dead_seekers:
+                self.__player.score += seeker.worth_points
                 self.__seekers.remove(seeker)
 
             for powerup in self.__power_ups:

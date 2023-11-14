@@ -11,7 +11,7 @@ from constants import seeker_constants
 
 class Seeker(Character, ABC):
     def __init__(self, player_reference: Player, seeker_range: int, seeker_health: int,
-                 seeker_speed: int, seeker_damage: int, seeker_armor: int, image: str ) -> None:
+                 seeker_speed: int, seeker_damage: int, seeker_armor: int, image: str, worth_points:int) -> None:
         self.__image = pygame.transform.scale(pygame.image.load(image),
                                               (seeker_constants.SEEKER_HEIGHT, seeker_constants.SEEKER_WIDTH)) #image
         self.__player_to_chase = player_reference
@@ -22,6 +22,7 @@ class Seeker(Character, ABC):
         self.__seeker_position = self.define_spawn_position()
         self.__inverted = False
         self.__alpha_draw = 100
+        self.__worth_points = worth_points
         super().__init__(self.__seeker_position, seeker_health, seeker_speed, seeker_damage, seeker_armor)
         if super().position.x <= self.__player_to_chase.position.x:
             self.__image = pygame.transform.flip(self.__image, True, False)
@@ -51,6 +52,35 @@ class Seeker(Character, ABC):
         self.__alpha_draw -= 10
         self.__image.set_alpha(self.__alpha_draw)
         
+    def move(self) -> None:
+        self.invert()
+        # Cálculo da distância entre o seeker e o player para saber se o seeker
+        # precisa continuar andando ou parar/atacar
+        distance_between_seeker_and_player = math.sqrt((self.__player_to_chase.position.x - super().position.x) ** 2 + (self.__player_to_chase.position.y - super().position.y) ** 2)
+
+        # Condicional que verifica se a distância entre o player e o seeker é maior que
+        # o range do seeker em questão, caso seja, o seeker continua andando, caso contrário
+        # o seeker não irá se movimentar
+        
+        if distance_between_seeker_and_player > self.__seeker_range:
+            super().position.y += ((self.__player_to_chase.position.y - super().position.y) / distance_between_seeker_and_player) * seeker_constants.FIGHT_SEEKER_SPEED
+            super().position.x += ((self.__player_to_chase.position.x - super().position.x) / distance_between_seeker_and_player) * seeker_constants.FIGHT_SEEKER_SPEED
+        else:
+            self.attack()
+            self.attack()
+
+    def invert(self):
+        if self.__inverted == False and super().position.x <= self.__player_to_chase.position.x:
+            self.__image = pygame.transform.flip(self.__image, True, False)
+            self.__inverted = True
+        elif self.__inverted == True and super().position.x > self.__player_to_chase.position.x:
+            self.__image = pygame.transform.flip(self.__image, True, False)
+            self.__inverted = False 
+            
+
+    @property
+    def worth_points(self):
+        return self.__worth_points
         
     @property
     def damage(self):
@@ -108,28 +138,3 @@ class Seeker(Character, ABC):
     def player_to_chase(self, player_to_chase: Player) -> None:
         if isinstance(player_to_chase, Player):
             self.__player_to_chase = player_to_chase
-
-    def move(self) -> None:
-        self.invert()
-        # Cálculo da distância entre o seeker e o player para saber se o seeker
-        # precisa continuar andando ou parar/atacar
-        distance_between_seeker_and_player = math.sqrt((self.__player_to_chase.position.x - super().position.x) ** 2 + (self.__player_to_chase.position.y - super().position.y) ** 2)
-
-        # Condicional que verifica se a distância entre o player e o seeker é maior que
-        # o range do seeker em questão, caso seja, o seeker continua andando, caso contrário
-        # o seeker não irá se movimentar
-        
-        if distance_between_seeker_and_player > self.__seeker_range:
-            super().position.y += ((self.__player_to_chase.position.y - super().position.y) / distance_between_seeker_and_player) * seeker_constants.FIGHT_SEEKER_SPEED
-            super().position.x += ((self.__player_to_chase.position.x - super().position.x) / distance_between_seeker_and_player) * seeker_constants.FIGHT_SEEKER_SPEED
-        else:
-            self.attack()
-            self.attack()
-
-    def invert(self):
-        if self.__inverted == False and super().position.x <= self.__player_to_chase.position.x:
-            self.__image = pygame.transform.flip(self.__image, True, False)
-            self.__inverted = True
-        elif self.__inverted == True and super().position.x > self.__player_to_chase.position.x:
-            self.__image = pygame.transform.flip(self.__image, True, False)
-            self.__inverted = False 

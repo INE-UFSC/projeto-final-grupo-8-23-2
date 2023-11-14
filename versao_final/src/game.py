@@ -7,7 +7,6 @@ from entities import player
 from states import state, menu_state
 from constants import game_constants
 from utils import mouse
-from utils.utils import get_file_path
 
 
 class Game:
@@ -60,7 +59,7 @@ class Game:
         self.__current_state.exiting()
         self.__current_state = new_state
         self.__current_state.entering()
-
-    def get_screen(self) -> pygame.Surface:
+        
+    @property
+    def screen(self) -> pygame.Surface:
         return self.__screen
-

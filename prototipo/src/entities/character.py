@@ -26,14 +26,8 @@ class Character(ABC):
         self.__weapon = weapon
         self.__sprite = sprite
         self.__rect = None
-
-    @property
-    def health(self) -> int:
-        return self.__health
-
-    @health.setter
-    def health(self, health: int) -> None:
-        self.__health = health
+        
+    # Abstract Methods
 
     @abstractmethod
     def take_damage(self, damage: int) -> None:
@@ -42,6 +36,24 @@ class Character(ABC):
     @abstractmethod
     def draw_at(self, screen: pygame.Surface) -> None:
         screen.blit(self.__sprite, self.__rect)
+        
+    @abstractmethod
+    def move(self) -> None:
+        pass
+
+    @abstractmethod
+    def attack(self) -> None:
+        pass
+    
+    # Getters and Setters
+
+    @property
+    def health(self) -> int:
+        return self.__health
+
+    @health.setter
+    def health(self, health: int) -> None:
+        self.__health = health
 
     @property
     def position(self) -> pygame.Vector2:
@@ -101,10 +113,3 @@ class Character(ABC):
         if isinstance(weapon, Weapon):
             self.__weapon = weapon
 
-    @abstractmethod
-    def move(self) -> None:
-        pass
-
-    @abstractmethod
-    def attack(self) -> None:
-        pass

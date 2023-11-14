@@ -24,6 +24,20 @@ class Bullet:
         self.__image = pygame.transform.flip(img_transform, True, False)
         self.__image = pygame.transform.rotate(self.__image, 45)
 
+    def draw_at(self, screen:pygame.Surface) -> None:
+        pygame.Surface.blit(screen, self.__image, self.__position)
+        # pygame.draw.circle(screen, self.__color, self.__position, 5)
+
+    def move(self) -> None:
+        # calculos para que se mova na direção do mouse
+        self.__position[0] += math.cos(self.__direction) * self.__speed
+        self.__position[1] += math.sin(self.__direction) * self.__speed
+        self.__range -= 1 * self.__speed
+        if self.__range <= 0:
+            self.__moving = False
+
+    # Getters and Setters
+    
     @property
     def moving(self):
         return self.__moving
@@ -68,15 +82,3 @@ class Bullet:
     def range(self, val:int):
         if isinstance(val, int):
             self.__range = val
-
-    def draw_at(self, screen:pygame.Surface) -> None:
-        pygame.Surface.blit(screen, self.__image, self.__position)
-        # pygame.draw.circle(screen, self.__color, self.__position, 5)
-
-    def move(self) -> None:
-        # calculos para que se mova na direção do mouse
-        self.__position[0] += math.cos(self.__direction) * self.__speed
-        self.__position[1] += math.sin(self.__direction) * self.__speed
-        self.__range -= 1 * self.__speed
-        if self.__range <= 0:
-            self.__moving = False

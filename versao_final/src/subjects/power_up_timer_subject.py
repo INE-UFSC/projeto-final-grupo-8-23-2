@@ -18,7 +18,7 @@ class PowerUpTimerSubject(subject.Subject):
 
     # Função que notifica os inscritos que este objeto mudou de estado
     def notify_all(self) -> None:
-        for callback in super().get_observers():
+        for callback in super().observers:
             callback()
 
     # Função que lida com os eventos na callback

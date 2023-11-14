@@ -35,6 +35,8 @@ class TextButton(button.Button):
             self.__render = self.__font.render(self.__text, True, (255, 255, 255))
         surface.blit(self.__render, self.__rect.topleft)
         return action
+    
+    # Getters and Setters
 
     @property
     def width(self):

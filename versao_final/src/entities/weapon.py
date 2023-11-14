@@ -26,6 +26,8 @@ class Weapon:
             bullet.move()
             if not bullet.moving:
                 self.__bullets.remove(bullet)
+                
+    # Getters and Setters
 
     @property
     def name(self) -> str:

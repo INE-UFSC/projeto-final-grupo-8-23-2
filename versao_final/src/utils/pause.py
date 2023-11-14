@@ -16,6 +16,8 @@ class Pause:
         
         self.__spacing = 50
         self.__bg_rect = pygame.rect.Rect(x, y, width, height)
+        
+    # Getters and Setters
     
     @property
     def buttons(self) -> list[TextButton]:

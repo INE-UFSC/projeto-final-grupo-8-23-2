@@ -20,15 +20,9 @@ class State(ABC):
         pygame.mixer.music.set_volume(self.__sound_volume)
         pygame.mixer.music.load(self.__path_sound)
         pygame.mixer.music.play()
-    
-    @property
-    def mouse(self):
-        return self.__mouse
-
-    @property
-    def game(self):
-        return self.__game_reference
-
+        
+    # Abstract Methods
+        
     # Método chamado ao entrar em um estado
     @abstractmethod
     def entering(self) -> None:
@@ -48,9 +42,22 @@ class State(ABC):
     @abstractmethod
     def exiting(self) -> None:
         pass
+    
+    # Getters and Setters
+    
+    @property
+    def mouse(self):
+        return self.__mouse
 
-    def get_game(self) -> game.Game:
+    @property
+    def game(self):
         return self.__game_reference
+
+    @property
+    def game(self) -> game.Game:
+        return self.__game_reference
+    
+    # Funcao generica para evitar erros
 
     def space_pressed(self) -> None:
         pass

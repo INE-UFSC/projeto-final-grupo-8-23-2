@@ -34,18 +34,6 @@ class Player(character.Character):
         
         super().__init__(self.__spawn_position, player_constants.HEALTH, player_constants.SPEED)
 
-    @property
-    def current_direction(self):
-        return self.__current_direction
-    
-    @current_direction.setter
-    def direction(self, val):
-        self.__current_direction = val
-        
-    @property
-    def death_player_draw(self):
-        return self.__death_player_draw
-    
     def attack(self, screen: pygame.Surface) -> None:
         if pygame.mouse.get_pressed()[0]:
             self.__attacking = True
@@ -142,6 +130,8 @@ class Player(character.Character):
                 # condição para usar o powerup
                 if (not powerup.actived) and (distance_formula <= (radius_player + radius_powerup)) :
                     powerup.activate_power_up()
+                    
+    # Getters and Setters
 
     @property
     def alive(self):
@@ -223,3 +213,16 @@ class Player(character.Character):
     def attacking(self, val:bool):
         if isinstance(val, bool):
             self.__attacking = val
+
+    @property
+    def current_direction(self):
+        return self.__current_direction
+    
+    @current_direction.setter
+    def direction(self, val):
+        if isinstance(val, str):
+            self.__current_direction = val
+        
+    @property
+    def death_player_draw(self):
+        return self.__death_player_draw

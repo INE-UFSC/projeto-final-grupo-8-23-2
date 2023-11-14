@@ -55,6 +55,7 @@ class Game:
 
             # Define o FPS do jogo
             clock.tick(game_constants.FPS)
-
-    def get_screen(self) -> pygame.Surface:
+            
+    @property
+    def screen(self) -> pygame.Surface:
         return self.__screen

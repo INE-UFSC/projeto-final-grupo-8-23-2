@@ -32,18 +32,18 @@ class MenuState(State):
     def render(self) -> None:
         base = game_constants.SCREEN_HEIGHT / 2 - 100
 
-        super().get_game().get_screen().blit(self.__background, (0, 0))
-        super().get_game().get_screen().blit(self.__render, ((game_constants.SCREEN_WIDTH - self.__render.get_width())//2, base - 100))
+        super().game.screen.blit(self.__background, (0, 0))
+        super().game.screen.blit(self.__render, ((game_constants.SCREEN_WIDTH - self.__render.get_width())//2, base - 100))
         for button in self.__buttons:
             base += 75
-            button.draw_at(super().get_game().get_screen(), (game_constants.SCREEN_WIDTH - button.width)//2, base)
+            button.draw_at(super().game.screen, (game_constants.SCREEN_WIDTH - button.width)//2, base)
                 #super().game.current_state = super().game.states[button.next_state]
-        super().mouse.show_mouse(super().get_game().get_screen())
+        super().mouse.show_mouse(super().game.screen)
 
 
     def update(self) -> None: # precisamos mudar isso para nao ficar só com if
         if self.__play_button.clicked:
-            super().get_game().set_state(level_state.LevelState(super().get_game()))
+            super().game.set_state(level_state.LevelState(super().game))
         if self.__buttons[2].clicked:
             pygame.quit() # achar outro jeito, assim aparece mensagem de erro
 

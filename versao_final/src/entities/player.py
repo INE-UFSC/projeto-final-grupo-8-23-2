@@ -1,13 +1,16 @@
 from __future__ import annotations
 import random
-
 import pygame
-from entities import weapon, character
+import math
+
+
+from entities import character
+from weapons.gun import Gun
+from weapons.earthquaker import Earthquaker
 from constants import game_constants, player_constants, powerup_constants, direction_constants
 from utils import health_bar
-import math
 from utils.utils import get_file_path
-import pygame
+
 
 class Player(character.Character):
     def __init__(
@@ -18,7 +21,8 @@ class Player(character.Character):
         score: int=0
         ) -> None:
         self.__alive = True
-        self.__weapon = weapon.Weapon('Pistol', 10, 400, 'pistol.png')
+        # self.__weapon = Gun('Pistol', 10, 400, 'pistol.png')
+        self.__weapon = Earthquaker("Earthquake", 10, 400, None)
         self.__experience = experience
         self.__level = level
         self.__power_ups = power_ups
@@ -48,14 +52,7 @@ class Player(character.Character):
         return self.__death_player_draw
     
     def attack(self, screen: pygame.Surface) -> None:
-        if pygame.mouse.get_pressed()[0]:
-            self.__attacking = True
-        if self.__attacking and not pygame.mouse.get_pressed()[0]:
-            dy = pygame.mouse.get_pos()[1] - super().position.y
-            dx = pygame.mouse.get_pos()[0] - super().position.x
-            angle = math.atan2(dy, dx)
-            self.__weapon.shoot(angle, super().position.x, super().position.y)
-            self.__attacking = False
+        self.__weapon.attack(self)
 
     def draw_at(self, screen: pygame.Surface, position = None) -> None:
         if self.alive:
@@ -149,6 +146,7 @@ class Player(character.Character):
                 # condição para usar o powerup
                 if (not powerup.actived) and (distance_formula <= (radius_player + radius_powerup)) :
                     powerup.activate_power_up()
+<<<<<<< HEAD
                     self.run_coin_sound()        
                                 
     # Getters and Setters
@@ -156,6 +154,9 @@ class Player(character.Character):
     @property
     def death_player_draw(self):
         return self.__death_player_draw
+=======
+                    self.run_coin_sound()
+>>>>>>> a4e2b39359f2d8e969226f21c24c681c27cdb449
 
     @property
     def alive(self):
@@ -180,9 +181,8 @@ class Player(character.Character):
         return self.__weapon
 
     @weapon.setter
-    def weapon(self, val:weapon.Weapon):
-        if isinstance(val, weapon.Weapon):
-            self.__weapon = val
+    def weapon(self, val):
+        self.__weapon = val
 
     @property
     def experience(self):

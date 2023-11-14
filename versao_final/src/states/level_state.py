@@ -73,13 +73,9 @@ class LevelState(state.State):
                 self.run_death_music()
                 self.__date_death_state = datetime.now()
                 self.__date_death_state_increment = self.__date_death_state
-        for seeker in self.__seekers: # TODO - refazer isso tudo
-            for bullet in self.__player.weapon.bullets:
-                if seeker.position[0] - seeker.radius <= bullet.position[0] <= seeker.position[0] + seeker.radius and \
-                        seeker.position[1] - seeker.radius <= bullet.position[1] <= seeker.position[1] + seeker.radius:
-                    seeker.take_damage(self.__player.weapon.damage)
-                    bullet.moving = False
+        for seeker in self.__seekers:
             seeker.draw_at(super().game.screen)
+            self.__player.weapon.check_target(seeker)
             if not self.__paused:
                 seeker.move()
         for powerup in self.__power_ups:

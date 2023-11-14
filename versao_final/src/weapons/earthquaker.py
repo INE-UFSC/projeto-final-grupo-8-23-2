@@ -2,7 +2,6 @@ import pygame
 from abc import ABC, abstractmethod
 
 from weapons.weapon import Weapon
-from weapons.earthquake import Earthquake
 
 class Earthquaker(Weapon):
     def __init__(self, name, damage, range, sprite):

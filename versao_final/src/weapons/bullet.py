@@ -49,13 +49,13 @@ class Bullet(Ammo):
             self.__speed = val
 
     def draw_at(self, screen:pygame.Surface) -> None:
-        pygame.Surface.blit(screen, self.__image, self.__position)
+        pygame.Surface.blit(screen, self.__image, super().position)
         # pygame.draw.circle(screen, self.__color, self.__position, 5)
 
     def move(self) -> None:
         # calculos para que se mova na direção do mouse
-        super().__position[0] += math.cos(self.__direction) * self.__speed
-        super().__position[1] += math.sin(self.__direction) * self.__speed
+        super().position[0] += math.cos(self.__direction) * self.__speed
+        super().position[1] += math.sin(self.__direction) * self.__speed
         self.__range -= 1 * self.__speed
         if self.__range <= 0:
             self.__moving = False

@@ -37,13 +37,14 @@ class Gun(Weapon):
             if not bullet.moving:
                 self.__bullets.remove(bullet)
 
-    def check_target(self, seeker):
-        for bullet in self.__bullets:
-            if seeker.position[0] - seeker.radius <= bullet.position[0] <= seeker.position[0] + seeker.radius and \
-                    seeker.position[1] - seeker.radius <= bullet.position[1] <= seeker.position[1] + seeker.radius:
-                seeker.take_damage(super().damage)
-                bullet.moving = False
+    def check_target(self, seekers):
+        for seeker in seekers:
+            for bullet in self.__bullets:
+                if seeker.position[0] - seeker.radius <= bullet.position[0] <= seeker.position[0] + seeker.radius and \
+                        seeker.position[1] - seeker.radius <= bullet.position[1] <= seeker.position[1] + seeker.radius:
+                    seeker.take_damage(super().damage)
+                    bullet.moving = False
 
     def shoot(self, angle, player_x, player_y) -> None:
-        bullet = Bullet(angle, 10, player_x + 45, player_y + 30, super().range)
+        bullet = Bullet(player_x + 45, player_y + 30, super().range, 10, angle)
         self.__bullets.append(bullet)

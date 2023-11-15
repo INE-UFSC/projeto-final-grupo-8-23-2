@@ -2,6 +2,7 @@ import pygame
 from abc import ABC, abstractmethod
 
 from weapons.weapon import Weapon
+from weapons.earthquake import Earthquake
 
 class Earthquaker(Weapon):
     def __init__(self, name, damage, range, sprite):
@@ -18,12 +19,12 @@ class Earthquaker(Weapon):
     def check_target(self, seekers):
         for seeker in seekers:
             if self.__earthquake != None:
-                if ((seeker.position.x - self.__earthquake[0])**2) + ((seeker.position.y - self.__earthquake[1])**2) <= (self.__earthquake[2])**2:
+                if ((seeker.position.x - self.__earthquake.position.x) + ((seeker.position.y - self.__earthquake.position.y)**2) <= (self.__earthquake.range)**2):
                     seeker.take_damage(super().damage)
         self.__earthquake = None
 
     def shake(self, player_ref):
-        self.__earthquake = (player_ref.position.x, player_ref.position.y, super().range)
+        self.__earthquake = Earthquake(player_ref.position.x, player_ref.position.y, super().range)
 
     def draw(self, screen):
         pass

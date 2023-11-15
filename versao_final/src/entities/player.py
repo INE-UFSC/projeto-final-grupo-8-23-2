@@ -1,13 +1,16 @@
 from __future__ import annotations
 import random
-
 import pygame
-from entities import weapon, character
+import math
+
+
+from entities import character
+from weapons.gun import Gun
+from weapons.earthquaker import Earthquaker
 from constants import game_constants, player_constants, powerup_constants, direction_constants
 from utils import health_bar
-import math
 from utils.utils import get_file_path
-import pygame
+
 
 class Player(character.Character):
     def __init__(
@@ -18,7 +21,8 @@ class Player(character.Character):
         score: int=0
         ) -> None:
         self.__alive = True
-        self.__weapon = weapon.Weapon('Pistol', 10, 400, 'pistol.png')
+        # self.__weapon = Gun('Pistol', 10, 400, 'pistol.png')
+        self.__weapon = Earthquaker("Earthquake", 10, 400, None)
         self.__experience = experience
         self.__level = level
         self.__power_ups = power_ups
@@ -35,27 +39,9 @@ class Player(character.Character):
         
         super().__init__(self.__spawn_position, player_constants.HEALTH, player_constants.SPEED)
 
-    @property
-    def current_direction(self):
-        return self.__current_direction
-    
-    @current_direction.setter
-    def direction(self, val):
-        self.__current_direction = val
-        
-    @property
-    def death_player_draw(self):
-        return self.__death_player_draw
     
     def attack(self, screen: pygame.Surface) -> None:
-        if pygame.mouse.get_pressed()[0]:
-            self.__attacking = True
-        if self.__attacking and not pygame.mouse.get_pressed()[0]:
-            dy = pygame.mouse.get_pos()[1] - super().position.y
-            dx = pygame.mouse.get_pos()[0] - super().position.x
-            angle = math.atan2(dy, dx)
-            self.__weapon.shoot(angle, super().position.x, super().position.y)
-            self.__attacking = False
+        self.__weapon.attack(self)
 
     def draw_at(self, screen: pygame.Surface, position = None) -> None:
         if self.alive:
@@ -135,21 +121,20 @@ class Player(character.Character):
         
         
     def get_power_up(self):
-        keys = pygame.key.get_pressed()
-        if keys[pygame.K_q] or keys[pygame.K_p]:
-            for powerup in self.__power_ups:
-                # calculo da distancia entre o powerup e o player
-                powerup_x = powerup.position.x
-                powerup_y = powerup.position.y
-                player_x = self.position.x
-                player_y = self.position.y
-                radius_player = player_constants.WIDTH
-                radius_powerup = powerup_constants.WIDTH
-                distance_formula = (math.sqrt(((powerup_x - player_x)**2) + ((powerup_y - player_y)**2)))
-                # condição para usar o powerup
-                if (not powerup.actived) and (distance_formula <= (radius_player + radius_powerup)) :
-                    powerup.activate_power_up()
-                    self.run_coin_sound()
+        for powerup in self.__power_ups:
+            # calculo da distancia entre o powerup e o player
+            powerup_x = powerup.position.x
+            powerup_y = powerup.position.y
+            player_x = self.position.x
+            player_y = self.position.y
+            radius_player = player_constants.WIDTH
+            radius_powerup = powerup_constants.WIDTH
+            distance_formula = (math.sqrt(((powerup_x - player_x)**2) + ((powerup_y - player_y)**2)))
+            # condição para usar o powerup
+            if (not powerup.actived) and (distance_formula <= (radius_player + radius_powerup)) :
+                powerup.activate_power_up()
+                self.run_coin_sound()
+
     @property
     def alive(self):
         return self.__alive
@@ -173,9 +158,8 @@ class Player(character.Character):
         return self.__weapon
 
     @weapon.setter
-    def weapon(self, val:weapon.Weapon):
-        if isinstance(val, weapon.Weapon):
-            self.__weapon = val
+    def weapon(self, val):
+        self.__weapon = val
 
     @property
     def experience(self):
@@ -230,3 +214,16 @@ class Player(character.Character):
     def attacking(self, val:bool):
         if isinstance(val, bool):
             self.__attacking = val
+            
+    @property
+    def current_direction(self):
+        return self.__current_direction
+    
+    @current_direction.setter
+    def direction(self, val):
+        if isinstance(val, str):
+            self.__current_direction = val
+        
+    @property
+    def death_player_draw(self):
+        return self.__death_player_draw

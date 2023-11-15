@@ -37,7 +37,7 @@ class GameOverState(state.State):
             if button.draw_at(self.get_game().get_screen(), (game_constants.SCREEN_WIDTH - button.width)//2, base):
                 #self().game.current_state = self().game.states[button.next_state]
                 pass
-        self.mouse.show_mouse(self.get_game().get_screen())
+        super().mouse.show_mouse(super().get_game().get_screen())
 
     def update(self) -> None:
         if self.__back_to_menu_button.clicked:

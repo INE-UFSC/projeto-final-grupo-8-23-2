@@ -20,21 +20,21 @@ class TutorialState(state.State):
         self.__font = pygame.font.Font(f'{resources_path}/fonts/Kemco Pixel Bold.ttf', 96)
         self.__render = self.__font.render("", True, (255, 0, 0))
         path_sound = f'{get_file_path(__file__)}/sounds/tutorial_sound.mp3'
-        super().__init__(game_ref, path_sound, volumn_sound=0.4)
+        super().__init__(game_ref, path_sound, volumn_sound=0.4, using_esc=True)
 
     def entering(self) -> None:
         super().run_bg_sound()
 
     def render(self) -> None:
         base = 0
-        super().get_game().get_screen().blit(self.__background, (0, 0))
-        super().get_game().get_screen().blit(self.__render, ((game_constants.SCREEN_WIDTH - self.__render.get_width())//2, base - 40))
+        super().game_reference.screen.blit(self.__background, (0, 0))
+        super().game_reference.screen.blit(self.__render, ((game_constants.SCREEN_WIDTH - self.__render.get_width())//2, base - 40))
         for button in self.__buttons:
             base += 10
-            if button.draw_at(super().get_game().get_screen(), (game_constants.SCREEN_WIDTH - button.width)//2, base):
+            if button.draw_at(super().game_reference.screen, (game_constants.SCREEN_WIDTH - button.width)//2, base):
                 #super().game.current_state = super().game.states[button.next_state]
                 pass
-        super().mouse.show_mouse(super().get_game().get_screen())
+        super().mouse.show_mouse(super().game_reference.screen)
 
     def update(self) -> None:
         if self.__back_to_menu_button.clicked:

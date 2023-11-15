@@ -77,6 +77,8 @@ class Player(character.Character):
                 # condição para usar o powerup
                 if (not powerup.actived) and (distance_formula <= (radius_player + radius_powerup)) :
                     powerup.activate_power_up()
+                    
+    # Getters and Setters
 
     @property
     def alive(self):

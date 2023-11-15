@@ -12,6 +12,8 @@ class Button(ABC):
 
     def draw_at() -> bool:
         pass
+    
+    # Getters and Setters
 
     @property
     def clicked(self) -> bool:
@@ -19,7 +21,8 @@ class Button(ABC):
     
     @clicked.setter
     def clicked(self, clicked: bool) -> None:
-        self.__clicked = clicked
+        if isinstance(clicked, bool):
+            self.__clicked = clicked
 
     @property
     def next_state(self):

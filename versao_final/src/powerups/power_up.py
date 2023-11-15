@@ -4,12 +4,12 @@ import random
 
 import constants.powerup_constants as cons
 import constants.game_constants as gamecons
-from entities import player
+from entities.player import Player
 from utils.utils import get_file_path
 
 
 class PowerUp(ABC):
-    def __init__(self, player_ref: player.Player) -> None:
+    def __init__(self, player_ref: Player) -> None:
        self.__player = player_ref
        self.__upgrade_value = None
        self.__icon = None
@@ -43,6 +43,8 @@ class PowerUp(ABC):
     @abstractmethod
     def power_up_logic(self) -> None:
         pass
+    
+    # Getters and Setters
 
     @property
     def player(self):
@@ -50,7 +52,8 @@ class PowerUp(ABC):
 
     @player.setter
     def player(self, player):
-        self.__player = player
+        if isinstance(player, Player):
+            self.__player = player
 
     @property
     def upgrade_value(self):
@@ -66,7 +69,8 @@ class PowerUp(ABC):
 
     @icon.setter
     def icon(self, icon):
-        self.__icon = icon
+        if isinstance(icon, str):
+            self.__icon = icon
 
     @property
     def position(self):
@@ -74,7 +78,8 @@ class PowerUp(ABC):
 
     @position.setter
     def position(self, position):
-        self.__position = position
+        if isinstance(position, pygame.Vector2):
+            self.__position = position
 
     @property
     def color(self):
@@ -82,7 +87,8 @@ class PowerUp(ABC):
 
     @color.setter
     def color(self, color):
-        self.__color = color
+        if isinstance(color, str): 
+            self.__color = color
 
     @property
     def actived(self):
@@ -90,4 +96,5 @@ class PowerUp(ABC):
 
     @actived.setter
     def actived(self, actived):
-        self.__actived = actived
+        if isinstance(actived, bool):
+            self.__actived = actived

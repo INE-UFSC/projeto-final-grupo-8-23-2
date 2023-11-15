@@ -9,26 +9,21 @@ from utils.utils import get_file_path
 # Classe para modelar cada estado do jogo (Menu, Level, GameOver)
 class State(ABC):
     # Recebe uma referencia do jogo
-    def __init__(self, game_reference: game.Game, path_sound=None, volumn_sound=1) -> None:
+    def __init__(self, game_reference: game.Game, path_sound=None, volumn_sound=1, using_esc=False) -> None:
         self.__game_reference = game_reference
         self.__mouse = mouse.Mouse()
         self.__path_sound = path_sound
         self.__sound_volume = volumn_sound
+        self.__using_esc = using_esc
         
     def run_bg_sound(self) -> None:
         pygame.mixer.init()
         pygame.mixer.music.set_volume(self.__sound_volume)
         pygame.mixer.music.load(self.__path_sound)
         pygame.mixer.music.play()
-    
-    @property
-    def mouse(self):
-        return self.__mouse
-
-    @property
-    def game(self):
-        return self.__game_reference
-
+        
+    # Abstract Methods
+        
     # Método chamado ao entrar em um estado
     @abstractmethod
     def entering(self) -> None:
@@ -48,9 +43,26 @@ class State(ABC):
     @abstractmethod
     def exiting(self) -> None:
         pass
+    
+    # Getters and Setters
+    
+    @property
+    def using_esc(self):
+        return self.__using_esc
+    
+    @property
+    def mouse(self):
+        return self.__mouse
 
-    def get_game(self) -> game.Game:
+    @property
+    def game_reference(self):
         return self.__game_reference
+    
+    @game_reference.setter
+    def game_reference(self, game_reference):
+        self.__game_reference = game_reference
+    
+    # Funcao generica para evitar erros
 
-    def space_pressed(self) -> None:
+    def key_pressed(self) -> None:
         pass

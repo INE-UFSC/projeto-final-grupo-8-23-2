@@ -20,7 +20,7 @@ class PowerUpTimerSubject(subject.Subject):
 
     # Função que notifica os inscritos que este objeto mudou de estado
     def notify_all(self) -> None:
-        for callback in self.get_observers():
+        for callback in self.observers:
             callback()
 
     # Função que lida com os eventos na callback

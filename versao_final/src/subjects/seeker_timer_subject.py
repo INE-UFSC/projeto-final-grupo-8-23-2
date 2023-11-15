@@ -20,7 +20,7 @@ class SeekerTimerSubject(subject.Subject):
 
     # Função que vai notificar os observadores inscritos nesse subject (assunto)
     def notify_all(self) -> None:
-        for callback in self.get_observers():
+        for callback in self.observers:
             callback()
 
     # Lida com os eventos, no caso, vai spawnar um seeker

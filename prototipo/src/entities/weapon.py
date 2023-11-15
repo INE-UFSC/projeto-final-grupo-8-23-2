@@ -14,6 +14,19 @@ class Weapon:
         self.__sprite = sprite
         self.__bullets = []
 
+    def shoot(self, angle, player_x, player_y) -> None:
+        bullet = Bullet(angle, 10, player_x, player_y, self.__range)
+        self.__bullets.append(bullet)
+
+    def draw(self, screen) -> None:
+        for bullet in self.__bullets:
+            bullet.draw_at(screen)
+            bullet.move()
+            if not bullet.moving:
+                self.__bullets.remove(bullet)
+
+    # Getters and Setters
+
     @property
     def name(self) -> str:
         return self.__name
@@ -58,14 +71,3 @@ class Weapon:
     def bullets(self, val: list[Bullet]):
         if isinstance(val, list):
             self.__bullets = val
-
-    def shoot(self, angle, player_x, player_y) -> None:
-        bullet = Bullet(angle, 10, player_x, player_y, self.__range)
-        self.__bullets.append(bullet)
-
-    def draw(self, screen) -> None:
-        for bullet in self.__bullets:
-            bullet.draw_at(screen)
-            bullet.move()
-            if not bullet.moving:
-                self.__bullets.remove(bullet)

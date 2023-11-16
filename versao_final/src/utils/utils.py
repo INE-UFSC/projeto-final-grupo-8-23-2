@@ -6,6 +6,7 @@ green = (58, 99, 50)
 red = (255, 17, 0)
 brown = (150, 75, 0)
 pink = (206, 53, 137) # #DE4083
+white = (255, 255, 255)
 
 
 if sys.platform == 'win32':

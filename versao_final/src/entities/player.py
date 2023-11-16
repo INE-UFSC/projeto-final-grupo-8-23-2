@@ -21,7 +21,7 @@ class Player(character.Character):
         ) -> None:
         self.__alive = True
         # self.__weapon = Gun('Pistol', 10, 400, 'pistol.png')
-        self.__weapon = Earthquaker("tanto faz", 10, 400, None)
+        self.__weapon = Earthquaker("tanto faz", 10, 250, None)
         self.__experience = experience
         self.__level = level
         self.__power_ups = power_ups

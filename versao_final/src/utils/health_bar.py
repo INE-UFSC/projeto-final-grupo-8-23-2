@@ -1,4 +1,5 @@
 import pygame
+from utils import utils
 
 
 class HealthBar:
@@ -18,10 +19,8 @@ class HealthBar:
 
     def draw_at(self, surface: pygame.Surface) -> None:
         ratio = self.__current_health / self.__max_health
-        # pygame.draw.rect(surface, 'red', (self.__position.x - self.__width / 2, self.__position.y + 60, self.__width, self.__height))
-        # pygame.draw.rect(surface, 'green', (self.__position.x - self.__width / 2, self.__position.y + 60, self.__width * ratio, self.__height))
-        pygame.draw.rect(surface, 'red', (self.__position.x - self.__spacing, self.__position.y - self.__spacing, self.__width, self.__height))
-        pygame.draw.rect(surface, 'green', (self.__position.x - self.__spacing, self.__position.y - self.__spacing, self.__width * ratio, self.__height))
+        pygame.draw.rect(surface, utils.red, (self.__position.x - self.__spacing, self.__position.y - self.__spacing, self.__width, self.__height))
+        pygame.draw.rect(surface, utils.green, (self.__position.x - self.__spacing, self.__position.y - self.__spacing, self.__width * ratio, self.__height))
 
     def update_health_bar(self, health: int) -> None:
         self.__current_health = health

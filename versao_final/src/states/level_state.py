@@ -7,7 +7,7 @@ from states import state, game_over_state
 from entities import player
 from entities import seeker
 from powerups import power_up
-from utils import seeker_spawner, power_up_generator, pause
+from utils import seeker_spawner, power_up_generator, pause, utils
 from subjects import seeker_timer_subject, power_up_timer_subject
 from map import map
 from datetime import datetime
@@ -126,7 +126,7 @@ class LevelState(state.State):
         base = base = (game_constants.SCREEN_HEIGHT - (height * len(self.__pausebt.buttons))) / 2
         
         # arrumar isso aqui depois
-        color = (0, 0, 0, 127)
+        color = utils.pink_low_alpha
         surface = pygame.Surface(self.__pausebt.bg_rect.size, pygame.SRCALPHA)
         pygame.draw.rect(surface, color, surface.get_rect())
         self.game_reference.screen.blit(surface, self.__pausebt.bg_rect.topleft)

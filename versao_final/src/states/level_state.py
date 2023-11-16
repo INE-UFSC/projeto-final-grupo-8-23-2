@@ -134,15 +134,24 @@ class LevelState(state.State):
         for button in self.__pause_class.buttons:
             button.draw_at(self.game_reference.screen, (game_constants.SCREEN_WIDTH - button.width)//2, base)
             base += self.__pause_class.spacing
-            
-        if self.__pause_class.buttons[0].full_click:
-            self.__paused = False
-        elif self.__pause_class.buttons[1].full_click:
-            self.game_reference.set_state(menu_state.MenuState(self.game_reference))
-        elif self.__pause_class.buttons[2].full_click:
-            pygame.quit()
+            if button.full_click:
+                action_name = button.next_action
+                action = getattr(self, action_name, None)  # Obtém a função associada pelo nome
+                action()
 
     def key_pressed(self) -> None:
         self.__power_up_time_listener.change_timer_state()
         self.__seeker_time_listener.change_timer_state()
         self.__paused = not self.__paused
+        
+    # funções para os botões
+
+    def resume_game(self):
+        self.__paused = False
+        
+    def quit_game(self):
+        pygame.quit()
+        quit()
+        
+    def change_to_menu(self):
+        self.game_reference.set_state(menu_state.MenuState(self.game_reference))

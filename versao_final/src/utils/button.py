@@ -3,15 +3,19 @@ import pygame
 from abc import ABC, abstractmethod
 from utils.utils import get_file_path
 from utils import utils
+from states.state import State
 
 
 class Button(ABC):
-    def __init__(self, state) -> None:
-        self.__clicking = False
-        self.__full_click = False
-        self.__next_state = state
+    def __init__(self, action) -> None:
+        self.__clicking:bool = False
+        self.__full_click:bool = False
+        self.__next_action = action
 
     def draw_at() -> bool:
+        pass
+    
+    def change_state(self) -> None:
         pass
     
     # Getters and Setters
@@ -26,8 +30,8 @@ class Button(ABC):
             self.__clicking = clicking
 
     @property
-    def next_state(self):
-        return self.__next_state
+    def next_action(self):
+        return self.__next_action
     
     @property
     def full_click(self) -> bool:

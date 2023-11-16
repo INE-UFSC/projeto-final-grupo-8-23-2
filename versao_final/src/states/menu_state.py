@@ -16,7 +16,9 @@ class MenuState(State):
         self.__background = pygame.transform.scale(pygame.image.load(f'{resources_path}/backgrounds/menu_background.jpg'),
         (game_constants.SCREEN_WIDTH, game_constants.SCREEN_HEIGHT))
 
-        self.__buttons = [text_button.TextButton('iniciar', 'level_state'), text_button.TextButton('tutorial', 'tutorial_state'), text_button.TextButton('sair', 'sair')]
+        self.__buttons = [text_button.TextButton('iniciar', 'change_to_level_state'), 
+                          text_button.TextButton('tutorial', 'change_to_tutorial_state'), 
+                          text_button.TextButton('sair', 'quit_game')]
 
         self.__play_button = self.__buttons[0]
         self.__tutorial_button = self.__buttons[1]
@@ -38,19 +40,22 @@ class MenuState(State):
         for button in self.__buttons:
             base += 75
             button.draw_at(super().game_reference.screen, (game_constants.SCREEN_WIDTH - button.width)//2, base)
-                #super().game.current_state = super().game.states[button.next_state]
+            if button.full_click:
+                getattr(self, button.next_action)()
         super().mouse.show_mouse(super().game_reference.screen)
-
-
-    def update(self) -> None: # precisamos mudar isso para nao ficar só com if
-        if self.__play_button.full_click:
-            super().game_reference.set_state(level_state.LevelState(super().game_reference))
-            super().game_reference.set_state(level_state.LevelState(super().game_reference))
-        if self.__tutorial_button.full_click:
-            super().game_reference.set_state(tutorial_state.TutorialState(super().game_reference))
-        if self.__buttons[2].full_click:
-            pygame.quit() # achar outro jeito, assim aparece mensagem de erro
 
     def exiting(self) -> None:
         return super().exiting()
 
+    def change_to_level_state(self) -> None:
+        super().game_reference.set_state(level_state.LevelState(super().game_reference))
+        
+    def change_to_tutorial_state(self) -> None:
+        super().game_reference.set_state(tutorial_state.TutorialState(super().game_reference))
+        
+    def update(self) -> None:
+        pass
+        
+    def quit_game(self):
+        pygame.quit()
+        quit()

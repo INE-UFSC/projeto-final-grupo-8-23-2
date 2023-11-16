@@ -5,7 +5,7 @@ from utils import utils, button
 
 
 class TextButton(button.Button):
-    def __init__(self, text: str, state, font_size = 36) -> None:
+    def __init__(self, text: str, action, font_size = 36) -> None:
         self.__text = text
         
         # Encontra o caminho até a pasta resources
@@ -18,7 +18,7 @@ class TextButton(button.Button):
         self.__width = self.__rect.width
         self.__height = self.__rect.height
 
-        super().__init__(state)
+        super().__init__(action)
 
     def draw_at(self, surface: pygame.Surface, x: int, y: int) -> bool:
         self.full_click = False

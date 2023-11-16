@@ -1,5 +1,6 @@
 import pygame
 
+import utils.utils as utils
 from powerups.power_up import PowerUp
 import constants.powerup_constants as powerconst
 

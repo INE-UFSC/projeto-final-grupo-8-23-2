@@ -1,19 +1,17 @@
 from __future__ import annotations
 
 import pygame
-
 import game
-from states import state, game_over_state, menu_state
-from entities import player
-from entities import seeker
-from powerups import power_up
+
 from utils import seeker_spawner, power_up_generator, pause, utils
 from subjects import seeker_timer_subject, power_up_timer_subject
-from map import map
-from datetime import datetime
-from datetime import timedelta
+from states import state, game_over_state, menu_state
+from datetime import datetime, timedelta
 from utils.utils import get_file_path
 from constants import game_constants
+from entities import player, seeker
+from powerups import power_up
+from map import map
 
 class LevelState(state.State):
     def __init__(self, game_ref: game.Game) -> None:

@@ -3,7 +3,7 @@ from __future__ import annotations
 import pygame
 
 import game
-from states import state, game_over_state
+from states import state, game_over_state, menu_state
 from entities import player
 from entities import seeker
 from powerups import power_up
@@ -37,10 +37,10 @@ class LevelState(state.State):
         
         path_sound = f'{get_file_path(__file__)}/sounds/game_sound.mp3'
         
-        self.__pausebt = pause.Pause()
+        self.__pause_class = pause.Pause()
         self.__paused = False
         
-        super().__init__(game_ref, path_sound, 0.7, using_esc=True)
+        super().__init__(game_ref, path_sound, 0.5, using_esc=True)
 
     def entering(self) -> None:
         self.run_bg_sound()
@@ -122,18 +122,25 @@ class LevelState(state.State):
         self.__seeker_time_listener.unsubscribe(self.__seeker_spawner.spawn)
 
     def pause(self):
-        height = self.__pausebt.buttons[0].height
-        base = base = (game_constants.SCREEN_HEIGHT - (height * len(self.__pausebt.buttons))) / 2
+        height = self.__pause_class.buttons[0].height
+        base = base = (game_constants.SCREEN_HEIGHT - (height * len(self.__pause_class.buttons))) / 2
         
         # arrumar isso aqui depois
         color = utils.pink_low_alpha
-        surface = pygame.Surface(self.__pausebt.bg_rect.size, pygame.SRCALPHA)
+        surface = pygame.Surface(self.__pause_class.bg_rect.size, pygame.SRCALPHA)
         pygame.draw.rect(surface, color, surface.get_rect())
-        self.game_reference.screen.blit(surface, self.__pausebt.bg_rect.topleft)
+        self.game_reference.screen.blit(surface, self.__pause_class.bg_rect.topleft)
         
-        for button in self.__pausebt.buttons:
+        for button in self.__pause_class.buttons:
             button.draw_at(self.game_reference.screen, (game_constants.SCREEN_WIDTH - button.width)//2, base)
-            base += self.__pausebt.spacing
+            base += self.__pause_class.spacing
+            
+        if self.__pause_class.buttons[0].full_click:
+            self.__paused = False
+        elif self.__pause_class.buttons[1].full_click:
+            self.game_reference.set_state(menu_state.MenuState(self.game_reference))
+        elif self.__pause_class.buttons[2].full_click:
+            pygame.quit()
 
     def key_pressed(self) -> None:
         self.__power_up_time_listener.change_timer_state()

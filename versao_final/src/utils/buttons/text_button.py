@@ -1,7 +1,8 @@
 import pygame
 
 from utils.utils import get_file_path
-from utils import utils, button
+from utils.buttons import button
+from utils import utils
 
 
 class TextButton(button.Button):

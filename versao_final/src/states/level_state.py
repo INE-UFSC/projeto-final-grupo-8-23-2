@@ -13,7 +13,6 @@ from map import map
 from datetime import datetime
 from datetime import timedelta
 from utils.utils import get_file_path
-from utils.img_button import ImgButton
 from constants import game_constants
 
 class LevelState(state.State):
@@ -135,9 +134,7 @@ class LevelState(state.State):
             button.draw_at(self.game_reference.screen, (game_constants.SCREEN_WIDTH - button.width)//2, base)
             base += self.__pause_class.spacing
             if button.full_click:
-                action_name = button.next_action
-                action = getattr(self, action_name, None)  # Obtém a função associada pelo nome
-                action()
+                getattr(self, button.next_action, None)()  # Obtém a função associada pelo nome
 
     def key_pressed(self) -> None:
         self.__power_up_time_listener.change_timer_state()
@@ -147,11 +144,12 @@ class LevelState(state.State):
     # funções para os botões
 
     def resume_game(self):
-        self.__paused = False
+        self.key_pressed()
+        
+    def change_to_menu(self):
+        self.game_reference.set_state(menu_state.MenuState(self.game_reference))
         
     def quit_game(self):
         pygame.quit()
         quit()
         
-    def change_to_menu(self):
-        self.game_reference.set_state(menu_state.MenuState(self.game_reference))

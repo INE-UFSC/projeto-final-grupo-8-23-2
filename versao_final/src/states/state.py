@@ -4,7 +4,6 @@ from abc import ABC, abstractmethod
 import game
 import pygame
 from utils import mouse
-from utils.utils import get_file_path
 
 # Classe para modelar cada estado do jogo (Menu, Level, GameOver)
 class State(ABC):

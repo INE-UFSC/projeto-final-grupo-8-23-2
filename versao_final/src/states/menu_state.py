@@ -7,7 +7,7 @@ from states.state import State
 from states import level_state, tutorial_state
 from constants import game_constants
 from utils.utils import get_file_path
-from utils import button, text_button
+from utils.buttons import text_button
 
 
 class MenuState(State):
@@ -45,16 +45,16 @@ class MenuState(State):
         super().mouse.show_mouse(super().game_reference.screen)
 
     def exiting(self) -> None:
-        return super().exiting()
+        pass
+    
+    def update(self) -> None:
+        pass
 
     def change_to_level_state(self) -> None:
         super().game_reference.set_state(level_state.LevelState(super().game_reference))
         
     def change_to_tutorial_state(self) -> None:
         super().game_reference.set_state(tutorial_state.TutorialState(super().game_reference))
-        
-    def update(self) -> None:
-        pass
         
     def quit_game(self):
         pygame.quit()

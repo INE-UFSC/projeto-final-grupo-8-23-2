@@ -6,7 +6,7 @@ import game
 from states import state, menu_state
 from constants import game_constants
 from utils.utils import get_file_path
-from utils import text_button
+from utils.buttons import text_button
 class TutorialState(state.State):
     def __init__(self, game_ref: game.Game) -> None:
         resources_path = get_file_path(__file__)
@@ -15,10 +15,7 @@ class TutorialState(state.State):
         
         self.__tutorial_img = pygame.transform.scale2x(pygame.image.load(f'{resources_path}/backgrounds/tutorial.png')),
 
-        self.__buttons = [text_button.TextButton('Voltar ao menu', menu_state.MenuState(game_ref))]
-
-        self.__back_to_menu_button = self.__buttons[0]
-
+        self.__buttons = [text_button.TextButton('Voltar ao menu', 'change_to_menu_state')]
         self.__font = pygame.font.Font(f'{resources_path}/fonts/NightsideDemoRegular.ttf', 64)
         self.__render = self.__font.render("Tutorial", True, (255, 255, 255))
         path_sound = f'{get_file_path(__file__)}/sounds/tutorial_sound.mp3'
@@ -44,16 +41,19 @@ class TutorialState(state.State):
         # mostra os botoes
         for button in self.__buttons:
             base += 10
-            if button.draw_at(super().game_reference.screen, (game_constants.SCREEN_WIDTH - button.width)//2, base):
-                #super().game.current_state = super().game.states[button.next_state]
-                pass
-        
+            button.draw_at(super().game_reference.screen, (game_constants.SCREEN_WIDTH - button.width)//2, base)
+            if button.full_click:
+                getattr(self, button.next_action, None)()
         
         super().mouse.show_mouse(super().game_reference.screen)
+        
+        # Functions
+    
+    def change_to_menu_state(self):
+        super().game_reference.set_state(menu_state.MenuState(self.game_reference))
 
     def update(self) -> None:
-        if self.__back_to_menu_button.full_click:
-            super().game_reference.set_state(menu_state.MenuState(super().game_reference))
+        pass
 
     def exiting(self) -> None:
         return super().exiting()

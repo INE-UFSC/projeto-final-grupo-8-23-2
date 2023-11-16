@@ -1,4 +1,4 @@
-from utils.text_button import TextButton
+from utils.buttons.text_button import TextButton
 from constants import game_constants
 import pygame
 

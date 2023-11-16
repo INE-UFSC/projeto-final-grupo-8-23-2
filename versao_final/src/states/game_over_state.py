@@ -6,7 +6,7 @@ import game
 from states import state, menu_state
 from constants import game_constants
 from utils.utils import get_file_path
-from utils import text_button
+from utils.buttons import text_button
 
 
 class GameOverState(state.State):
@@ -15,9 +15,7 @@ class GameOverState(state.State):
         self.__background = pygame.transform.scale(pygame.image.load(f'{resources_path}/backgrounds/bg_game_over_2.jpg'),
         (game_constants.SCREEN_WIDTH, game_constants.SCREEN_HEIGHT))
 
-        self.__buttons = [text_button.TextButton('Voltar ao menu', menu_state.MenuState(game_ref))]
-
-        self.__back_to_menu_button = self.__buttons[0]
+        self.__buttons = [text_button.TextButton('Voltar ao menu', 'change_to_menu_state')]
 
         self.__font = pygame.font.Font(f'{resources_path}/fonts/Kemco Pixel Bold.ttf', 96)
         self.__render = self.__font.render("GAME OVER", True, (255, 0, 0))
@@ -34,16 +32,16 @@ class GameOverState(state.State):
         super().game_reference.screen.blit(self.__render, ((game_constants.SCREEN_WIDTH - self.__render.get_width())//2, base - 40))
         for button in self.__buttons:
             base += 75
-            if button.draw_at(self.game_reference.screen, (game_constants.SCREEN_WIDTH - button.width)//2, base):
-                #self().game.current_state = self().game.states[button.next_state]
-                pass
+            button.draw_at(self.game_reference.screen, (game_constants.SCREEN_WIDTH - button.width)//2, base)
+            if button.full_click:
+                getattr(self, button.next_action, None)()
         super().mouse.show_mouse(super().game_reference.screen)
 
     def update(self) -> None:
-        if self.__back_to_menu_button.full_click:
-            self.game_reference.set_state(menu_state.MenuState(self.game_reference))
         pass
 
     def exiting(self) -> None:
         return super().exiting()
 
+    def change_to_menu_state(self):
+        super().game_reference.set_state(menu_state.MenuState(self.game_reference))

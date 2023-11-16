@@ -11,7 +11,6 @@ class Bullet(Ammo):
         super().__init__(x, y, range)
         self.__speed = speed
         self.__direction = direction
-        self.__color = 'red'
         self.__moving = True
         self.__range = range
         

@@ -4,6 +4,7 @@ from powerups.power_up import PowerUp
 from entities import player
 import constants.player_constants as playerconst
 import constants.powerup_constants as powerconst
+from utils import utils
 
 
 class PowerUpHealth(PowerUp):

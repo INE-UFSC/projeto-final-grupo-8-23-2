@@ -30,18 +30,18 @@ class GameOverState(state.State):
     def render(self) -> None:
         base = game_constants.SCREEN_HEIGHT / 2 - 10
 
-        self.get_game().get_screen().blit(self.__background, (0, 0))
-        self.get_game().get_screen().blit(self.__render, ((game_constants.SCREEN_WIDTH - self.__render.get_width())//2, base - 40))
+        super().game_reference.screen.blit(self.__background, (0, 0))
+        super().game_reference.screen.blit(self.__render, ((game_constants.SCREEN_WIDTH - self.__render.get_width())//2, base - 40))
         for button in self.__buttons:
             base += 75
-            if button.draw_at(self.get_game().get_screen(), (game_constants.SCREEN_WIDTH - button.width)//2, base):
+            if button.draw_at(self.game_reference.screen, (game_constants.SCREEN_WIDTH - button.width)//2, base):
                 #self().game.current_state = self().game.states[button.next_state]
                 pass
-        super().mouse.show_mouse(super().get_game().get_screen())
+        super().mouse.show_mouse(super().game_reference.screen)
 
     def update(self) -> None:
-        if self.__back_to_menu_button.clicked:
-            self.get_game().set_state(menu_state.MenuState(self.get_game()))
+        if self.__back_to_menu_button.full_click:
+            self.game_reference.set_state(menu_state.MenuState(self.game_reference))
         pass
 
     def exiting(self) -> None:

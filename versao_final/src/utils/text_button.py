@@ -21,20 +21,19 @@ class TextButton(button.Button):
         super().__init__(state)
 
     def draw_at(self, surface: pygame.Surface, x: int, y: int) -> bool:
+        self.full_click = False
         self.__rect.topleft = (x, y)
-        action = False
         pos = pygame.mouse.get_pos()
         if self.__rect.collidepoint(pos):
-            if pygame.mouse.get_pressed()[0] == 1 and not self.clicked:
-                self.clicked = True
+            if pygame.mouse.get_pressed()[0] == 1 and not self.clicking:
+                self.clicking = True
                 self.__render = self.__font.render(self.__text, True, (utils.pink))
                 # depois opinem sobre esse ""
-        if pygame.mouse.get_pressed()[0] == 0 and self.clicked:
-            self.clicked = False
-            action = True
+        if pygame.mouse.get_pressed()[0] == 0 and self.clicking:
+            self.clicking = False
+            self.full_click = True
             self.__render = self.__font.render(self.__text, True, (255, 255, 255))
         surface.blit(self.__render, self.__rect.topleft)
-        return action
     
     # Getters and Setters
 

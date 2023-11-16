@@ -7,7 +7,8 @@ from utils import utils
 
 class Button(ABC):
     def __init__(self, state) -> None:
-        self.__clicked = False
+        self.__clicking = False
+        self.__full_click = False
         self.__next_state = state
 
     def draw_at() -> bool:
@@ -16,14 +17,23 @@ class Button(ABC):
     # Getters and Setters
 
     @property
-    def clicked(self) -> bool:
-        return self.__clicked
+    def clicking(self) -> bool:
+        return self.__clicking
     
-    @clicked.setter
-    def clicked(self, clicked: bool) -> None:
-        if isinstance(clicked, bool):
-            self.__clicked = clicked
+    @clicking.setter
+    def clicking(self, clicking: bool) -> None:
+        if isinstance(clicking, bool):
+            self.__clicking = clicking
 
     @property
     def next_state(self):
         return self.__next_state
+    
+    @property
+    def full_click(self) -> bool:
+        return self.__full_click
+    
+    @full_click.setter
+    def full_click(self, full_click: bool) -> None:
+        if isinstance(full_click, bool):
+            self.__full_click = full_click

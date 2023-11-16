@@ -43,12 +43,12 @@ class MenuState(State):
 
 
     def update(self) -> None: # precisamos mudar isso para nao ficar só com if
-        if self.__play_button.clicked:
+        if self.__play_button.full_click:
             super().game_reference.set_state(level_state.LevelState(super().game_reference))
             super().game_reference.set_state(level_state.LevelState(super().game_reference))
-        if self.__tutorial_button.clicked:
+        if self.__tutorial_button.full_click:
             super().game_reference.set_state(tutorial_state.TutorialState(super().game_reference))
-        if self.__buttons[2].clicked:
+        if self.__buttons[2].full_click:
             pygame.quit() # achar outro jeito, assim aparece mensagem de erro
 
     def exiting(self) -> None:

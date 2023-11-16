@@ -37,8 +37,8 @@ class TutorialState(state.State):
         super().mouse.show_mouse(super().game_reference.screen)
 
     def update(self) -> None:
-        if self.__back_to_menu_button.clicked:
-            super().get_game().set_state(menu_state.MenuState(super().get_game()))
+        if self.__back_to_menu_button.full_click:
+            super().game_reference.set_state(menu_state.MenuState(super().game_reference))
 
     def exiting(self) -> None:
         return super().exiting()

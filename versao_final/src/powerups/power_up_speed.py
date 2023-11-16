@@ -2,6 +2,8 @@ import pygame
 
 from powerups.power_up import PowerUp
 import constants.powerup_constants as powerconst
+from utils import utils
+
 
 
 class PowerUpSpeed(PowerUp):

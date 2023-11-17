@@ -4,12 +4,13 @@ from powerups.power_up import PowerUp
 from entities import player
 import constants.player_constants as playerconst
 import constants.powerup_constants as powerconst
+from utils import utils
 
 
 class PowerUpHealth(PowerUp):
     def __init__(self, player_ref: player.Player):
         super().__init__(player_ref)
-        self.color = pygame.Color("yellow")
+        self.color = pygame.Color(utils.yellow)
         self.upgrade_value = powerconst.HEALTH
 
     def power_up_logic(self) -> None:

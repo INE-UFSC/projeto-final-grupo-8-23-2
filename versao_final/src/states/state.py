@@ -4,16 +4,16 @@ from abc import ABC, abstractmethod
 import game
 import pygame
 from utils import mouse
-from utils.utils import get_file_path
 
 # Classe para modelar cada estado do jogo (Menu, Level, GameOver)
 class State(ABC):
     # Recebe uma referencia do jogo
-    def __init__(self, game_reference: game.Game, path_sound=None, volumn_sound=1) -> None:
+    def __init__(self, game_reference: game.Game, path_sound=None, volumn_sound=1, using_esc=False) -> None:
         self.__game_reference = game_reference
         self.__mouse = mouse.Mouse()
         self.__path_sound = path_sound
         self.__sound_volume = volumn_sound
+        self.__using_esc = using_esc
         
     def run_bg_sound(self) -> None:
         pygame.mixer.init()
@@ -46,6 +46,10 @@ class State(ABC):
     # Getters and Setters
     
     @property
+    def using_esc(self):
+        return self.__using_esc
+    
+    @property
     def mouse(self):
         return self.__mouse
 
@@ -59,5 +63,5 @@ class State(ABC):
     
     # Funcao generica para evitar erros
 
-    def space_pressed(self) -> None:
+    def key_pressed(self) -> None:
         pass

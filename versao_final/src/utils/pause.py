@@ -1,13 +1,13 @@
-from utils.text_button import TextButton
+from utils.buttons.text_button import TextButton
 from constants import game_constants
 import pygame
 
 class Pause:
     def __init__(self):
         self.__buttons = [
-            TextButton('continuar', 'level_state', 30),
-            TextButton('menu', 'menu_state', 30),
-            TextButton('sair', 'sair', 30)
+            TextButton('continuar', 'resume_game', 30),
+            TextButton('menu', 'change_to_menu', 30),
+            TextButton('sair', 'quit_game', 30)
         ]
         width = game_constants.SCREEN_WIDTH // 2
         height = game_constants.SCREEN_HEIGHT // 2

@@ -14,7 +14,8 @@ class FightSeeker(Seeker):
             seeker_constants.FIGHT_SEEKER_SPEED,
             seeker_constants.FIGHT_SEEKER_DAMAGE,
             seeker_constants.FIGHT_SEEKER_ARMOR,
-            f'{get_file_path(__file__)}/sprites/ghost.webp'
+            f'{get_file_path(__file__)}/sprites/ghost.webp',
+            30 # ideias
         )
 
     # metodo implementado na classe pai, porem pode sofrer alteracoes

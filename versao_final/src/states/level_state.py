@@ -1,20 +1,17 @@
 from __future__ import annotations
 
 import pygame
-
 import game
-from states import state, game_over_state
-from entities import player
-from entities import seeker
-from powerups import power_up
-from utils import seeker_spawner, power_up_generator, pause
+
+from utils import seeker_spawner, power_up_generator, pause, utils
 from subjects import seeker_timer_subject, power_up_timer_subject
-from map import map
-from datetime import datetime
-from datetime import timedelta
+from states import state, game_over_state, menu_state
+from datetime import datetime, timedelta
 from utils.utils import get_file_path
-from utils.img_button import ImgButton
 from constants import game_constants
+from entities import player, seeker
+from powerups import power_up
+from map import map
 
 class LevelState(state.State):
     def __init__(self, game_ref: game.Game) -> None:
@@ -37,15 +34,15 @@ class LevelState(state.State):
         
         path_sound = f'{get_file_path(__file__)}/sounds/game_sound.mp3'
         
-        self.__pausebt = pause.Pause()
+        self.__pause_class = pause.Pause()
         self.__paused = False
 
         self.__collisions = pygame.sprite.groupcollide(self.__player.weapon.bullets, self.__seekers, True, False)
         
-        super().__init__(game_ref, path_sound, 0.7)
+        super().__init__(game_ref, path_sound, 0.5, using_esc=True)
 
     def entering(self) -> None:
-        super().run_bg_sound()
+        self.run_bg_sound()
         self.__power_up_time_listener.subscribe(self.__power_up_generator.generate)
         self.__seeker_time_listener.subscribe(self.__seeker_spawner.spawn)
 
@@ -66,27 +63,27 @@ class LevelState(state.State):
         pygame.mixer.music.play()
 
     def render(self) -> None:
-        self.__map.draw_background(super().game_reference.screen)
+        self.__map.draw_background(self.game_reference.screen)
         if self.__player.alive:
-            self.__player.draw_at(super().game_reference.screen)
+            self.__player.draw_at(self.game_reference.screen)
         else:
-            self.__player.draw_at_death(super().game_reference.screen)
+            self.__player.draw_at_death(self.game_reference.screen)
             if self.__date_death_state == datetime.min:
                 self.run_death_music()
                 self.__date_death_state = datetime.now()
                 self.__date_death_state_increment = self.__date_death_state
         for seeker in self.__seekers:
             seeker.draw_at(super().game_reference.screen)
-            self.__player.weapon.check_target(seeker)
             if not self.__paused:
                 seeker.move()
+        self.__player.weapon.check_target(self.__seekers)
         for powerup in self.__power_ups:
-            powerup.draw_at(super().game_reference.screen)
+            powerup.draw_at(self.game_reference.screen)
             powerup.add_power_up_to_list()
         if self.__paused:
             self.pause()
 
-        super().mouse.show_mouse(super().game_reference.screen)
+        self.mouse.show_mouse(self.game_reference.screen)
 
     def update(self) -> None:
         if not self.__paused:
@@ -95,6 +92,7 @@ class LevelState(state.State):
                 if not seeker.alive:
                     dead_seekers.append(seeker)
             for seeker in dead_seekers:
+                self.__player.score += seeker.worth_points
                 self.__seekers.remove(seeker)
 
             for powerup in self.__power_ups:
@@ -108,13 +106,13 @@ class LevelState(state.State):
                 self.__player.move()
                 
             self.__player.get_power_up()
-            self.__player.attack(super().game_reference.screen)
+            self.__player.attack(self.game_reference.screen)
             
             date_sec = self.__date_death_state + timedelta(seconds=100)
             if not self.__player.alive:
                 if self.__date_death_state_increment == date_sec:
                     pygame.mixer.music.pause()
-                    super().game_reference.set_state(game_over_state.GameOverState(super().game_reference))
+                    self.game_reference.set_state(game_over_state.GameOverState(self.game_reference))
                 else:
                     self.__date_death_state_increment = self.__date_death_state_increment + timedelta(seconds=1)
         
@@ -123,18 +121,35 @@ class LevelState(state.State):
         self.__seeker_time_listener.unsubscribe(self.__seeker_spawner.spawn)
 
     def pause(self):
-        height = self.__pausebt.buttons[0].height
-        base = base = (game_constants.SCREEN_HEIGHT - (height * len(self.__pausebt.buttons))) / 2
+        height = self.__pause_class.buttons[0].height
+        base = base = (game_constants.SCREEN_HEIGHT - (height * len(self.__pause_class.buttons))) / 2
         
         # arrumar isso aqui depois
-        color = (0, 0, 0, 127)
-        surface = pygame.Surface(self.__pausebt.bg_rect.size, pygame.SRCALPHA)
+        color = utils.pink_low_alpha
+        surface = pygame.Surface(self.__pause_class.bg_rect.size, pygame.SRCALPHA)
         pygame.draw.rect(surface, color, surface.get_rect())
-        super().game_reference.screen.blit(surface, self.__pausebt.bg_rect.topleft)
+        self.game_reference.screen.blit(surface, self.__pause_class.bg_rect.topleft)
         
-        for button in self.__pausebt.buttons:
-            button.draw_at(super().game_reference.screen, (game_constants.SCREEN_WIDTH - button.width)//2, base)
-            base += self.__pausebt.spacing
-            
-    def space_pressed(self) -> None:
+        for button in self.__pause_class.buttons:
+            button.draw_at(self.game_reference.screen, (game_constants.SCREEN_WIDTH - button.width)//2, base)
+            base += self.__pause_class.spacing
+            if button.full_click:
+                getattr(self, button.next_action, None)()  # Obtém a função associada pelo nome
+
+    def key_pressed(self) -> None:
+        self.__power_up_time_listener.change_timer_state()
+        self.__seeker_time_listener.change_timer_state()
         self.__paused = not self.__paused
+        
+    # funções para os botões
+
+    def resume_game(self):
+        self.key_pressed()
+        
+    def change_to_menu(self):
+        self.game_reference.set_state(menu_state.MenuState(self.game_reference))
+        
+    def quit_game(self):
+        pygame.quit()
+        quit()
+        

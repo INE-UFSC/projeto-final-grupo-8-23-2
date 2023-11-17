@@ -10,7 +10,12 @@ from utils import mouse
 
 
 class Game:
-    def __init__(self) -> None:
+    # Método de contém todas as chamadas relacionadas a renderização da tela
+    def render(self) -> None:
+        self.__current_state.render()
+        pygame.display.flip()
+
+    def run(self) -> None:
         pygame.init()
         # Atributo para saber se o jogo está rodando
         self.__running = True
@@ -32,14 +37,7 @@ class Game:
         self.__current_state: state.State = menu_state.MenuState(self)
 
         self.__current_state.entering()
-
-    # Método de contém todas as chamadas relacionadas a renderização da tela
-    def render(self) -> None:
-        self.__current_state.render()
-        pygame.display.flip()
-
-
-    def run(self) -> None:
+        
         # Inicializa o relógio (clock) do jogo
         clock = pygame.time.Clock()
         # MainLoop do jogo

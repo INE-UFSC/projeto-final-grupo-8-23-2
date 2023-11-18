@@ -1,11 +1,9 @@
 from entities.seeker import Seeker
 from entities.player import Player
-from constants import seeker_constants, game_constants
-import pygame
+from constants import seeker_constants
 from utils.utils import get_file_path
 
 class FightSeeker(Seeker):
-    
     def __init__(self, player_ref: Player) -> None:
         super().__init__(
             player_ref,
@@ -18,9 +16,6 @@ class FightSeeker(Seeker):
             30 # ideias
         )
 
-    # metodo implementado na classe pai, porem pode sofrer alteracoes
-    #def take_damage(self, damage: int) -> None:
-    #    pass
-
     def strong_punch(self) -> None:
         pass
+

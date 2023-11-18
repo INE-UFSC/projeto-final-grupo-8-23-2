@@ -8,7 +8,7 @@ class Weapon(ABC):
         self.__damage = damage
         self.__range = range
         self.__sprite = sprite
-        self.bullets = []
+        self.__bullets = []
 
     @abstractmethod
     def attack(self):

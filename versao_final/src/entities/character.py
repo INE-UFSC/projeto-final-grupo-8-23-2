@@ -6,14 +6,14 @@ from abc import abstractmethod, ABC
 
 class Character(ABC, pygame.sprite.Sprite):
     def __init__(
-            self,
-            position: pygame.Vector2,
-            health: int,
-            speed: int,
-            damage=5,
-            armor=0,
-            weapon=None,
-            sprite=None
+        self,
+        position: pygame.Vector2,
+        health: int,
+        speed: int,
+        sprite: pygame.surface.Surface,
+        damage=5,
+        armor=0,
+        weapon=None,
         ) -> None:
         self.__position = position
         self.__health = health
@@ -22,7 +22,13 @@ class Character(ABC, pygame.sprite.Sprite):
         self.__armor = armor
         self.__weapon = weapon
         self.__sprite = sprite
-        self.__rect = None
+        self.__rect = self.__sprite.get_rect()
+
+        pygame.sprite.Sprite.__init__(self)
+
+    @property
+    def rect(self) -> pygame.Rect:
+        return self.__rect
 
     @property
     def health(self) -> int:

@@ -3,6 +3,7 @@ from __future__ import annotations
 import pygame
 import game
 
+from managers import collision_detector
 from utils import seeker_spawner, power_up_generator, pause, utils
 from subjects import seeker_timer_subject, power_up_timer_subject
 from states import state, game_over_state, menu_state
@@ -13,13 +14,14 @@ from entities import player, seeker
 from powerups import power_up
 from map import map
 
+
 class LevelState(state.State):
     def __init__(self, game_ref: game.Game) -> None:
         self.__player: player.Player = player.Player()
-
         self.__seekers: list[seeker.Seeker] = []
-
         self.__power_ups: list[power_up.PowerUp] = []
+
+        self.__collision_detector = collision_detector.CollisionDetector(self.__seekers, self.__player.weapon.bullets)
 
         self.__seeker_spawner = seeker_spawner.SeekerSpawner(self.__seekers, self.__player)
         self.__seeker_time_listener = seeker_timer_subject.SeekerTimerSubject()
@@ -28,17 +30,15 @@ class LevelState(state.State):
         self.__power_up_time_listener = power_up_timer_subject.PowerUpTimerSubject()
 
         self.__map = map.Map()
-        
+
         self.__date_death_state = datetime.min
         self.__date_death_state_increment = self.__date_death_state
-        
+
         path_sound = f'{get_file_path(__file__)}/sounds/game_sound.mp3'
-        
+
         self.__pause_class = pause.Pause()
         self.__paused = False
 
-        self.__collisions = pygame.sprite.groupcollide(self.__player.weapon.bullets, self.__seekers, True, False)
-        
         super().__init__(game_ref, path_sound, 0.5, using_esc=True)
 
     def entering(self) -> None:
@@ -54,7 +54,7 @@ class LevelState(state.State):
                 pygame.KEYDOWN
             ]
         )
-        
+
     def run_death_music(self):
         pygame.mixer.music.pause()
         pygame.mixer.init()
@@ -104,10 +104,10 @@ class LevelState(state.State):
 
             if self.__player.alive:
                 self.__player.move()
-                
+
             self.__player.get_power_up()
             self.__player.attack(self.game_reference.screen)
-            
+
             date_sec = self.__date_death_state + timedelta(seconds=100)
             if not self.__player.alive:
                 if self.__date_death_state_increment == date_sec:
@@ -115,7 +115,7 @@ class LevelState(state.State):
                     self.game_reference.set_state(game_over_state.GameOverState(self.game_reference))
                 else:
                     self.__date_death_state_increment = self.__date_death_state_increment + timedelta(seconds=1)
-        
+
     def exiting(self) -> None:
         self.__power_up_time_listener.unsubscribe(self.__power_up_generator.generate)
         self.__seeker_time_listener.unsubscribe(self.__seeker_spawner.spawn)
@@ -123,13 +123,13 @@ class LevelState(state.State):
     def pause(self):
         height = self.__pause_class.buttons[0].height
         base = base = (game_constants.SCREEN_HEIGHT - (height * len(self.__pause_class.buttons))) / 2
-        
+
         # arrumar isso aqui depois
         color = utils.pink_low_alpha
         surface = pygame.Surface(self.__pause_class.bg_rect.size, pygame.SRCALPHA)
         pygame.draw.rect(surface, color, surface.get_rect())
         self.game_reference.screen.blit(surface, self.__pause_class.bg_rect.topleft)
-        
+
         for button in self.__pause_class.buttons:
             button.draw_at(self.game_reference.screen, (game_constants.SCREEN_WIDTH - button.width)//2, base)
             base += self.__pause_class.spacing
@@ -140,16 +140,16 @@ class LevelState(state.State):
         self.__power_up_time_listener.change_timer_state()
         self.__seeker_time_listener.change_timer_state()
         self.__paused = not self.__paused
-        
+
     # funções para os botões
 
     def resume_game(self):
         self.key_pressed()
-        
+
     def change_to_menu(self):
         self.game_reference.set_state(menu_state.MenuState(self.game_reference))
-        
+
     def quit_game(self):
         pygame.quit()
         quit()
-        
+

@@ -20,8 +20,8 @@ class Player(character.Character):
         score: int=0
         ) -> None:
         self.__alive = True
-        # self.__weapon = Gun('Pistol', 10, 400, 'pistol.png')
-        self.__weapon = Earthquaker("tanto faz", 10, 250, None)
+        self.__weapon = Gun('Pistol', 10, 400, 'pistol.png')
+        #self.__weapon = Earthquaker("tanto faz", 10, 250, None)
         self.__experience = experience
         self.__level = level
         self.__power_ups = power_ups
@@ -35,10 +35,9 @@ class Player(character.Character):
         img_transform = pygame.transform.scale(pygame.image.load(img),
                                               (player_constants.WIDTH, player_constants.HEIGHT)) #image
         self.__image = pygame.transform.flip(img_transform, False, False)
-        
-        super().__init__(self.__spawn_position, player_constants.HEALTH, player_constants.SPEED)
 
-    
+        super().__init__(self.__spawn_position, player_constants.HEALTH, player_constants.SPEED, self.__image)
+
     def attack(self, screen: pygame.Surface) -> None:
         self.__weapon.attack(self)
 

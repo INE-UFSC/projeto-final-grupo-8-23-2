@@ -23,7 +23,8 @@ class Seeker(Character, ABC):
         self.__inverted = False
         self.__alpha_draw = 100
         self.__worth_points = worth_points
-        super().__init__(self.__seeker_position, seeker_health, seeker_speed, seeker_damage, seeker_armor)
+
+        super().__init__(self.__seeker_position, seeker_health, seeker_speed, self.__image, seeker_armor)
         if super().position.x <= self.__player_to_chase.position.x:
             self.__image = pygame.transform.flip(self.__image, True, False)
             self.__inverted = True

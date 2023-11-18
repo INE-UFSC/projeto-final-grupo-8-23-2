@@ -3,6 +3,7 @@ from __future__ import annotations
 import pygame
 import game
 
+from managers import bullet_collision_handler
 from managers import collision_detector
 from utils import seeker_spawner, power_up_generator, pause, utils
 from subjects import seeker_timer_subject, power_up_timer_subject
@@ -21,7 +22,8 @@ class LevelState(state.State):
         self.__seekers: list[seeker.Seeker] = []
         self.__power_ups: list[power_up.PowerUp] = []
 
-        self.__collision_detector = collision_detector.CollisionDetector(self.__seekers, self.__player.weapon.bullets)
+        self.__bullet_seeker_collision_detector = collision_detector.CollisionDetector(self.__seekers, self.__player.weapon.bullets)
+        self.__bullet_seeker_collision_handler = bullet_collision_handler.BulletCollisionHandler(self.__player.weapon, self.__seekers)
 
         self.__seeker_spawner = seeker_spawner.SeekerSpawner(self.__seekers, self.__player)
         self.__seeker_time_listener = seeker_timer_subject.SeekerTimerSubject()
@@ -87,6 +89,9 @@ class LevelState(state.State):
 
     def update(self) -> None:
         if not self.__paused:
+            bullet_seeker_collisions = self.__bullet_seeker_collision_detector.detect_collision()
+            self.__bullet_seeker_collision_handler.handle_collision(bullet_seeker_collisions)
+
             dead_seekers = []
             for seeker in self.__seekers:
                 if not seeker.alive:

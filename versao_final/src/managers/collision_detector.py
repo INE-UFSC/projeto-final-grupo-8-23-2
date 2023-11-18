@@ -17,3 +17,4 @@ class CollisionDetector:
 
         collisions = pygame.sprite.groupcollide(entities_list_group, entities_list2_group, False, False)
         return collisions
+

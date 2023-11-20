@@ -1,5 +1,3 @@
-import pygame
-
 from weapons import weapon
 from entities import seeker
 
@@ -14,9 +12,15 @@ class BulletCollisionHandler:
         self.__seekers_list = seekers_list_ref
 
     def handle_collision(self, collisions: dict) -> None:
-        for bullet, seeker in collisions.items():
+        bullets_to_remove = []
+
+        for bullet, seekers in collisions.items():
+            bullets_to_remove.append(bullet)
+            for seeker in seekers:
+                seeker.take_damage(self.__weapon.damage)
+                if seeker.health <= 0:
+                    self.__seekers_list.remove(seeker)
+
+        for bullet in bullets_to_remove:
             self.__bullets_list.remove(bullet)
-            seeker.take_damage(self.__weapon.damage)
-            if seeker.health <= 0:
-                self.__seekers_list.remove(seeker)
 

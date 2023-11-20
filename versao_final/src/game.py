@@ -18,6 +18,9 @@ class Game:
         # Inicializa o display
         self.__screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
 
+        # Inicializa o relógio (clock) do jogo
+        self.__clock = pygame.time.Clock()
+
         # Muda a aparencia do mouse
         self.__mouse = mouse.Mouse()
 
@@ -40,8 +43,6 @@ class Game:
 
 
     def run(self) -> None:
-        # Inicializa o relógio (clock) do jogo
-        clock = pygame.time.Clock()
         # MainLoop do jogo
         while self.__running:
             # for para capturar os eventos do jogo, inicialmente pensado para detectar as teclas pressionadas pelo
@@ -56,13 +57,18 @@ class Game:
             self.render()
 
             # Define o FPS do jogo
-            clock.tick(game_constants.FPS)
+            self.__clock.tick(game_constants.FPS)
 
     def set_state(self, new_state: state.State) -> None:
         self.__current_state.exiting()
         self.__current_state = new_state
         self.__current_state.entering()
-        
+
     @property
     def screen(self) -> pygame.Surface:
         return self.__screen
+
+    @property
+    def clock(self) -> pygame.time.Clock:
+        return self.__clock
+

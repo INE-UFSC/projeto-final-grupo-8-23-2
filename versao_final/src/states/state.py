@@ -14,15 +14,15 @@ class State(ABC):
         self.__path_sound = path_sound
         self.__sound_volume = volumn_sound
         self.__using_esc = using_esc
-        
+
     def run_bg_sound(self) -> None:
         pygame.mixer.init()
         pygame.mixer.music.set_volume(self.__sound_volume)
         pygame.mixer.music.load(self.__path_sound)
-        pygame.mixer.music.play()
-        
+        pygame.mixer.music.play(-1)
+
     # Abstract Methods
-        
+
     # Método chamado ao entrar em um estado
     @abstractmethod
     def entering(self) -> None:

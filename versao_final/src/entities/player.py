@@ -1,10 +1,10 @@
 from __future__ import annotations
-import random
+
 import pygame
 import math
 
-
 from entities import character
+from weapons import weapon
 from weapons.gun import Gun
 from weapons.earthquaker import Earthquaker
 from constants import game_constants, player_constants, powerup_constants, direction_constants
@@ -14,14 +14,14 @@ from utils.utils import get_file_path
 class Player(character.Character):
     def __init__(
         self,
+        weapon: weapon.Weapon,
         experience: int=0,
         level: int=0,
         power_ups: list=[],
         score: int=0
         ) -> None:
         self.__alive = True
-        self.__weapon = Gun('Pistol', 10, 400, 'pistol.png')
-        #self.__weapon = Earthquaker("tanto faz", 10, 250, None)
+        self.__weapon = weapon
         self.__experience = experience
         self.__level = level
         self.__power_ups = power_ups
@@ -34,9 +34,9 @@ class Player(character.Character):
         img = f'{get_file_path(__file__)}/player/player.webp'
         img_transform = pygame.transform.scale(pygame.image.load(img),
                                               (player_constants.WIDTH, player_constants.HEIGHT)) #image
-        self.__image = pygame.transform.flip(img_transform, False, False)
+        self.image = pygame.transform.flip(img_transform, False, False)
 
-        super().__init__(self.__spawn_position, player_constants.HEALTH, player_constants.SPEED, self.__image)
+        super().__init__(self.__spawn_position, player_constants.HEALTH, player_constants.SPEED, self.image)
 
     def attack(self, screen: pygame.Surface) -> None:
         self.__weapon.attack(self)
@@ -45,10 +45,10 @@ class Player(character.Character):
         if self.alive:
             self.set_img_by_direction()
         pos = super().position if position == None else position
-        pygame.Surface.blit(screen, self.__image, pos)
+        pygame.Surface.blit(screen, self.image, pos)
         self.__health_bar.draw_at(screen)
         self.__weapon.draw(screen)
-        
+
     def set_img_by_direction(self):
         match self.__current_direction:
             case direction_constants.LEFT:
@@ -57,27 +57,27 @@ class Player(character.Character):
                 self.set_img_draw_right()
             case _:
                 return
-        
+
     def set_img_draw_right(self):
         img = f'{get_file_path(__file__)}/player/player_run.png'
         img_transform = pygame.transform.scale(pygame.image.load(img),
                                               (player_constants.WIDTH, player_constants.HEIGHT)) #image
-        self.__image = pygame.transform.flip(img_transform, False, False)
-        
+        self.image = pygame.transform.flip(img_transform, False, False)
+
     def set_img_draw_left(self):
         img = f'{get_file_path(__file__)}/player/player_run.png'
         img_transform = pygame.transform.scale(pygame.image.load(img),
                                               (player_constants.WIDTH, player_constants.HEIGHT)) #image
-        self.__image = pygame.transform.flip(img_transform, True, False)
-        
+        self.image = pygame.transform.flip(img_transform, True, False)
+
     def draw_at_death(self, screen: pygame.Surface):
         img = f'{get_file_path(__file__)}/player/death_player.png'
         img_transform = pygame.transform.scale(pygame.image.load(img),
                                               (70, 35)) #image
         is_left = self.__current_direction == 'LEFT'
-        self.__image = pygame.transform.flip(img_transform, is_left, False)
+        self.image = pygame.transform.flip(img_transform, is_left, False)
         position = pygame.Vector2(super().position.x, super().position.y + 35)
-        
+
         self.draw_at(screen, position=position)
         self.__death_player_draw = True
 
@@ -108,7 +108,7 @@ class Player(character.Character):
             direction = 'RIGHT'
             if super().position.x < game_constants.SCREEN_WIDTH - player_constants.WIDTH:
                 super().position.x += super().speed
-                
+
         if direction != None:
             self.__current_direction = direction
 
@@ -116,8 +116,7 @@ class Player(character.Character):
         coin_sound = pygame.mixer.Sound(f'{get_file_path(__file__)}/sounds/coin_effect.mp3')
         coin_sound.set_volume(0.5)
         coin_sound.play()
-        
-        
+
     def get_power_up(self):
         for powerup in self.__power_ups:
             # calculo da distancia entre o powerup e o player
@@ -212,16 +211,17 @@ class Player(character.Character):
     def attacking(self, val:bool):
         if isinstance(val, bool):
             self.__attacking = val
-            
+
     @property
     def current_direction(self):
         return self.__current_direction
-    
+
     @current_direction.setter
     def direction(self, val):
         if isinstance(val, str):
             self.__current_direction = val
-        
+
     @property
     def death_player_draw(self):
         return self.__death_player_draw
+

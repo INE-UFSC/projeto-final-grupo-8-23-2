@@ -1,10 +1,11 @@
 from __future__ import annotations
 
 import pygame
-import game
 
-from managers import bullet_collision_handler
-from managers import collision_detector
+import game
+from weapons import gun
+from handlers import bullet_collision_handler
+from handlers import collision_detector
 from utils import seeker_spawner, power_up_generator, pause, utils
 from subjects import seeker_timer_subject, power_up_timer_subject
 from states import state, game_over_state, menu_state
@@ -18,11 +19,12 @@ from map import map
 
 class LevelState(state.State):
     def __init__(self, game_ref: game.Game) -> None:
-        self.__player: player.Player = player.Player()
+        self.__weapon = gun.Gun('Pistol', 10, 400, 'pistol.png', game_ref)
         self.__seekers: list[seeker.Seeker] = []
         self.__power_ups: list[power_up.PowerUp] = []
+        self.__player: player.Player = player.Player(self.__weapon)
 
-        self.__bullet_seeker_collision_detector = collision_detector.CollisionDetector(self.__seekers, self.__player.weapon.bullets)
+        self.__bullet_seeker_collision_detector = collision_detector.CollisionDetector(self.__player.weapon.bullets, self.__seekers)
         self.__bullet_seeker_collision_handler = bullet_collision_handler.BulletCollisionHandler(self.__player.weapon, self.__seekers)
 
         self.__seeker_spawner = seeker_spawner.SeekerSpawner(self.__seekers, self.__player)
@@ -78,7 +80,6 @@ class LevelState(state.State):
             seeker.draw_at(super().game_reference.screen)
             if not self.__paused:
                 seeker.move()
-        self.__player.weapon.check_target(self.__seekers)
         for powerup in self.__power_ups:
             powerup.draw_at(self.game_reference.screen)
             powerup.add_power_up_to_list()

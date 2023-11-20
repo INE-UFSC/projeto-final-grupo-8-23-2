@@ -1,14 +1,42 @@
+from __future__ import annotations
+
 import pygame
 from abc import ABC, abstractmethod
 
+import game
+
 
 class Weapon(ABC):
-    def __init__(self, name, damage, range, sprite):
+    def __init__(self, name, damage, range, recover_time: int, sprite, game_ref: game.Game):
         self.__name = name
         self.__damage = damage
         self.__range = range
         self.__sprite = sprite
         self.__bullets = []
+
+        self.__game_ref = game_ref
+        self.__last_attack = 0
+        self.__recover_time = recover_time
+
+    @property
+    def recover_time(self) -> int:
+        return self.__recover_time
+
+    @recover_time.setter
+    def recover_time(self, recover_time: int) -> None:
+        self.__recover_time = recover_time
+
+    @property
+    def last_attack(self) -> int:
+        return self.__last_attack
+
+    @last_attack.setter
+    def last_attack(self, last_attack_time: int) -> None:
+        self.__last_attack = last_attack_time
+
+    @property
+    def game_ref(self) -> game.Game:
+        return self.__game_ref
 
     @abstractmethod
     def attack(self):
@@ -16,10 +44,6 @@ class Weapon(ABC):
 
     @abstractmethod
     def draw(self):
-        pass
-
-    @abstractmethod
-    def check_target(self):
         pass
 
     @property

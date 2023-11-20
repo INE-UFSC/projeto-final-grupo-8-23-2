@@ -3,6 +3,7 @@ from __future__ import annotations
 import pygame
 import math
 
+from constants import weapons_constants
 from entities import player
 from weapons.weapon import Weapon
 from weapons.bullet import Bullet
@@ -11,7 +12,7 @@ import game
 
 class Gun(Weapon):
     def __init__(self, name, damage, range, sprite, game_ref: game.Game):
-        super().__init__(name, damage, range, 1000, sprite, game_ref)
+        super().__init__(name, damage, range, weapons_constants.GUN_RECOVER_TIME, sprite, game_ref)
         self.__bullets = []
         self.last_attack = -self.recover_time
 

@@ -75,10 +75,10 @@ class LevelState(state.State):
                 self.run_death_music()
                 self.__date_death_state = datetime.now()
                 self.__date_death_state_increment = self.__date_death_state
-        # for seeker in self.__seekers:
-        #     seeker.draw_at(super().game_reference.screen)
-        #     if not self.__paused:
-        #         seeker.move()
+        for seeker in self.__seekers:
+            seeker.draw_at(super().game_reference.screen)
+            if not self.__paused:
+                seeker.move()
         for powerup in self.__power_ups:
             powerup.draw_at(self.game_reference.screen)
             if powerup.actived and powerup.contains_timer:

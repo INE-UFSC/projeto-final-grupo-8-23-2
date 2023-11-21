@@ -89,7 +89,6 @@ class LevelState(state.State):
         if self.__paused:
             self.pause()
             
-            
         self.mouse.show_mouse(self.game_reference.screen)
 
     def update(self) -> None:

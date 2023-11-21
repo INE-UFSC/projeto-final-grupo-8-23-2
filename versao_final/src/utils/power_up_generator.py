@@ -13,7 +13,7 @@ class PowerUpGenerator:
 
     def generate(self) -> None:
         power_up = random.choice([
-            # power_up_health.PowerUpHealth(self.__player),
+            power_up_health.PowerUpHealth(self.__player),
             power_up_speed.PowerUpSpeed(self.__player)
         ])
         self.__power_ups.append(power_up)

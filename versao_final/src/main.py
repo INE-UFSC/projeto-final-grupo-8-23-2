@@ -1,5 +1,5 @@
 from game import Game
-
+# -*- coding: utf-8 -*-
 
 # Função para rodar o jogo
 def main() -> None:

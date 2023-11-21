@@ -7,6 +7,7 @@ import constants.powerup_constants as cons
 import constants.game_constants as gamecons
 from entities.player import Player
 from utils.utils import get_file_path
+import utils.utils
 import time
 
 
@@ -101,11 +102,11 @@ class PowerUp(ABC):
         return sec
     
     def draw_modal_message(self, screen):
-        font = pygame.font.Font(f'{get_file_path(__file__)}/fonts/gunmetl.ttf', 40)
-        color_text = (153,0,153)
+        font = pygame.font.Font(f'{get_file_path(__file__)}/fonts/VT323-Regular.ttf', 50)
+        color_text = utils.utils.white
         text_surface = font.render(self.__message_modal, False, color_text)
         text_pos_x = (gamecons.SCREEN_WIDTH / 2) - (text_surface.get_width() / 2)
-        text_surface_position = pygame.Vector2(text_pos_x, 20)
+        text_surface_position = pygame.Vector2(text_pos_x, ((gamecons.SCREEN_HEIGHT / 2) - (text_surface.get_height() / 2)))
     
         if self.__timer_modal_start == None:
             self.__timer_modal_start = datetime.now()

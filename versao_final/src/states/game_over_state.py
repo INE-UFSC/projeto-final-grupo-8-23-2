@@ -7,6 +7,7 @@ from states import state, menu_state
 from constants import game_constants
 from utils.utils import get_file_path
 from utils.buttons import text_button
+import utils.utils
 
 
 class GameOverState(state.State):
@@ -17,8 +18,8 @@ class GameOverState(state.State):
 
         self.__buttons = [text_button.TextButton('Voltar ao menu', 'change_to_menu_state')]
 
-        self.__font = pygame.font.Font(f'{resources_path}/fonts/Kemco Pixel Bold.ttf', 96)
-        self.__render = self.__font.render("GAME OVER", True, (255, 0, 0))
+        self.__font = pygame.font.Font(f'{resources_path}/fonts/VT323-Regular.ttf', 136)
+        self.__render = self.__font.render("GAME OVER", True, utils.utils.red)
         path_sound = f'{get_file_path(__file__)}/sounds/menu_sound.mp3'
         super().__init__(game_ref, path_sound, volumn_sound=0.4)
 
@@ -29,7 +30,7 @@ class GameOverState(state.State):
         base = game_constants.SCREEN_HEIGHT / 2 - 10
 
         super().game_reference.screen.blit(self.__background, (0, 0))
-        super().game_reference.screen.blit(self.__render, ((game_constants.SCREEN_WIDTH - self.__render.get_width())//2, base - 40))
+        super().game_reference.screen.blit(self.__render, ((game_constants.SCREEN_WIDTH - self.__render.get_width())//2, base - 80))
         for button in self.__buttons:
             base += 75
             button.draw_at(self.game_reference.screen, (game_constants.SCREEN_WIDTH - button.width)//2, base)

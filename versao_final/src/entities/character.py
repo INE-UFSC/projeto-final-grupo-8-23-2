@@ -18,6 +18,7 @@ class Character(ABC, pygame.sprite.Sprite):
         self.__position = position
         self.__health = health
         self.__damage = damage
+        self.__speed_init = speed
         self.__speed = speed
         self.__armor = armor
         self.__weapon = weapon
@@ -25,6 +26,14 @@ class Character(ABC, pygame.sprite.Sprite):
 
         pygame.sprite.Sprite.__init__(self)
 
+    @property
+    def speed_init(self) -> int:
+        return self.__speed_init
+
+    @speed_init.setter
+    def speed_init(self, speed_init: int) -> None:
+        self.__speed_init = speed_init
+        
     @property
     def health(self) -> int:
         return self.__health

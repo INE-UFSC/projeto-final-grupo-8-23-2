@@ -23,4 +23,3 @@ class BulletCollisionHandler:
 
         for bullet in bullets_to_remove:
             self.__bullets_list.remove(bullet)
-

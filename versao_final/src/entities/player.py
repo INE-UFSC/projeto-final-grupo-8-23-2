@@ -47,7 +47,7 @@ class Player(character.Character):
         pos = super().position if position == None else position
         pygame.Surface.blit(screen, self.image, pos)
         self.__health_bar.draw_at(screen)
-        self.__weapon.draw(screen)
+        self.__weapon.draw(screen, self)
 
     def set_img_by_direction(self):
         match self.__current_direction:

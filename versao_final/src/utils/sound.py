@@ -1,8 +1,5 @@
 import pygame
 
-from utils.utils import get_file_path
-
-
 class Sound():
     def __init__(self, name, path, volumn = 1, is_bg=True) -> None:
         self.__name = name

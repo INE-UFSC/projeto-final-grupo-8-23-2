@@ -77,7 +77,7 @@ class LevelState(state.State):
             seeker.draw_at(super().game_reference.screen)
             if not self.__paused:
                 seeker.move()
-        self._player.weapon.check_target(self._seekers)
+        self.__player.weapon.check_target(self._seekers)
         for powerup in self.__power_ups:
             powerup.draw_at(super().game_reference.screen)
             powerup.add_power_up_to_list()

@@ -3,7 +3,7 @@ from __future__ import annotations
 import pygame
 
 import game
-from weapons import gun
+from weapons import gun, earthquaker
 from handlers import bullet_collision_handler
 from handlers import collision_detector
 from utils import seeker_spawner, power_up_generator, pause, utils
@@ -19,7 +19,8 @@ from map import map
 
 class LevelState(state.State):
     def __init__(self, game_ref: game.Game) -> None:
-        self.__weapon = gun.Gun('Pistol', 10, 400, 'pistol.png', game_ref)
+        self.__weapon = earthquaker.Earthquaker('Earthquaker', 50, 100, 'grass.png', game_ref)
+        # self.__weapon = gun.Gun('Pistol', 10, 400, 'pistol.png', game_ref)
         self.__seekers: list[seeker.Seeker] = []
         self.__power_ups: list[power_up.PowerUp] = []
         self.__player: player.Player = player.Player(self.__weapon)
@@ -76,6 +77,7 @@ class LevelState(state.State):
                 self.__date_death_state = datetime.now()
                 self.__date_death_state_increment = self.__date_death_state
         for seeker in self.__seekers:
+            self.__player.weapon.check_target(seeker)
             seeker.draw_at(super().game_reference.screen)
             if not self.__paused:
                 seeker.move()

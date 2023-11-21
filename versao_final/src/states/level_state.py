@@ -86,7 +86,8 @@ class LevelState(state.State):
             powerup.add_power_up_to_list()
         if self.__paused:
             self.pause()
-
+            
+            
         self.mouse.show_mouse(self.game_reference.screen)
 
     def update(self) -> None:

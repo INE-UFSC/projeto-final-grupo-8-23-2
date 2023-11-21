@@ -83,6 +83,8 @@ class LevelState(state.State):
             powerup.draw_at(self.game_reference.screen)
             if powerup.actived and powerup.contains_timer:
                 powerup.draw_timer(self.game_reference.screen)
+            if powerup.actived and not powerup.hidden_modal:
+                powerup.draw_modal_message(self.game_reference.screen)
             powerup.add_power_up_to_list()
         if self.__paused:
             self.pause()

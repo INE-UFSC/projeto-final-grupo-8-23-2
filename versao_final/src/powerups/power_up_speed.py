@@ -7,7 +7,7 @@ import constants.powerup_constants as powerconst
 
 class PowerUpSpeed(PowerUp):
     def __init__(self, player_ref):
-        super().__init__(player_ref)
+        super().__init__(player_ref, message_modal="SPEED 2x")
         self.color = pygame.Color(utils.purple)
         self.upgrade_value = powerconst.SPEED
 

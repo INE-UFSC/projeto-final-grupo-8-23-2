@@ -11,7 +11,7 @@ import time
 
 
 class PowerUp(ABC):
-    def __init__(self, player_ref: Player, contains_timer = True, max_timer_start = 5) -> None:
+    def __init__(self, player_ref: Player, contains_timer = True, max_timer_start = 5, message_modal = None) -> None:
        self.__player = player_ref
        self.__upgrade_value = None
        self.__icon = None
@@ -29,6 +29,12 @@ class PowerUp(ABC):
        self.__timer_draw_start = None
        self.__max_time_draw_sec = 10
        self.__hidden_draw = False
+       
+       self.__timer_modal_start = None
+       self.__max_time_modal_sec = 2
+       self.__hidden_modal = False
+       
+       self.__message_modal = message_modal
        
     @property
     def contains_timer(self):
@@ -53,6 +59,14 @@ class PowerUp(ABC):
     @hidden_draw.setter
     def hidden_draw(self, val:bool):
         self.__hidden_draw = val
+        
+    @property
+    def hidden_modal(self):
+        return self.__hidden_modal
+
+    @hidden_modal.setter
+    def hidden_modal(self, val:bool):
+        self.__hidden_modal = val
         
     @property
     def finished_time(self):
@@ -85,6 +99,20 @@ class PowerUp(ABC):
             else:
                 sec = 0 
         return sec
+    
+    def draw_modal_message(self, screen):
+        font = pygame.font.Font(f'{get_file_path(__file__)}/fonts/gunmetl.ttf', 40)
+        color_text = (153,0,153)
+        text_surface = font.render(self.__message_modal, False, color_text)
+        text_pos_x = (gamecons.SCREEN_WIDTH / 2) - (text_surface.get_width() / 2)
+        text_surface_position = pygame.Vector2(text_pos_x, 20)
+    
+        if self.__timer_modal_start == None:
+            self.__timer_modal_start = datetime.now()
+        sec = self.counter_time(self.__timer_modal_start, self.__max_time_modal_sec)
+        self.__hidden_modal = sec == 0
+        
+        pygame.Surface.blit(screen, text_surface, text_surface_position)
 
     def draw_at(self, screen: pygame.Surface) -> None:
         if not self.actived and not self.hidden_draw:
@@ -139,7 +167,7 @@ class PowerUp(ABC):
         else:
             self.disable_power_up()
 
-    def activate_power_up(self) -> None:
+    def activate_power_up(self, screen:pygame.Surface) -> None:
         # p fazer o calculo do timer
         if self.__timer_start == None:
             self.__timer_start = datetime.now()

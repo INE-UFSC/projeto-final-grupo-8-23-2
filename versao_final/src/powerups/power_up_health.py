@@ -9,7 +9,7 @@ from utils import utils
 
 class PowerUpHealth(PowerUp):
     def __init__(self, player_ref: player.Player):
-        super().__init__(player_ref, contains_timer=False)
+        super().__init__(player_ref, contains_timer=False, message_modal="25% DE VIDA RECUPERADA")
         self.color = pygame.Color(utils.yellow)
         self.upgrade_value = powerconst.HEALTH
         

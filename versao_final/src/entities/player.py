@@ -129,7 +129,7 @@ class Player(character.Character):
             distance_formula = (math.sqrt(((powerup_x - player_x)**2) + ((powerup_y - player_y)**2)))
             # condição para usar o powerup
             if (not powerup.actived) and (distance_formula <= (radius_player + radius_powerup)) :
-                powerup.activate_power_up()
+                powerup.activate_power_up(screen)
                 self.run_coin_sound()
             
     @property

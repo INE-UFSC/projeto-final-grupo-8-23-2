@@ -31,7 +31,9 @@ class Earthquaker(Weapon):
 
     def check_target(self, seeker):
         if self.__earthquake != None:
-            if ((seeker.position.x - self.__earthquake.position.x) + ((seeker.position.y - self.__earthquake.position.y)**2) <= (self.__earthquake.range)**2):
+            verify_x = (seeker.position.x - self.__earthquake.position.x)**2 <= (self.__earthquake.range)**2
+            verify_y = (seeker.position.y - self.__earthquake.position.y)**2 <= (self.__earthquake.range)**2
+            if verify_x and verify_y:
                 seeker.take_damage(super().damage)
         self.__earthquake = None
 

@@ -32,7 +32,6 @@ class LevelState(state.State):
 
         self.__power_up_generator = power_up_generator.PowerUpGenerator(self.__power_ups, self.__player)
         self.__power_up_time_listener = power_up_timer_subject.PowerUpTimerSubject()
-
         self.__map = map.Map()
 
         self.__date_death_state = datetime.min
@@ -76,12 +75,14 @@ class LevelState(state.State):
                 self.run_death_music()
                 self.__date_death_state = datetime.now()
                 self.__date_death_state_increment = self.__date_death_state
-        for seeker in self.__seekers:
-            seeker.draw_at(super().game_reference.screen)
-            if not self.__paused:
-                seeker.move()
+        # for seeker in self.__seekers:
+        #     seeker.draw_at(super().game_reference.screen)
+        #     if not self.__paused:
+        #         seeker.move()
         for powerup in self.__power_ups:
             powerup.draw_at(self.game_reference.screen)
+            if powerup.actived and powerup.contains_timer:
+                powerup.draw_timer(self.game_reference.screen)
             powerup.add_power_up_to_list()
         if self.__paused:
             self.pause()
@@ -102,7 +103,7 @@ class LevelState(state.State):
                 self.__seekers.remove(seeker)
 
             for powerup in self.__power_ups:
-                if powerup.actived:
+                if powerup.finished:
                     self.__power_ups.remove(powerup)
 
             self.__seeker_time_listener.handle_events()
@@ -110,8 +111,8 @@ class LevelState(state.State):
 
             if self.__player.alive:
                 self.__player.move()
-
-            self.__player.get_power_up()
+            
+            self.__player.get_power_up(self.game_reference.screen)
             self.__player.attack(self.game_reference.screen)
 
             date_sec = self.__date_death_state + timedelta(seconds=100)

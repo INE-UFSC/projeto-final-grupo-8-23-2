@@ -9,9 +9,13 @@ from utils import utils
 
 class PowerUpHealth(PowerUp):
     def __init__(self, player_ref: player.Player):
-        super().__init__(player_ref)
+        super().__init__(player_ref, contains_timer=False)
         self.color = pygame.Color(utils.yellow)
         self.upgrade_value = powerconst.HEALTH
+        
+    def disable_power_up(self) -> None:
+        self.actived = False
+        self.finished = True
 
     def power_up_logic(self) -> None:
         if self.player.health + self.upgrade_value > playerconst.HEALTH:

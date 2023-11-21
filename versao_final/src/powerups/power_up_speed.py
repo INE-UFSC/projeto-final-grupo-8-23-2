@@ -11,5 +11,11 @@ class PowerUpSpeed(PowerUp):
         self.color = pygame.Color(utils.purple)
         self.upgrade_value = powerconst.SPEED
 
+    def disable_power_up(self):
+        self.player.speed -= self.upgrade_value
+        
+        self.actived = False
+        self.finished = True
+        
     def power_up_logic(self) -> None:
         self.player.speed += self.upgrade_value

@@ -117,7 +117,7 @@ class Player(character.Character):
         coin_sound.set_volume(0.5)
         coin_sound.play()
 
-    def get_power_up(self):
+    def get_power_up(self, screen):
         for powerup in self.__power_ups:
             # calculo da distancia entre o powerup e o player
             powerup_x = powerup.position.x
@@ -131,7 +131,7 @@ class Player(character.Character):
             if (not powerup.actived) and (distance_formula <= (radius_player + radius_powerup)) :
                 powerup.activate_power_up()
                 self.run_coin_sound()
-
+            
     @property
     def alive(self):
         return self.__alive

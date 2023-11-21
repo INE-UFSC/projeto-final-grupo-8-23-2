@@ -91,6 +91,7 @@ class LevelState(state.State):
             
         self.mouse.show_mouse(self.game_reference.screen)
 
+
     def update(self) -> None:
         if not self.__paused:
             bullet_seeker_collisions = self.__bullet_seeker_collision_detector.detect_collision()

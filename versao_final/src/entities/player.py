@@ -4,6 +4,8 @@ import pygame
 import math
 
 from entities import character
+from utils.images.ImageGame import ImageGame
+from constants import img_names_constants
 from utils.music import Music
 from weapons import weapon
 from weapons.gun import Gun
@@ -32,10 +34,8 @@ class Player(character.Character):
         self.__spawn_position = pygame.Vector2(player_constants.PLAYER_SPAWN_POSITION)
         self.__health_bar = health_bar.HealthBar(self.__spawn_position, player_constants.HEALTH)
         self.__attacking = False
-        img = f'{get_file_path(__file__)}/player/player.webp'
-        img_transform = pygame.transform.scale(pygame.image.load(img),
-                                              (player_constants.WIDTH, player_constants.HEIGHT)) #image
-        self.image = pygame.transform.flip(img_transform, False, False)
+        # era flip
+        self.image = ImageGame().transform_scale(img_names_constants.PLAYER)
 
         super().__init__(self.__spawn_position, player_constants.HEALTH, player_constants.SPEED, self.image)
 
@@ -60,23 +60,14 @@ class Player(character.Character):
                 return
 
     def set_img_draw_right(self):
-        img = f'{get_file_path(__file__)}/player/player_run.png'
-        img_transform = pygame.transform.scale(pygame.image.load(img),
-                                              (player_constants.WIDTH, player_constants.HEIGHT)) #image
-        self.image = pygame.transform.flip(img_transform, False, False)
+        self.image = ImageGame().transform_scale(img_names_constants.RUN_PLAYER)
 
     def set_img_draw_left(self):
-        img = f'{get_file_path(__file__)}/player/player_run.png'
-        img_transform = pygame.transform.scale(pygame.image.load(img),
-                                              (player_constants.WIDTH, player_constants.HEIGHT)) #image
-        self.image = pygame.transform.flip(img_transform, True, False)
+        self.image = ImageGame().transform_flip(img_names_constants.RUN_PLAYER, True)
 
     def draw_at_death(self, screen: pygame.Surface):
-        img = f'{get_file_path(__file__)}/player/death_player.png'
-        img_transform = pygame.transform.scale(pygame.image.load(img),
-                                              (70, 35)) #image
         is_left = self.__current_direction == 'LEFT'
-        self.image = pygame.transform.flip(img_transform, is_left, False)
+        self.image = ImageGame().transform_flip(img_names_constants.DEATH_PLAYER, is_left)
         position = pygame.Vector2(super().position.x, super().position.y + 35)
 
         self.draw_at(screen, position=position)

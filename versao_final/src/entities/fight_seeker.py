@@ -12,7 +12,6 @@ class FightSeeker(Seeker):
             seeker_constants.FIGHT_SEEKER_SPEED,
             seeker_constants.FIGHT_SEEKER_DAMAGE,
             seeker_constants.FIGHT_SEEKER_ARMOR,
-            f'{get_file_path(__file__)}/sprites/ghost.webp',
             30 # ideias
         )
 

@@ -7,14 +7,14 @@ from states import state, menu_state
 from constants import game_constants, names_musics
 from utils.utils import get_file_path
 from utils.buttons import text_button
+from utils.images.ImageGame import ImageGame
+from constants import img_names_constants
 class TutorialState(state.State):
     def __init__(self, game_ref: game.Game) -> None:
         resources_path = get_file_path(__file__)
-        self.__background = pygame.transform.scale(pygame.image.load(f'{resources_path}/backgrounds/tutorial_bg.jpg'),
-                                                    (game_constants.SCREEN_WIDTH, game_constants.SCREEN_HEIGHT))
+        self.__background = ImageGame().transform_scale(img_names_constants.BG_TUTORIAL)
         
-        self.__tutorial_img = pygame.transform.scale2x(pygame.image.load(f'{resources_path}/backgrounds/tutorial.png')),
-
+        self.__tutorial_img = ImageGame().transform_scale_2x(img_names_constants.TUTORIAL_MODAL)
         self.__buttons = [text_button.TextButton('Voltar ao menu', 'change_to_menu_state')]
         self.__font = pygame.font.Font(f'{resources_path}/fonts/NightsideDemoRegular.ttf', 64)
         self.__render = self.__font.render("Tutorial", True, (255, 255, 255))
@@ -32,9 +32,9 @@ class TutorialState(state.State):
         super().game_reference.screen.blit(self.__render, ((game_constants.SCREEN_WIDTH - self.__render.get_width())//2, 50)) 
         
         # mostra a imagem do tutorial
-        super().game_reference.screen.blit(self.__tutorial_img[0], ( ## por alguma razao to tendo que botar um [0], alguem sabe?
-                                           (game_constants.SCREEN_WIDTH - self.__tutorial_img[0].get_width())//2, 
-                                           (game_constants.SCREEN_HEIGHT - self.__tutorial_img[0].get_height())//2 + 20))
+        super().game_reference.screen.blit(self.__tutorial_img, ( 
+                                           (game_constants.SCREEN_WIDTH - self.__tutorial_img.get_width())//2, 
+                                           (game_constants.SCREEN_HEIGHT - self.__tutorial_img.get_height())//2 + 20))
         
         base = game_constants.SCREEN_HEIGHT - 50 - self.__buttons[0].height
         # mostra os botoes

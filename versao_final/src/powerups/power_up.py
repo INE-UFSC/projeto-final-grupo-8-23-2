@@ -5,7 +5,9 @@ from datetime import datetime, timedelta
 
 import constants.powerup_constants as cons
 import constants.game_constants as gamecons
+from constants import img_names_constants
 from entities.player import Player
+from utils.images.ImageGame import ImageGame
 from utils.utils import get_file_path
 import utils.utils
 import time
@@ -123,10 +125,7 @@ class PowerUp(ABC):
 
     def draw_at(self, screen: pygame.Surface, pause_game) -> None:
         if not self.actived and not self.hidden_draw:
-            img = f'{get_file_path(__file__)}/components/coin.webp'
-            img_transform = pygame.transform.scale(pygame.image.load(img),
-                                                (25, 25)) #image
-            image = pygame.transform.flip(img_transform, True, False)
+            image = ImageGame().transform_flip(img_names_constants.COIN)
             
             if self.__timer_draw_start == None:
                 self.__timer_draw_start = datetime.now()
@@ -151,7 +150,7 @@ class PowerUp(ABC):
             elif not pause_game:
                 self.__current_timer = self.update_timer(self.__current_timer, 10000)
                 
-            img = f'{get_file_path(__file__)}/components/white_timer.webp'
+            img_transform = ImageGame().transform_scale(img_names_constants.WHITE_TIMER)
             
             # add temporizador
             pygame.font.init()
@@ -169,9 +168,9 @@ class PowerUp(ABC):
                 color_text = (255,255,255)
             elif ending_total_sec >= sec > half_total_sec:
                 color_text = (255,255,0) # yellow
-                img = f'{get_file_path(__file__)}/components/yellow_timer.webp'
+                img_transform = ImageGame().transform_scale(img_names_constants.YELLOW_TIMER)
             else:
-                img = f'{get_file_path(__file__)}/components/red_timer.webp'
+                img_transform = ImageGame().transform_scale(img_names_constants.RED_TIMER)
                 color_text = (255,0,0)
                 
             txt_sec = f"00:{sec}" if sec > 9 else f"00:0{sec}"
@@ -181,10 +180,7 @@ class PowerUp(ABC):
             pygame.Surface.blit(screen, text_surface, text_surface_position)
             
             # renderiza o cronometro
-            img_transform = pygame.transform.scale(pygame.image.load(img),
-                                                (22, 25)) #image
-            image = pygame.transform.flip(img_transform, True, False)
-            pygame.Surface.blit(screen, image, self.define_timer_position())
+            pygame.Surface.blit(screen, img_transform, self.define_timer_position())
         else:
             self.disable_power_up()
 

@@ -5,6 +5,8 @@ import pygame
 import game
 from states import state, menu_state
 from constants import game_constants, names_musics
+from utils.images.ImageGame import ImageGame
+from constants import img_names_constants
 from utils.utils import get_file_path
 from utils.buttons import text_button
 import utils.utils
@@ -13,8 +15,7 @@ import utils.utils
 class GameOverState(state.State):
     def __init__(self, game_ref: game.Game) -> None:
         resources_path = get_file_path(__file__)
-        self.__background = pygame.transform.scale(pygame.image.load(f'{resources_path}/backgrounds/bg_game_over_2.jpg'),
-        (game_constants.SCREEN_WIDTH, game_constants.SCREEN_HEIGHT))
+        self.__background = ImageGame().transform_scale(img_names_constants.BG_GAME_OVER)
 
         self.__buttons = [text_button.TextButton('Voltar ao menu', 'change_to_menu_state')]
 

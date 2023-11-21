@@ -8,13 +8,13 @@ from states import level_state, tutorial_state
 from constants import game_constants, names_musics
 from utils.utils import get_file_path
 from utils.buttons import text_button
-
+from utils.images.ImageGame import ImageGame
+from constants import img_names_constants
 
 class MenuState(State):
     def __init__(self, game_ref: game.Game) -> None:
         resources_path = get_file_path(__file__)
-        self.__background = pygame.transform.scale(pygame.image.load(f'{resources_path}/backgrounds/menu_background.jpg'),
-        (game_constants.SCREEN_WIDTH, game_constants.SCREEN_HEIGHT))
+        self.__background = ImageGame().transform_scale(img_names_constants.BG_MENU)
 
         self.__buttons = [text_button.TextButton('iniciar', 'change_to_level_state'), 
                           text_button.TextButton('tutorial', 'change_to_tutorial_state'), 

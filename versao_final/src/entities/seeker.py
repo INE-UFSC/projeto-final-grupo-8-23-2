@@ -7,13 +7,13 @@ from entities.player import Player
 from entities.character import Character
 from constants import game_constants
 from constants import seeker_constants
-
+from utils.images.ImageGame import ImageGame
+from constants import img_names_constants
 
 class Seeker(Character, ABC):
     def __init__(self, player_reference: Player, seeker_range: int, seeker_health: int,
-                 seeker_speed: int, seeker_damage: int, seeker_armor: int, image: str, worth_points:int) -> None:
-        self.image = pygame.transform.scale(pygame.image.load(image),
-                                              (seeker_constants.SEEKER_HEIGHT, seeker_constants.SEEKER_WIDTH)) #image
+                 seeker_speed: int, seeker_damage: int, seeker_armor: int, worth_points:int) -> None:
+        self.image = ImageGame().transform_scale(img_names_constants.GHOST)
         self.__player_to_chase = player_reference
         self.__seeker_range = seeker_range
         self.__damage = seeker_damage
@@ -26,7 +26,7 @@ class Seeker(Character, ABC):
 
         super().__init__(self.__seeker_position, seeker_health, seeker_speed, self.image, seeker_armor)
         if super().position.x <= self.__player_to_chase.position.x:
-            self.image = pygame.transform.flip(self.image, True, False)
+            self.image = ImageGame().transform_flip(img_names_constants.GHOST, True)
             self.__inverted = True
 
         self.rect = self.image.get_rect()

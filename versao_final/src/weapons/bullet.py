@@ -5,6 +5,8 @@ from time import sleep
 from utils.utils import get_file_path
 from weapons.ammo import Ammo
 
+from utils.images.ImageGame import ImageGame
+from constants import img_names_constants
 
 class Bullet(Ammo):
     def __init__(self, x, y, range, speed, direction) -> None:
@@ -13,12 +15,7 @@ class Bullet(Ammo):
         self.__direction = direction
         self.__moving = True
         self.__range = range
-
-        img = f'{get_file_path(__file__)}/bullet/fireball.webp'
-        img_transform = pygame.transform.scale(pygame.image.load(img),
-        (15, 15)) #image
-        self.image = pygame.transform.flip(img_transform, True, False)
-        self.image = pygame.transform.rotate(self.image, 45)
+        self.image = ImageGame().transform_rotate(img_names_constants.BULLET_FIREBALL, 45)
         self.rect = self.image.get_rect()
         self.rect.topleft = (int(self.position.x), int(self.position.y))
 

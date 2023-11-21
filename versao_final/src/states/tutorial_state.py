@@ -18,7 +18,7 @@ class TutorialState(state.State):
         self.__buttons = [text_button.TextButton('Voltar ao menu', 'change_to_menu_state')]
         self.__font = pygame.font.Font(f'{resources_path}/fonts/NightsideDemoRegular.ttf', 64)
         self.__render = self.__font.render("Tutorial", True, (255, 255, 255))
-        super().__init__(game_ref, name_music=names_musics.TUTORIAL, volumn_sound=0.4, using_esc=True)
+        super().__init__(game_ref, name_music=names_musics.TUTORIAL, using_esc=True)
 
     def entering(self) -> None:
         super().run_bg_sound()

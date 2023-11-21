@@ -91,27 +91,31 @@ class Player(character.Character):
         self.__health_bar.update_health_bar(self.health)
 
     def move(self):
-        keys = pygame.key.get_pressed()
-        direction = None
-        if keys[pygame.K_w] or keys[pygame.K_UP]:
-            direction = 'UP'
-            if super().position.y > player_constants.WIDTH:
-                super().position.y -= super().speed
-        if keys[pygame.K_s] or keys[pygame.K_DOWN]:
-            direction = 'DOWN'
-            if super().position.y < game_constants.SCREEN_HEIGHT - player_constants.WIDTH:
-                super().position.y += super().speed
-        if keys[pygame.K_a] or keys[pygame.K_LEFT]:
-            direction = 'LEFT'
-            if super().position.x > player_constants.WIDTH:
-                super().position.x -= super().speed
-        if keys[pygame.K_d] or keys[pygame.K_RIGHT]:
-            direction = 'RIGHT'
-            if super().position.x < game_constants.SCREEN_WIDTH - player_constants.WIDTH:
-                super().position.x += super().speed
+        if self.alive:
+            keys = pygame.key.get_pressed()
+            direction = None
+            if keys[pygame.K_w] or keys[pygame.K_UP]:
+                direction = 'UP'
+                if super().position.y > player_constants.WIDTH:
+                    super().position.y -= super().speed
+            if keys[pygame.K_s] or keys[pygame.K_DOWN]:
+                direction = 'DOWN'
+                if super().position.y < game_constants.SCREEN_HEIGHT - player_constants.WIDTH:
+                    super().position.y += super().speed
+            if keys[pygame.K_a] or keys[pygame.K_LEFT]:
+                direction = 'LEFT'
+                if super().position.x > player_constants.WIDTH:
+                    super().position.x -= super().speed
+            if keys[pygame.K_d] or keys[pygame.K_RIGHT]:
+                direction = 'RIGHT'
+                if super().position.x < game_constants.SCREEN_WIDTH - player_constants.WIDTH:
+                    super().position.x += super().speed
 
-        if direction != None:
-            self.__current_direction = direction
+            if direction != None:
+                self.__current_direction = direction
+            
+    def add_score(self, worth_points):
+        self.score += worth_points
 
     def get_power_up(self, screen):
         for powerup in self.__power_ups:

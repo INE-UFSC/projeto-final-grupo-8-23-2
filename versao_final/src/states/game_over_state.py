@@ -20,7 +20,7 @@ class GameOverState(state.State):
 
         self.__font = pygame.font.Font(f'{resources_path}/fonts/VT323-Regular.ttf', 136)
         self.__render = self.__font.render("GAME OVER", True, utils.utils.red)
-        super().__init__(game_ref, name_music=names_musics.GAME_OVER_MENU, volumn_sound=0.4)
+        super().__init__(game_ref, name_music=names_musics.GAME_OVER_MENU)
 
     def entering(self) -> None:
         self.run_bg_sound()

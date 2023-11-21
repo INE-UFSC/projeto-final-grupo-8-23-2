@@ -11,7 +11,6 @@ class PowerUpSpeed(PowerUp):
         speed_percent = int(abs((powerconst.SPEED * 100 / player_ref.speed_init) - 100))
         super().__init__(player_ref, message_modal=f"SPEED {speed_percent}% AUMENTADA")
         
-        print(player_ref.speed_init)
         self.color = pygame.Color(utils.purple)
         self.upgrade_value = powerconst.SPEED
 

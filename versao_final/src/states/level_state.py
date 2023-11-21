@@ -58,8 +58,17 @@ class LevelState(state.State):
             ]
         )
 
-    def render(self) -> None:
+    def render_map(self):
         self.__map.draw_background(self.game_reference.screen)
+        
+    def render_seekers(self):
+        for seeker in self.__seekers:
+            self.__player.weapon.check_target(seeker)
+            seeker.draw_at(super().game_reference.screen)
+            if not self.__paused:
+                seeker.move()
+    
+    def render_player(self):
         if self.__player.alive:
             self.__player.draw_at(self.game_reference.screen)
         else:
@@ -68,11 +77,8 @@ class LevelState(state.State):
                 Music().run_sound(names_musics.DEATH)
                 self.__date_death_state = datetime.now()
                 self.__date_death_state_increment = self.__date_death_state
-        for seeker in self.__seekers:
-            self.__player.weapon.check_target(seeker)
-            seeker.draw_at(super().game_reference.screen)
-            if not self.__paused:
-                seeker.move()
+        
+    def render_powerups(self):
         for powerup in self.__power_ups:
             powerup.draw_at(self.game_reference.screen, self.__paused)
             if powerup.actived and powerup.contains_timer:
@@ -80,45 +86,62 @@ class LevelState(state.State):
             if powerup.actived and not powerup.hidden_modal:
                 powerup.draw_modal_message(self.game_reference.screen)
             powerup.add_power_up_to_list()
+            
+    def render(self) -> None:
+        self.render_map()
+        self.render_player()
+        self.render_seekers()
+        self.render_powerups()
         if self.__paused:
             self.pause()
-            
         self.mouse.show_mouse(self.game_reference.screen)
 
+    def dead_seeker(self):
+        for seeker in self.__seekers:
+            if not seeker.alive:
+                self.player_score_dead_seeker(seeker.worth_points)
+                self.__seekers.remove(seeker)
+                
+    def bullet_seeker_collision(self):
+        bullet_seeker_collisions = self.__bullet_seeker_collision_detector.detect_collision()
+        self.__bullet_seeker_collision_handler.handle_collision(bullet_seeker_collisions)
 
+    
+    def player_score_dead_seeker(self, worth_points):
+        self.__player.add_score(worth_points)
+        
+    def powerup_finished(self):
+        for powerup in self.__power_ups:
+            if powerup.finished:
+                self.__power_ups.remove(powerup)
+                
+    def player_act(self):
+        self.__player.move()
+        self.__player.get_power_up(self.game_reference.screen)
+        self.__player.attack(self.game_reference.screen)
+        
+    def player_death_state(self):
+        date_sec = self.__date_death_state + timedelta(seconds=100)
+        
+        if not self.__player.alive:
+            if self.__date_death_state_increment == date_sec:
+                pygame.mixer.music.pause()
+                self.game_reference.set_state(game_over_state.GameOverState(self.game_reference))
+            else:
+                self.__date_death_state_increment = self.__date_death_state_increment + timedelta(seconds=1)
+        
     def update(self) -> None:
         if not self.__paused:
-            bullet_seeker_collisions = self.__bullet_seeker_collision_detector.detect_collision()
-            self.__bullet_seeker_collision_handler.handle_collision(bullet_seeker_collisions)
-
-            dead_seekers = []
-            for seeker in self.__seekers:
-                if not seeker.alive:
-                    dead_seekers.append(seeker)
-            for seeker in dead_seekers:
-                self.__player.score += seeker.worth_points
-                self.__seekers.remove(seeker)
-
-            for powerup in self.__power_ups:
-                if powerup.finished:
-                    self.__power_ups.remove(powerup)
+            self.bullet_seeker_collision()
+            
+            self.dead_seeker()
+            self.powerup_finished()
 
             self.__seeker_time_listener.handle_events()
             self.__power_up_time_listener.handle_events()
 
-            if self.__player.alive:
-                self.__player.move()
-            
-            self.__player.get_power_up(self.game_reference.screen)
-            self.__player.attack(self.game_reference.screen)
-
-            date_sec = self.__date_death_state + timedelta(seconds=100)
-            if not self.__player.alive:
-                if self.__date_death_state_increment == date_sec:
-                    pygame.mixer.music.pause()
-                    self.game_reference.set_state(game_over_state.GameOverState(self.game_reference))
-                else:
-                    self.__date_death_state_increment = self.__date_death_state_increment + timedelta(seconds=1)
+            self.player_act()
+            self.player_death_state()
 
     def exiting(self) -> None:
         self.__power_up_time_listener.unsubscribe(self.__power_up_generator.generate)

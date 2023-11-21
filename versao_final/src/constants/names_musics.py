@@ -1,0 +1,7 @@
+DEATH = "death"
+COIN = "coin"
+GAME_OVER = "game_over"
+GAME_OVER_MENU = "game_over_menu"
+LEVEL = "level"
+MENU = "menu"
+TUTORIAL = "tutorial"

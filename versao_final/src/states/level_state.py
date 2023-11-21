@@ -3,6 +3,7 @@ from __future__ import annotations
 import pygame
 
 import game
+from utils.music import Music
 from weapons import gun, earthquaker
 from handlers import bullet_collision_handler
 from handlers import collision_detector
@@ -11,7 +12,7 @@ from subjects import seeker_timer_subject, power_up_timer_subject
 from states import state, game_over_state, menu_state
 from datetime import datetime, timedelta
 from utils.utils import get_file_path
-from constants import game_constants
+from constants import game_constants, names_musics
 from entities import player, seeker
 from powerups import power_up
 from map import map
@@ -38,12 +39,10 @@ class LevelState(state.State):
         self.__date_death_state = datetime.min
         self.__date_death_state_increment = self.__date_death_state
 
-        path_sound = f'{get_file_path(__file__)}/sounds/game_sound.mp3'
-
         self.__pause_class = pause.Pause()
         self.__paused = False
 
-        super().__init__(game_ref, path_sound, 0.5, using_esc=True)
+        super().__init__(game_ref, using_esc=True, name_music=names_musics.LEVEL)
 
     def entering(self) -> None:
         self.run_bg_sound()
@@ -59,13 +58,6 @@ class LevelState(state.State):
             ]
         )
 
-    def run_death_music(self):
-        pygame.mixer.music.pause()
-        pygame.mixer.init()
-        pygame.mixer.music.set_volume(1)
-        pygame.mixer.music.load(f"{get_file_path(__file__)}/sounds/death_player.mp3")
-        pygame.mixer.music.play()
-
     def render(self) -> None:
         self.__map.draw_background(self.game_reference.screen)
         if self.__player.alive:
@@ -73,7 +65,7 @@ class LevelState(state.State):
         else:
             self.__player.draw_at_death(self.game_reference.screen)
             if self.__date_death_state == datetime.min:
-                self.run_death_music()
+                Music().run_sound(names_musics.DEATH)
                 self.__date_death_state = datetime.now()
                 self.__date_death_state_increment = self.__date_death_state
         for seeker in self.__seekers:

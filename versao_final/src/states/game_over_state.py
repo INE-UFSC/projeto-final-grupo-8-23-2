@@ -4,7 +4,7 @@ import pygame
 
 import game
 from states import state, menu_state
-from constants import game_constants
+from constants import game_constants, names_musics
 from utils.utils import get_file_path
 from utils.buttons import text_button
 import utils.utils
@@ -20,8 +20,7 @@ class GameOverState(state.State):
 
         self.__font = pygame.font.Font(f'{resources_path}/fonts/VT323-Regular.ttf', 136)
         self.__render = self.__font.render("GAME OVER", True, utils.utils.red)
-        path_sound = f'{get_file_path(__file__)}/sounds/menu_sound.mp3'
-        super().__init__(game_ref, path_sound, volumn_sound=0.4)
+        super().__init__(game_ref, name_music=names_musics.GAME_OVER_MENU, volumn_sound=0.4)
 
     def entering(self) -> None:
         self.run_bg_sound()

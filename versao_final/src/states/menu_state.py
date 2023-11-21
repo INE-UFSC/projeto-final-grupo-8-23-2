@@ -5,7 +5,7 @@ import pygame
 import game
 from states.state import State
 from states import level_state, tutorial_state
-from constants import game_constants
+from constants import game_constants, names_musics
 from utils.utils import get_file_path
 from utils.buttons import text_button
 
@@ -26,8 +26,7 @@ class MenuState(State):
         self.__font = pygame.font.Font(f'{resources_path}/fonts/NightsideDemoRegular.ttf', 96)
         self.__render = self.__font.render("SOUL SEEKERS", True, (255, 255, 255))
 
-        path_sound = f'{get_file_path(__file__)}/sounds/game_over_menu_sound.mp3'
-        super().__init__(game_ref, path_sound)
+        super().__init__(game_ref, name_music=names_musics.MENU)
 
     def entering(self) -> None:
         super().run_bg_sound()

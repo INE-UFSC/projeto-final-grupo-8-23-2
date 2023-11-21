@@ -4,10 +4,11 @@ import pygame
 import math
 
 from entities import character
+from utils.music import Music
 from weapons import weapon
 from weapons.gun import Gun
 from weapons.earthquaker import Earthquaker
-from constants import game_constants, player_constants, powerup_constants, direction_constants
+from constants import game_constants, player_constants, powerup_constants, direction_constants, names_musics
 from utils import health_bar
 from utils.utils import get_file_path
 
@@ -112,11 +113,6 @@ class Player(character.Character):
         if direction != None:
             self.__current_direction = direction
 
-    def run_coin_sound(self) -> None:
-        coin_sound = pygame.mixer.Sound(f'{get_file_path(__file__)}/sounds/coin_effect.mp3')
-        coin_sound.set_volume(0.5)
-        coin_sound.play()
-
     def get_power_up(self, screen):
         for powerup in self.__power_ups:
             # calculo da distancia entre o powerup e o player
@@ -130,7 +126,7 @@ class Player(character.Character):
             # condição para usar o powerup
             if (not powerup.actived) and (distance_formula <= (radius_player + radius_powerup)) :
                 powerup.activate_power_up(screen)
-                self.run_coin_sound()
+                Music().run_sound(names_musics.COIN)
             
     @property
     def alive(self):

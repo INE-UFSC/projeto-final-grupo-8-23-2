@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 import pygame
 import random
-from datetime import datetime
+from datetime import datetime, timedelta
 
 import constants.powerup_constants as cons
 import constants.game_constants as gamecons
@@ -23,11 +23,13 @@ class PowerUp(ABC):
        self.__timer_start = None
        self.__contains_timer = contains_timer
        self.__max_time_sec = max_timer_start
+       self.__current_timer = None # decrescente
        self.__finished_time = False # tempo esgotado
        self.__finished = False
        
        # tempo que o power up durara na tela
        self.__timer_draw_start = None
+       self.__current_timer_draw = None
        self.__max_time_draw_sec = 10
        self.__hidden_draw = False
        
@@ -87,12 +89,13 @@ class PowerUp(ABC):
 
     def add_power_up_to_list(self):
         self.__player.power_ups.append(self)
-        
-    def counter_time(self, time_start:datetime, max_time_sec):
+    
+    def counter_time(self, time_start:datetime, max_time_sec, current_timer = None):
         sec = 0 
-        
+        if current_timer == None:
+            current_timer = datetime.now()
         if time_start != None:
-            sec = time_start.timestamp() - datetime.now().timestamp()
+            sec = time_start.timestamp() - current_timer.timestamp()
             double_max_time_sec = max_time_sec * 2
             
             if max_time_sec - int(sec) < double_max_time_sec:
@@ -100,6 +103,9 @@ class PowerUp(ABC):
             else:
                 sec = 0 
         return sec
+    
+    def update_timer(self,current_timer, sum_microsec):
+        return current_timer + timedelta(microseconds=sum_microsec)
     
     def draw_modal_message(self, screen):
         font = pygame.font.Font(f'{get_file_path(__file__)}/fonts/VT323-Regular.ttf', 50)
@@ -115,7 +121,7 @@ class PowerUp(ABC):
         
         pygame.Surface.blit(screen, text_surface, text_surface_position)
 
-    def draw_at(self, screen: pygame.Surface) -> None:
+    def draw_at(self, screen: pygame.Surface, pause_game) -> None:
         if not self.actived and not self.hidden_draw:
             img = f'{get_file_path(__file__)}/components/coin.webp'
             img_transform = pygame.transform.scale(pygame.image.load(img),
@@ -124,14 +130,27 @@ class PowerUp(ABC):
             
             if self.__timer_draw_start == None:
                 self.__timer_draw_start = datetime.now()
-            sec = self.counter_time(self.__timer_draw_start, self.__max_time_draw_sec)
-            self.__hidden_draw = sec == 0
+            
+            if self.__current_timer_draw == None:
+                self.__current_timer_draw = datetime.now()
+               
+            if not pause_game:
+                if self.__current_timer_draw != None:
+                    self.__current_timer_draw = self.update_timer(self.__current_timer_draw, 10000)
+                    
+                sec = self.counter_time(self.__timer_draw_start, self.__max_time_draw_sec, self.__current_timer_draw)
+                self.__hidden_draw = sec == 0
             pygame.Surface.blit(screen, image, self.__position)
         # pygame.draw.circle(screen, self.__color, self.__position, self.__width)
         
-    def draw_timer(self, screen:pygame.Surface):
+    def draw_timer(self, screen:pygame.Surface, pause_game):
         # add component img
         if not self.__finished_time:
+            if self.__current_timer == None:
+                self.__current_timer = datetime.now()
+            elif not pause_game:
+                self.__current_timer = self.update_timer(self.__current_timer, 10000)
+                
             img = f'{get_file_path(__file__)}/components/white_timer.webp'
             
             # add temporizador
@@ -139,7 +158,8 @@ class PowerUp(ABC):
             font = pygame.font.Font(f'{get_file_path(__file__)}/fonts/digital-7.ttf', 25)
             color_text = (255,255,255)
             
-            sec = self.counter_time(self.__timer_start, self.__max_time_sec)
+            # if not pause_game:
+            sec = self.counter_time(self.__timer_start, self.__max_time_sec, self.__current_timer)
             self.__finished_time = sec == 0
             
             half_total_sec = int(self.__max_time_sec / 2)

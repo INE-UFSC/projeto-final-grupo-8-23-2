@@ -34,6 +34,14 @@ class Gun(Weapon):
             angle = math.atan2(dy, dx)
             self.shoot(angle, player_ref.position.x, player_ref.position.y)
             self.__attacking = False
+            
+    def check_target(self, seekers):
+        for seeker in seekers:
+            for bullet in self.__bullets:
+                if seeker.position[0] - seeker.radius <= bullet.position[0] <= seeker.position[0] + seeker.radius and \
+                        seeker.position[1] - seeker.radius <= bullet.position[1] <= seeker.position[1] + seeker.radius:
+                    seeker.take_damage(super().damage)
+                    bullet.moving = False
 
     def draw(self, screen: pygame.Surface):
         for bullet in self.__bullets:

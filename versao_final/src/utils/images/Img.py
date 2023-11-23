@@ -68,8 +68,8 @@ class Img():
     def transform_flip(self, flip_x=False, flip_y=False):
         return pygame.transform.flip(self.transform_scale(), flip_x, flip_y)
     
-    def transform_rotate(self, image:pygame.Surface, deg:int):
-        return pygame.transform.rotate(image, deg)
+    def transform_rotate(self, deg:int):
+        return pygame.transform.rotate(self.transform_scale(), deg)
     
     def transform_scale_2x(self):
         return pygame.transform.scale2x(pygame.image.load(self.path))

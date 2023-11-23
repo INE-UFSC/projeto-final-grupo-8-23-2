@@ -7,6 +7,7 @@ from entities import player
 from states import state, menu_state
 from constants import game_constants
 from utils import mouse
+from persistence import board_DAO
 
 
 class Game:
@@ -35,6 +36,8 @@ class Game:
         self.__current_state: state.State = menu_state.MenuState(self)
 
         self.__current_state.entering()
+
+        # self.__DAO = board_DAO.BoardDAO()
 
     # Método de contém todas as chamadas relacionadas a renderização da tela
     def render(self) -> None:

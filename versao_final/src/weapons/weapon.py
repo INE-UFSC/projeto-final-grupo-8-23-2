@@ -18,6 +18,14 @@ class Weapon(ABC):
         self.__last_attack = 0
         self.__recover_time = recover_time
 
+        self.__attacking = False
+
+    def verify_attack_time(self) -> bool:
+        if pygame.time.get_ticks() - self.last_attack < self.recover_time:
+            return False
+        self.last_attack = pygame.time.get_ticks()
+        return True
+
     @property
     def recover_time(self) -> int:
         return self.__recover_time
@@ -85,3 +93,14 @@ class Weapon(ABC):
     @property
     def bullets(self):
         return self.__bullets
+    
+    #crie getters e setters para os atributos restantes
+
+    @property
+    def attacking(self) -> bool:
+        return self.__attacking
+    
+    @attacking.setter
+    def attacking(self, val: bool) -> None:
+        if isinstance(val, bool):
+            self.__attacking = val

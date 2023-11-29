@@ -1,1 +1,13 @@
-{"Dudu":"57"}
+[
+    {
+    "name": "Azul",
+    "score": "10",
+    "time": "10"
+    },
+    {
+    "name": "Verde",
+    "score": "42",
+    "time": "312"
+    }
+    
+]

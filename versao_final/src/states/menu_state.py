@@ -4,7 +4,7 @@ import pygame
 
 import game
 from states.state import State
-from states import level_state, tutorial_state
+from states import level_state, tutorial_state, score_state
 from constants import game_constants, names_musics
 from utils.utils import get_file_path
 from utils.buttons import text_button
@@ -18,6 +18,7 @@ class MenuState(State):
 
         self.__buttons = [text_button.TextButton('iniciar', 'change_to_level_state'), 
                           text_button.TextButton('tutorial', 'change_to_tutorial_state'), 
+                          text_button.TextButton('placar', 'change_to_score_state'),
                           text_button.TextButton('sair', 'quit_game')]
 
         self.__play_button = self.__buttons[0]
@@ -54,6 +55,9 @@ class MenuState(State):
         
     def change_to_tutorial_state(self) -> None:
         super().game_reference.set_state(tutorial_state.TutorialState(super().game_reference))
+
+    def change_to_score_state(self) -> None:
+        super().game_reference.set_state(score_state.ScoreState(super().game_reference))
         
     def quit_game(self):
         pygame.quit()

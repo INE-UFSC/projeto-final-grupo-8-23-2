@@ -5,7 +5,7 @@ from abc import ABC, abstractmethod
 class DAO(ABC):
     def __init__(self, datasource):
         self.__datasource = datasource
-        self.__cache = {}
+        self.__cache = []
         try:
             self.load()
         except FileNotFoundError:

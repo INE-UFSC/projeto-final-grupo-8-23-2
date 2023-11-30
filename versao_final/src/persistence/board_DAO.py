@@ -29,6 +29,11 @@ class BoardDAO(DAO):
             if self.search_player(name)['score'] < score:
                 self.search_player(name)['score'] = score
                 self.search_player(name)['time'] = time
+        self.sort_players()
+
+    def sort_players(self):
+        self.cache.sort(key=lambda x: x['score'], reverse=False)
+        self.cache.sort(key=lambda x: x['time'])
 
     def delete_player(self, name: str):
         self.cache.remove(self.search_player(name))

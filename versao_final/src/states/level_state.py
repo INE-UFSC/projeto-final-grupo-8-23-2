@@ -106,7 +106,7 @@ class LevelState(state.State):
             if seeker.alive == False:
                 self.__player.score += seeker.worth_points
                 self.__seekers.remove(seeker)
-                
+
     def bullet_seeker_collision(self):
         bullet_seeker_collisions = self.__bullet_seeker_collision_detector.detect_collision()
         self.__bullet_seeker_collision_handler.handle_collision(bullet_seeker_collisions)

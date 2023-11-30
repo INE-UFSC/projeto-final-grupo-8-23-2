@@ -48,9 +48,9 @@ class ScoreState(state.State):
             self.__nome = self.__font3.render(elements[0], True, (255, 255, 255))
             self.__pontuacao = self.__font3.render(str(elements[1]), True, (255, 255, 255))
             self.__tempo = self.__font3.render(str(elements[2]), True, (255, 255, 255))
-            super().game_reference.screen.blit(self.__nome, ((game_constants.SCREEN_WIDTH - self.__nome.get_width())//2 - 100, 150+i))
+            super().game_reference.screen.blit(self.__nome, (((game_constants.SCREEN_WIDTH - self.__nome.get_width())//2) - 150, 150+i))
             super().game_reference.screen.blit(self.__pontuacao, ((game_constants.SCREEN_WIDTH - self.__pontuacao.get_width())//2, 150+i))
-            super().game_reference.screen.blit(self.__tempo, ((game_constants.SCREEN_WIDTH - self.__tempo.get_width())//2 + 100, 150+i))
+            super().game_reference.screen.blit(self.__tempo, (((game_constants.SCREEN_WIDTH - self.__tempo.get_width())//2) + 150, 150+i))
             i += 50
 
 

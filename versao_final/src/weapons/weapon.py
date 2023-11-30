@@ -94,8 +94,6 @@ class Weapon(ABC):
     def bullets(self):
         return self.__bullets
     
-    #crie getters e setters para os atributos restantes
-
     @property
     def attacking(self) -> bool:
         return self.__attacking

@@ -25,7 +25,7 @@ class LevelState(state.State):
         self.__weapon = gun.Gun('Pistol', 10, 400, 'pistol.png', game_ref)
         self.__seekers: list[seeker.Seeker] = []
         self.__power_ups: list[power_up.PowerUp] = []
-        self.__player: player.Player = player.Player(self.__weapon)
+        self.__player: player.Player = player.Player(self.__weapon, game_ref)
 
         self.__bullet_seeker_collision_detector = collision_detector.CollisionDetector(self.__player.weapon.bullets, self.__seekers)
         self.__bullet_seeker_collision_handler = bullet_collision_handler.BulletCollisionHandler(self.__player.weapon, self.__seekers)
@@ -106,7 +106,7 @@ class LevelState(state.State):
             if seeker.alive == False:
                 self.__player.score += seeker.worth_points
                 self.__seekers.remove(seeker)
-
+                
     def bullet_seeker_collision(self):
         bullet_seeker_collisions = self.__bullet_seeker_collision_detector.detect_collision()
         self.__bullet_seeker_collision_handler.handle_collision(bullet_seeker_collisions)

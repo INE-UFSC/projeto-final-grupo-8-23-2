@@ -21,7 +21,8 @@ class Player(character.Character):
         experience: int=0,
         level: int=0,
         power_ups: list=[],
-        score: int=0
+        score: int=0,
+        game_ref = None
         ) -> None:
         self.__alive = True
         self.__weapon = weapon
@@ -34,6 +35,7 @@ class Player(character.Character):
         self.__spawn_position = pygame.Vector2(player_constants.PLAYER_SPAWN_POSITION)
         self.__health_bar = health_bar.HealthBar(self.__spawn_position, player_constants.HEALTH)
         self.__attacking = False
+        self.__game_ref = game_ref
         # era flip
         self.image = ImageGame().transform_scale(img_names_constants.PLAYER)
 
@@ -213,3 +215,10 @@ class Player(character.Character):
     def death_player_draw(self):
         return self.__death_player_draw
 
+    @property
+    def game_ref(self):
+        return self.__game_ref
+    
+    @game_ref.setter
+    def game_ref(self, val):
+        self.__game_ref = val

@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import random
 
-from powerups import power_up, power_up_health, power_up_speed
+from powerups import power_up, power_up_health, power_up_speed, power_up_weapon
 from entities import player
 
 class PowerUpGenerator:
@@ -13,6 +13,7 @@ class PowerUpGenerator:
     def generate(self) -> None:
         power_up = random.choice([
             power_up_health.PowerUpHealth(self.__player),
-            power_up_speed.PowerUpSpeed(self.__player)
+            power_up_speed.PowerUpSpeed(self.__player),
+            power_up_weapon.PowerUpWeapon(self.__player)
         ])
         self.__power_ups.append(power_up)

@@ -1,13 +1,1 @@
-[
-    {
-    "name": "Azul",
-    "score": "10",
-    "time": "10"
-    },
-    {
-    "name": "Verde",
-    "score": "42",
-    "time": "312"
-    }
-    
-]
+[{"name": "Jogador 1", "score": 0, "time": 7}, {"name": "Jogador 2", "score": 0, "time": 10}, {"name": "Jogador 3", "score": 0, "time": 7}, {"name": "Jogador 4", "score": 0, "time": 16}]

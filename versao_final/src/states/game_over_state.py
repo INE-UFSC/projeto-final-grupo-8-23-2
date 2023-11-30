@@ -10,21 +10,27 @@ from constants import img_names_constants
 from utils.utils import get_file_path
 from utils.buttons import text_button
 import utils.utils
+from persistence.SingletonDAO import SingletonDAO
+from entities import player
 
 
 class GameOverState(state.State):
-    def __init__(self, game_ref: game.Game) -> None:
+    def __init__(self, game_ref: game.Game, player_ref: player.Player, time_init) -> None:
         resources_path = get_file_path(__file__)
         self.__background = ImageGame().transform_scale(img_names_constants.BG_GAME_OVER)
-
+        self.__player = player_ref
         self.__buttons = [text_button.TextButton('Voltar ao menu', 'change_to_menu_state')]
 
         self.__font = pygame.font.Font(f'{resources_path}/fonts/VT323-Regular.ttf', 136)
         self.__render = self.__font.render("GAME OVER", True, utils.utils.red)
         super().__init__(game_ref, name_music=names_musics.GAME_OVER_MENU)
+        self.__DAO = SingletonDAO.get_instance()
+        self.__time_init = time_init
 
     def entering(self) -> None:
         self.run_bg_sound()
+        self.__DAO.add_player(f"Jogador {len(self.__DAO.get_players_name()) + 1}", self.__player.score, ((pygame.time.get_ticks() - self.__time_init)//1000))
+        self.__DAO.dump()
 
     def render(self) -> None:
         base = game_constants.SCREEN_HEIGHT / 2 - 10

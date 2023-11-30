@@ -104,9 +104,6 @@ class Player(character.Character):
 
             if direction != None:
                 self.__current_direction = direction
-            
-    def add_score(self, worth_points):
-        self.score += worth_points
 
     def get_power_up(self, screen):
         for powerup in self.__power_ups:

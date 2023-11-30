@@ -3,6 +3,7 @@ from __future__ import annotations
 import pygame
 
 import game
+from persistence.SingletonDAO import SingletonDAO
 from utils.music import Music
 from weapons import gun, earthquaker
 from handlers import bullet_collision_handler
@@ -41,6 +42,10 @@ class LevelState(state.State):
 
         self.__pause_class = pause.Pause()
         self.__paused = False
+
+        self.__time_init = pygame.time.get_ticks()
+
+        self.__DAO = SingletonDAO.get_instance()
 
         super().__init__(game_ref, using_esc=True, name_music=names_musics.LEVEL)
 
@@ -98,18 +103,14 @@ class LevelState(state.State):
 
     def dead_seeker(self):
         for seeker in self.__seekers:
-            if not seeker.alive:
-                self.player_score_dead_seeker(seeker.worth_points)
+            if seeker.alive == False:
+                self.__player.score += seeker.worth_points
                 self.__seekers.remove(seeker)
                 
     def bullet_seeker_collision(self):
         bullet_seeker_collisions = self.__bullet_seeker_collision_detector.detect_collision()
         self.__bullet_seeker_collision_handler.handle_collision(bullet_seeker_collisions)
 
-    
-    def player_score_dead_seeker(self, worth_points):
-        self.__player.add_score(worth_points)
-        
     def powerup_finished(self):
         for powerup in self.__power_ups:
             if powerup.finished:
@@ -126,7 +127,7 @@ class LevelState(state.State):
         if not self.__player.alive:
             if self.__date_death_state_increment == date_sec:
                 pygame.mixer.music.pause()
-                self.game_reference.set_state(game_over_state.GameOverState(self.game_reference))
+                self.game_reference.set_state(game_over_state.GameOverState(self.game_reference, self.__player, self.__time_init))
             else:
                 self.__date_death_state_increment = self.__date_death_state_increment + timedelta(seconds=1)
         

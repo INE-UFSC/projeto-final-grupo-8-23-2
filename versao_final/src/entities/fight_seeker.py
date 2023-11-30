@@ -12,7 +12,7 @@ class FightSeeker(Seeker):
             seeker_constants.FIGHT_SEEKER_SPEED,
             seeker_constants.FIGHT_SEEKER_DAMAGE,
             seeker_constants.FIGHT_SEEKER_ARMOR,
-            30 # ideias
+            30 # quantos pontos vale matar um seeker
         )
 
     def strong_punch(self) -> None:

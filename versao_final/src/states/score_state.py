@@ -23,7 +23,7 @@ class ScoreState(state.State):
         self.__font2 = pygame.font.Font(f'{resources_path}/fonts/ARCADECLASSIC.TTF', 35)
         self.__font3 = pygame.font.Font(f'{resources_path}/fonts/ARCADECLASSIC.TTF', 30)
         self.__render = self.__font.render("Placar", True, (255, 255, 255))
-        self.__render2 = self.__font.render("Nome     Pontuacao     Tempo", True, (255, 255, 255))
+        self.__render2 = self.__font.render("Nome     Pontuacao     Tempo(s)", True, (255, 255, 255))
         super().__init__(game_ref, name_music=names_musics.TUTORIAL, using_esc=True)
 
         self.__DAO = SingletonDAO.get_instance()

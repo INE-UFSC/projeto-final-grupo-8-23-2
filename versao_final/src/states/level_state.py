@@ -3,7 +3,6 @@ from __future__ import annotations
 import pygame
 
 import game
-from utils.music import Music
 from weapons import gun, earthquaker
 from handlers import bullet_collision_handler
 from handlers import collision_detector
@@ -12,7 +11,7 @@ from subjects import seeker_timer_subject, power_up_timer_subject
 from states import state, game_over_state, menu_state
 from datetime import datetime, timedelta
 from utils.utils import get_file_path
-from constants import game_constants, names_musics
+from constants import game_constants
 from entities import player, seeker
 from powerups import power_up
 from map import map
@@ -20,8 +19,8 @@ from map import map
 
 class LevelState(state.State):
     def __init__(self, game_ref: game.Game) -> None:
-        self.__weapon = earthquaker.Earthquaker('Earthquaker', 50, 200, 'grass.png', game_ref)
-        # self.__weapon = gun.Gun('Pistol', 10, 400, 'pistol.png', game_ref)
+        #self.__weapon = earthquaker.Earthquaker('Earthquaker', 50, 200, 'grass.png', game_ref)
+        self.__weapon = gun.Gun('Pistol', 10, 400, 'pistol.png', game_ref)
         self.__seekers: list[seeker.Seeker] = []
         self.__power_ups: list[power_up.PowerUp] = []
         self.__player: player.Player = player.Player(self.__weapon)
@@ -39,10 +38,12 @@ class LevelState(state.State):
         self.__date_death_state = datetime.min
         self.__date_death_state_increment = self.__date_death_state
 
+        path_sound = f'{get_file_path(__file__)}/sounds/game_sound.mp3'
+
         self.__pause_class = pause.Pause()
         self.__paused = False
 
-        super().__init__(game_ref, using_esc=True, name_music=names_musics.LEVEL)
+        super().__init__(game_ref, using_esc=True, name_music=path_sound)
 
     def entering(self) -> None:
         self.run_bg_sound()
@@ -58,27 +59,28 @@ class LevelState(state.State):
             ]
         )
 
-    def render_map(self):
+    def run_death_music(self):
+        pygame.mixer.music.pause()
+        pygame.mixer.init()
+        pygame.mixer.music.set_volume(1)
+        pygame.mixer.music.load(f"{get_file_path(__file__)}/sounds/death_player.mp3")
+        pygame.mixer.music.play()
+
+    def render(self) -> None:
         self.__map.draw_background(self.game_reference.screen)
-        
-    def render_seekers(self):
-        self.__player.weapon.check_target(self.__seekers)
-        for seeker in self.__seekers:
-            seeker.draw_at(super().game_reference.screen)
-            if not self.__paused:
-                seeker.move()
-    
-    def render_player(self):
         if self.__player.alive:
             self.__player.draw_at(self.game_reference.screen)
         else:
             self.__player.draw_at_death(self.game_reference.screen)
             if self.__date_death_state == datetime.min:
-                Music().run_sound(names_musics.DEATH)
+                self.run_death_music()
                 self.__date_death_state = datetime.now()
                 self.__date_death_state_increment = self.__date_death_state
-        
-    def render_powerups(self):
+        for seeker in self.__seekers:
+            self.__player.weapon.check_target(seeker)
+            seeker.draw_at(super().game_reference.screen)
+            if not self.__paused:
+                seeker.move()
         for powerup in self.__power_ups:
             powerup.draw_at(self.game_reference.screen, self.__paused)
             if powerup.actived and powerup.contains_timer:
@@ -86,62 +88,57 @@ class LevelState(state.State):
             if powerup.actived and not powerup.hidden_modal:
                 powerup.draw_modal_message(self.game_reference.screen)
             powerup.add_power_up_to_list()
-            
-    def render(self) -> None:
-        self.render_map()
-        self.render_player()
-        self.render_seekers()
-        self.render_powerups()
         if self.__paused:
             self.pause()
+            
         self.mouse.show_mouse(self.game_reference.screen)
 
-    def dead_seeker(self):
-        for seeker in self.__seekers:
-            if not seeker.alive:
-                self.player_score_dead_seeker(seeker.worth_points)
-                self.__seekers.remove(seeker)
-                
-    def bullet_seeker_collision(self):
-        bullet_seeker_collisions = self.__bullet_seeker_collision_detector.detect_collision()
-        self.__bullet_seeker_collision_handler.handle_collision(bullet_seeker_collisions)
 
-    
-    def player_score_dead_seeker(self, worth_points):
-        self.__player.add_score(worth_points)
-        
-    def powerup_finished(self):
-        for powerup in self.__power_ups:
-            if powerup.finished:
-                self.__power_ups.remove(powerup)
-                
-    def player_act(self):
-        self.__player.move()
-        self.__player.get_power_up(self.game_reference.screen)
-        self.__player.attack(self.game_reference.screen)
-        
-    def player_death_state(self):
-        date_sec = self.__date_death_state + timedelta(seconds=100)
-        
-        if not self.__player.alive:
-            if self.__date_death_state_increment == date_sec:
-                pygame.mixer.music.pause()
-                self.game_reference.set_state(game_over_state.GameOverState(self.game_reference))
-            else:
-                self.__date_death_state_increment = self.__date_death_state_increment + timedelta(seconds=1)
-        
     def update(self) -> None:
         if not self.__paused:
-            self.bullet_seeker_collision()
-            
-            self.dead_seeker()
-            self.powerup_finished()
+            bullet_seeker_collisions = self.__bullet_seeker_collision_detector.detect_collision()
+            self.__bullet_seeker_collision_handler.handle_collision(bullet_seeker_collisions)
+
+            self.search_dead_seekers()
+            self.search_finished_power_ups()
 
             self.__seeker_time_listener.handle_events()
             self.__power_up_time_listener.handle_events()
 
-            self.player_act()
-            self.player_death_state()
+            self.move_player()
+            
+            self.__player.get_power_up(self.game_reference.screen)
+            self.__player.attack(self.game_reference.screen)
+
+            date_sec = self.__date_death_state + timedelta(seconds=100)
+            if not self.__player.alive:
+                self.player_death(date_sec)
+
+                    
+    def search_dead_seekers(self):
+        dead_seekers = []
+        for seeker in self.__seekers:
+            if not seeker.alive:
+                dead_seekers.append(seeker)
+        for seeker in dead_seekers:
+            self.__player.score += seeker.worth_points
+            self.__seekers.remove(seeker)
+            
+    def search_finished_power_ups(self):
+        for powerup in self.__power_ups:
+            if powerup.finished:
+                self.__power_ups.remove(powerup)
+                
+    def move_player(self) -> None:
+        if self.__player.alive:
+            self.__player.move()
+            
+    def player_death(self, date_sec):
+        if self.__date_death_state_increment == date_sec:
+            pygame.mixer.music.pause()
+            self.game_reference.set_state(game_over_state.GameOverState(self.game_reference))
+        else:
+            self.__date_death_state_increment = self.__date_death_state_increment + timedelta(seconds=1)
 
     def exiting(self) -> None:
         self.__power_up_time_listener.unsubscribe(self.__power_up_generator.generate)
@@ -154,7 +151,7 @@ class LevelState(state.State):
         # arrumar isso aqui depois
         color = utils.pink_low_alpha
         surface = pygame.Surface(self.__pause_class.bg_rect.size, pygame.SRCALPHA)
-        pygame.draw.rect(surface, color, surface.get_rect())
+        pygame.draw.rect(surface, color, surface.get_rect(), border_radius=20)
         self.game_reference.screen.blit(surface, self.__pause_class.bg_rect.topleft)
 
         for button in self.__pause_class.buttons:

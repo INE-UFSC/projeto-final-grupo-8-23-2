@@ -7,6 +7,8 @@ from weapons.weapon import Weapon
 from weapons.earthquake import Earthquake
 from utils import utils
 from constants import player_constants, game_constants, weapons_constants
+from utils.images.ImageGame import ImageGame
+
 
 class Earthquaker(Weapon):
     def __init__(self, name, damage, range, sprite, game_ref):
@@ -34,8 +36,9 @@ class Earthquaker(Weapon):
         self.__earthquake = Earthquake(player_ref.position.x, player_ref.position.y, super().range)
 
 
-    def draw(self, screen):
+    def draw(self, screen:pygame.Surface):
         if self.attacking:
-            position = (self.__earthquake.position.x, self.__earthquake.position.y)
-            pygame.draw.circle(screen, utils.red, position, self.range)
+            position = (self.__earthquake.position.x - self.__earthquake.range, self.__earthquake.position.y - self.__earthquake.range)
+            pygame.Surface.blit(screen, self.sprite, position)
+            #pygame.draw.circle(screen, utils.red, position, self.range)
             self.attacking = False

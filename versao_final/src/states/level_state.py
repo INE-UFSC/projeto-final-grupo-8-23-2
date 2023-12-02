@@ -4,23 +4,23 @@ import pygame
 
 import game
 from weapons import gun, earthquaker
-from handlers import bullet_collision_handler
-from handlers import collision_detector
+from handlers import bullet_collision_handler, collision_detector
 from utils import seeker_spawner, power_up_generator, pause, utils
 from subjects import seeker_timer_subject, power_up_timer_subject
 from states import state, game_over_state, menu_state
 from datetime import datetime, timedelta
 from utils.utils import get_file_path
-from constants import game_constants
+from constants import game_constants, names_musics, weapons_constants, img_names_constants
 from entities import player, seeker
 from powerups import power_up
+from utils.images.ImageGame import ImageGame
 from map import map
 
 
 class LevelState(state.State):
     def __init__(self, game_ref: game.Game) -> None:
-        #self.__weapon = earthquaker.Earthquaker('Earthquaker', 50, 200, 'grass.png', game_ref)
-        self.__weapon = gun.Gun('Pistol', 10, 400, 'pistol.png', game_ref)
+        self.__weapon = earthquaker.Earthquaker('Earthquaker', 50, 200, 'grass.png', game_ref)
+        # self.__weapon = gun.Gun('Pistol', 10, 400, 'pistol.png', game_ref)
         self.__seekers: list[seeker.Seeker] = []
         self.__power_ups: list[power_up.PowerUp] = []
         self.__player: player.Player = player.Player(self.__weapon)
@@ -151,7 +151,7 @@ class LevelState(state.State):
         # arrumar isso aqui depois
         color = utils.pink_low_alpha
         surface = pygame.Surface(self.__pause_class.bg_rect.size, pygame.SRCALPHA)
-        pygame.draw.rect(surface, color, surface.get_rect(), border_radius=20)
+        pygame.draw.rect(surface, color, surface.get_rect())
         self.game_reference.screen.blit(surface, self.__pause_class.bg_rect.topleft)
 
         for button in self.__pause_class.buttons:

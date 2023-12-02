@@ -22,7 +22,7 @@ class ImageGame(ABC):
             Img(name=img_names_constants.TUTORIAL_MODAL, path=f"{base_path}/backgrounds/tutorial.png"),
             Img(name=img_names_constants.WHITE_TIMER, path=f"{base_path}/components/white_timer.webp", height=22, width=22),
             Img(name=img_names_constants.YELLOW_TIMER, path=f"{base_path}/components/yellow_timer.webp", height=22, width=22),
-            Img(name=img_names_constants.EARTHQUAKE, path=f"{base_path}/weapons/earthquake.png", height=weapons_constants.EARTHQUAKER_RANGE*2, width=weapons_constants.EARTHQUAKER_RANGE*2),
+            Img(name=img_names_constants.EARTHQUAKE, path=f"{base_path}/weapons/earthquake2.webp", height=weapons_constants.EARTHQUAKER_RANGE*2, width=weapons_constants.EARTHQUAKER_RANGE*2),
         ]
         
     @property

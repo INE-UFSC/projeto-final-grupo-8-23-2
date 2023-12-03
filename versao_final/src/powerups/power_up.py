@@ -14,32 +14,33 @@ import time
 
 
 class PowerUp(ABC):
-    def __init__(self, player_ref: Player, contains_timer = True, max_timer_start = 5, message_modal = None) -> None:
-       self.__player = player_ref
-       self.__upgrade_value = None
-       self.__icon = None
-       self.__position = self.define_power_up_position()
-       self.__color = None
-       self.__actived = False
-       self.__width = cons.WIDTH
-       self.__timer_start = None
-       self.__contains_timer = contains_timer
-       self.__max_time_sec = max_timer_start
-       self.__current_timer = None # decrescente
-       self.__finished_time = False # tempo esgotado
-       self.__finished = False
-       
-       # tempo que o power up durara na tela
-       self.__timer_draw_start = None
-       self.__current_timer_draw = None
-       self.__max_time_draw_sec = 10
-       self.__hidden_draw = False
-       
-       self.__timer_modal_start = None
-       self.__max_time_modal_sec = 2
-       self.__hidden_modal = False
-       
-       self.__message_modal = message_modal
+    def __init__(self, player_ref: Player, sprite: str, contains_timer = True, max_timer_start = 5, message_modal = None) -> None:
+        self.__player = player_ref
+        self.__upgrade_value = None
+        self.__icon = None
+        self.__position = self.define_power_up_position()
+        self.__color = None
+        self.__actived = False
+        self.__width = cons.WIDTH
+        self.__timer_start = None
+        self.__contains_timer = contains_timer
+        self.__max_time_sec = max_timer_start
+        self.__current_timer = None # decrescente
+        self.__finished_time = False # tempo esgotado
+        self.__finished = False
+        self.__sprite_name = sprite
+
+        # tempo que o power up durara na tela
+        self.__timer_draw_start = None
+        self.__current_timer_draw = None
+        self.__max_time_draw_sec = 10
+        self.__hidden_draw = False
+        
+        self.__timer_modal_start = None
+        self.__max_time_modal_sec = 2
+        self.__hidden_modal = False
+        
+        self.__message_modal = message_modal
        
     @property
     def contains_timer(self):
@@ -125,7 +126,7 @@ class PowerUp(ABC):
 
     def draw_at(self, screen: pygame.Surface, pause_game) -> None:
         if not self.actived and not self.hidden_draw:
-            image = ImageGame().transform_flip(img_names_constants.COIN)
+            image = ImageGame().transform_flip(self.__sprite_name)
             
             if self.__timer_draw_start == None:
                 self.__timer_draw_start = datetime.now()

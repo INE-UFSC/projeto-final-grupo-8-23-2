@@ -1,7 +1,8 @@
-from constants import game_constants
 
 
-SEEKER_SPAWN_COOLDOWN = 2000
+SEEKER_SPAWN_COOLDOWN = 6000
+SEEKER_SPAWN_INCREMENT = -200
+SEEKER_SPAWN_TIME_LIMIT = 1800
 
 # constantes do fight_seeker
 FIGHT_SEEKER_RANGE = 60

@@ -3,6 +3,7 @@ from constants import img_names_constants, player_constants, seeker_constants, g
 from utils.images.Img import Img
 from utils.utils import get_file_path
 
+
 class ImageGame(ABC):
     def __init__(self) -> None:
         base_path = get_file_path(__file__)
@@ -11,7 +12,8 @@ class ImageGame(ABC):
             Img(name=img_names_constants.BG_MENU, path=f"{base_path}/backgrounds/menu_background.jpg", height=game_constants.SCREEN_HEIGHT, width=game_constants.SCREEN_WIDTH),
             Img(name=img_names_constants.BG_TUTORIAL, path=f"{base_path}/backgrounds/tutorial_bg.jpg", height=game_constants.SCREEN_HEIGHT, width=game_constants.SCREEN_WIDTH),
             Img(name=img_names_constants.BULLET_FIREBALL, path=f"{base_path}/bullet/fireball.webp", height=15, width=15),
-            Img(name=img_names_constants.COIN, path=f"{base_path}/components/coin.webp", height=25, width=25),
+            Img(name=img_names_constants.CHERRY, path=f"{base_path}/powerup_sprites/cherry.png", height=40, width=40),
+            Img(name=img_names_constants.BOOTS, path=f"{base_path}/powerup_sprites/boots.png", height=40, width=40),
             Img(name=img_names_constants.CURSOR, path=f"{base_path}/cursors/white_cursor.webp", height=18, width=18),
             Img(name=img_names_constants.DEATH_PLAYER, path=f"{base_path}/player/death_player.png", height=35, width=70),
             Img(name=img_names_constants.GHOST, path=f"{base_path}/sprites/ghost.webp", height=seeker_constants.SEEKER_HEIGHT, width=seeker_constants.SEEKER_WIDTH),
@@ -22,6 +24,7 @@ class ImageGame(ABC):
             Img(name=img_names_constants.TUTORIAL_MODAL, path=f"{base_path}/backgrounds/tutorial.png"),
             Img(name=img_names_constants.WHITE_TIMER, path=f"{base_path}/components/white_timer.webp", height=22, width=22),
             Img(name=img_names_constants.YELLOW_TIMER, path=f"{base_path}/components/yellow_timer.webp", height=22, width=22),
+            Img(name=img_names_constants.PLAYER, path=f"{base_path}/player/player.webp", height=player_constants.HEIGHT, width=player_constants.WIDTH),
         ]
         
     @property

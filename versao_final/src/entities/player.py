@@ -8,11 +8,9 @@ from utils.images.ImageGame import ImageGame
 from constants import img_names_constants
 from utils.music import Music
 from weapons import weapon
-from weapons.gun import Gun
-from weapons.earthquaker import Earthquaker
 from constants import game_constants, player_constants, powerup_constants, direction_constants, names_musics
 from utils import health_bar
-from utils.utils import get_file_path
+
 
 class Player(character.Character):
     def __init__(
@@ -104,7 +102,7 @@ class Player(character.Character):
 
             if direction != None:
                 self.__current_direction = direction
-            
+
     def add_score(self, worth_points):
         self.score += worth_points
 

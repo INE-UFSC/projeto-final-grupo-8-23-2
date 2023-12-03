@@ -20,8 +20,8 @@ from map import map
 
 class LevelState(state.State):
     def __init__(self, game_ref: game.Game) -> None:
-        self.__weapon = earthquaker.Earthquaker('Earthquaker', 50, 200, 'grass.png', game_ref)
-        # self.__weapon = gun.Gun('Pistol', 10, 400, 'pistol.png', game_ref)
+        # self.__weapon = earthquaker.Earthquaker('Earthquaker', 50, 200, 'grass.png', game_ref)
+        self.__weapon = gun.Gun('Pistol', 10, 400, 'pistol.png', game_ref)
         self.__seekers: list[seeker.Seeker] = []
         self.__power_ups: list[power_up.PowerUp] = []
         self.__player: player.Player = player.Player(self.__weapon)
@@ -60,17 +60,17 @@ class LevelState(state.State):
 
     def render_map(self):
         self.__map.draw_background(self.game_reference.screen)
-        
+
     def render_seekers(self):
         self.__player.weapon.check_target(self.__seekers)
         for seeker in self.__seekers:
             seeker.draw_at(super().game_reference.screen)
             if not self.__paused:
                 seeker.move()
-    
+
     def render_player(self):
         if self.__player.alive:
-            self.__player.draw_at(self.game_reference.screen)
+            self.__player.draw_at(self.game_reference.screen, self.__player.position)
         else:
             self.__player.draw_at_death(self.game_reference.screen)
             if self.__date_death_state == datetime.min:

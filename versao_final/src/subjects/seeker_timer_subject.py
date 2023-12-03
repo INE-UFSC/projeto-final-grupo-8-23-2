@@ -10,9 +10,13 @@ class SeekerTimerSubject(subject.Subject):
     def __init__(self) -> None:
         # Cria um tipo de evento para essa classe
         self.__event_type = pygame.USEREVENT + 1
+
+        self.__spawn_time = seeker_constants.SEEKER_SPAWN_COOLDOWN
+
         # Dizemos ao pygame qual evento queremos gerar (no caso, o que acabou de ser criado)
         # e de quanto em quanto tempo queremos gerar esse evento
-        self.__seeker_timer = pygame.time.set_timer(self.__event_type, seeker_constants.SEEKER_SPAWN_COOLDOWN)
+        self.__seeker_timer = pygame.time.set_timer(self.__event_type, self.__spawn_time)
+
 
         self.__set_timer_to = 0
 
@@ -29,6 +33,8 @@ class SeekerTimerSubject(subject.Subject):
 
         for _ in range(len(seeker_time_events)):
             self.notify_all()
+            if self.__spawn_time < seeker_constants.SEEKER_SPAWN_TIME_LIMIT:
+                self.__spawn_time += seeker_constants.SEEKER_SPAWN_INCREMENT
 
     # Esse método vai parar o timer caso o jogo pause, por exemplo
     # Caso o timer já esteja em 0 (pausado), e o método seja chamado

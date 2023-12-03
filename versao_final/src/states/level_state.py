@@ -5,22 +5,26 @@ import game
 from persistence.SingletonDAO import SingletonDAO
 from utils.music import Music
 from weapons import gun, earthquaker
-from handlers import bullet_collision_handler
-from handlers import collision_detector
+from handlers import bullet_collision_handler, collision_detector
 from utils import seeker_spawner, power_up_generator, pause, utils
 from subjects import seeker_timer_subject, power_up_timer_subject
 from states import state, game_over_state, menu_state
 from datetime import datetime, timedelta
 from utils.utils import get_file_path
-from constants import game_constants, names_musics
+from constants import game_constants, names_musics, weapons_constants, img_names_constants
 from entities import player, seeker
 from powerups import power_up
+from utils.images.ImageGame import ImageGame
 from map import map
 
 
 class LevelState(state.State):
     def __init__(self, game_ref: game.Game) -> None:
-        self.__weapon = gun.Gun('Pistol', 10, 400, 'pistol.png', game_ref)
+        self.__weapon = earthquaker.Earthquaker('Earthquaker', weapons_constants.EARTHQUAKER_DAMAGE, 
+                                                weapons_constants.EARTHQUAKER_RANGE, 
+                                                ImageGame().transform_scale(img_names_constants.EARTHQUAKE), 
+                                                game_ref)
+        # self.__weapon = gun.Gun('Pistol', 10, 400, 'pistol.png', game_ref)
         self.__seekers: list[seeker.Seeker] = []
         self.__power_ups: list[power_up.PowerUp] = []
         self.__player: player.Player = player.Player(self.__weapon, game_ref)
@@ -54,17 +58,17 @@ class LevelState(state.State):
 
     def render_map(self):
         self.__map.draw_background(self.game_reference.screen)
-        
+
     def render_seekers(self):
         self.__player.weapon.check_target(self.__seekers)
         for seeker in self.__seekers:
             seeker.draw_at(super().game_reference.screen)
             if not self.__paused:
                 seeker.move()
-    
+
     def render_player(self):
         if self.__player.alive:
-            self.__player.draw_at(self.game_reference.screen)
+            self.__player.draw_at(self.game_reference.screen, self.__player.position)
         else:
             self.__player.draw_at_death(self.game_reference.screen)
             if self.__date_death_state == datetime.min:
@@ -131,7 +135,7 @@ class LevelState(state.State):
         base = base = (game_constants.SCREEN_HEIGHT - (height * len(self.__pause_class.buttons))) / 2
         color = utils.pink_low_alpha
         surface = pygame.Surface(self.__pause_class.bg_rect.size, pygame.SRCALPHA)
-        pygame.draw.rect(surface, color, surface.get_rect())
+        pygame.draw.rect(surface, color, surface.get_rect(), border_radius=50)
         self.game_reference.screen.blit(surface, self.__pause_class.bg_rect.topleft)
         for button in self.__pause_class.buttons:
             button.draw_at(self.game_reference.screen, (game_constants.SCREEN_WIDTH - button.width)//2, base)

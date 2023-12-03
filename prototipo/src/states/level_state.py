@@ -126,9 +126,9 @@ class LevelState(state.State):
         
         # arrumar isso aqui depois
         color = (0, 0, 0, 127)
-        surface = pygame.Surface(self.__pausebt.bg_rect.size, pygame.SRCALPHA)
+        surface = pygame.Surface(self.__pausebt.bg.size, pygame.SRCALPHA)
         pygame.draw.rect(surface, color, surface.get_rect())
-        super().game_reference.screen.blit(surface, self.__pausebt.bg_rect.topleft)
+        super().game_reference.screen.blit(surface, self.__pausebt.bg.topleft)
         
         for button in self.__pausebt.buttons:
             button.draw_at(super().game_reference.screen, (game_constants.SCREEN_WIDTH - button.width)//2, base)

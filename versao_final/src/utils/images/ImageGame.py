@@ -1,5 +1,5 @@
 from abc import ABC
-from constants import img_names_constants, player_constants, seeker_constants, game_constants
+from constants import img_names_constants, player_constants, seeker_constants, game_constants, weapons_constants
 from utils.images.Img import Img
 from utils.utils import get_file_path
 
@@ -25,6 +25,7 @@ class ImageGame(ABC):
             Img(name=img_names_constants.WHITE_TIMER, path=f"{base_path}/components/white_timer.webp", height=22, width=22),
             Img(name=img_names_constants.YELLOW_TIMER, path=f"{base_path}/components/yellow_timer.webp", height=22, width=22),
             Img(name=img_names_constants.PLAYER, path=f"{base_path}/player/player.webp", height=player_constants.HEIGHT, width=player_constants.WIDTH),
+            Img(name=img_names_constants.EARTHQUAKE, path=f"{base_path}/weapons/earthquake2.webp", height=weapons_constants.EARTHQUAKER_RANGE*2, width=weapons_constants.EARTHQUAKER_RANGE*2),
         ]
         
     @property

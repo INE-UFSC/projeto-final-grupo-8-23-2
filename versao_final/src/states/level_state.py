@@ -1,5 +1,4 @@
 from __future__ import annotations
-
 import pygame
 
 import game
@@ -21,32 +20,22 @@ from map import map
 
 class LevelState(state.State):
     def __init__(self, game_ref: game.Game) -> None:
-        # self.__weapon = earthquaker.Earthquaker('Earthquaker', 50, 200, 'grass.png', game_ref)
         self.__weapon = gun.Gun('Pistol', 10, 400, 'pistol.png', game_ref)
         self.__seekers: list[seeker.Seeker] = []
         self.__power_ups: list[power_up.PowerUp] = []
         self.__player: player.Player = player.Player(self.__weapon, game_ref)
-
         self.__bullet_seeker_collision_detector = collision_detector.CollisionDetector(self.__player.weapon.bullets, self.__seekers)
         self.__bullet_seeker_collision_handler = bullet_collision_handler.BulletCollisionHandler(self.__player.weapon, self.__seekers)
-
         self.__seeker_spawner = seeker_spawner.SeekerSpawner(self.__seekers, self.__player)
         self.__seeker_time_listener = seeker_timer_subject.SeekerTimerSubject()
-
         self.__power_up_generator = power_up_generator.PowerUpGenerator(self.__power_ups, self.__player)
         self.__power_up_time_listener = power_up_timer_subject.PowerUpTimerSubject()
         self.__map = map.Map()
-
         self.__date_death_state = datetime.min
         self.__date_death_state_increment = self.__date_death_state
-
         self.__pause_class = pause.Pause()
         self.__paused = False
-
         self.__time_init = pygame.time.get_ticks()
-
-        self.__DAO = SingletonDAO.get_instance()
-
         super().__init__(game_ref, using_esc=True, name_music=names_musics.LEVEL)
 
     def entering(self) -> None:
@@ -100,12 +89,6 @@ class LevelState(state.State):
         if self.__paused:
             self.pause()
         self.mouse.show_mouse(self.game_reference.screen)
-
-    # def dead_seeker(self):
-    #     for seeker in self.__seekers:
-    #         if seeker.alive == False:
-    #             self.__player.score += seeker.worth_points
-    #             self.__seekers.remove(seeker)
                 
     def bullet_seeker_collision(self):
         bullet_seeker_collisions = self.__bullet_seeker_collision_detector.detect_collision()
@@ -123,7 +106,6 @@ class LevelState(state.State):
         
     def player_death_state(self):
         date_sec = self.__date_death_state + timedelta(seconds=100)
-        
         if not self.__player.alive:
             if self.__date_death_state_increment == date_sec:
                 pygame.mixer.music.pause()
@@ -134,13 +116,9 @@ class LevelState(state.State):
     def update(self) -> None:
         if not self.__paused:
             self.bullet_seeker_collision()
-            
-            # self.dead_seeker()
             self.powerup_finished()
-
             self.__seeker_time_listener.handle_events()
             self.__power_up_time_listener.handle_events()
-
             self.player_act()
             self.player_death_state()
 
@@ -151,25 +129,20 @@ class LevelState(state.State):
     def pause(self):
         height = self.__pause_class.buttons[0].height
         base = base = (game_constants.SCREEN_HEIGHT - (height * len(self.__pause_class.buttons))) / 2
-
-        # arrumar isso aqui depois
         color = utils.pink_low_alpha
         surface = pygame.Surface(self.__pause_class.bg_rect.size, pygame.SRCALPHA)
         pygame.draw.rect(surface, color, surface.get_rect())
         self.game_reference.screen.blit(surface, self.__pause_class.bg_rect.topleft)
-
         for button in self.__pause_class.buttons:
             button.draw_at(self.game_reference.screen, (game_constants.SCREEN_WIDTH - button.width)//2, base)
             base += self.__pause_class.spacing
             if button.full_click:
-                getattr(self, button.next_action, None)()  # Obtém a função associada pelo nome
+                getattr(self, button.next_action, None)()
 
     def key_pressed(self) -> None:
         self.__power_up_time_listener.change_timer_state()
         self.__seeker_time_listener.change_timer_state()
         self.__paused = not self.__paused
-
-    # funções para os botões
 
     def resume_game(self):
         self.key_pressed()
@@ -180,4 +153,3 @@ class LevelState(state.State):
     def quit_game(self):
         pygame.quit()
         quit()
-

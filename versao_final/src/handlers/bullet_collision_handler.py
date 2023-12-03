@@ -18,6 +18,10 @@ class BulletCollisionHandler:
             bullets_to_remove.append(bullet)
             for seeker in seekers:
                 seeker.take_damage(self.__weapon.damage)
+                if seeker.health <= 0:
+                    seeker.give_points()
+                    seeker.alive = False
+                    self.__seekers_list.remove(seeker)
 
         for bullet in bullets_to_remove:
             self.__bullets_list.remove(bullet)

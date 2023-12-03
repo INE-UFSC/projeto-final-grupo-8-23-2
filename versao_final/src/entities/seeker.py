@@ -74,6 +74,9 @@ class Seeker(Character, ABC):
             self.image = pygame.transform.flip(self.image, True, False)
             self.__inverted = False
 
+    def give_points(self):
+        self.__player_to_chase.score += self.__worth_points
+
     @property
     def worth_points(self):
         return self.__worth_points

@@ -101,11 +101,11 @@ class LevelState(state.State):
             self.pause()
         self.mouse.show_mouse(self.game_reference.screen)
 
-    def dead_seeker(self):
-        for seeker in self.__seekers:
-            if seeker.alive == False:
-                self.__player.score += seeker.worth_points
-                self.__seekers.remove(seeker)
+    # def dead_seeker(self):
+    #     for seeker in self.__seekers:
+    #         if seeker.alive == False:
+    #             self.__player.score += seeker.worth_points
+    #             self.__seekers.remove(seeker)
                 
     def bullet_seeker_collision(self):
         bullet_seeker_collisions = self.__bullet_seeker_collision_detector.detect_collision()
@@ -135,7 +135,7 @@ class LevelState(state.State):
         if not self.__paused:
             self.bullet_seeker_collision()
             
-            self.dead_seeker()
+            # self.dead_seeker()
             self.powerup_finished()
 
             self.__seeker_time_listener.handle_events()

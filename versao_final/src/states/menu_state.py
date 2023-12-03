@@ -21,8 +21,10 @@ class MenuState(State):
                           text_button.TextButton('placar', 'change_to_score_state'),
                           text_button.TextButton('sair', 'quit_game')]
         self.__font = pygame.font.Font(f'{resources_path}/fonts/NightsideDemoRegular.ttf', 96)
+        self.__font_name = pygame.font.Font(f'{resources_path}/fonts/NightsideDemoRegular.ttf', 24)
         self.__render = self.__font.render("SOUL SEEKERS", True, (255, 255, 255))
         super().__init__(game_ref, name_music=names_musics.MENU)
+        self.__name = ''
         self.__DAO = SingletonDAO.get_instance()
 
     def entering(self) -> None:
@@ -37,13 +39,34 @@ class MenuState(State):
             button.draw_at(super().game_reference.screen, (game_constants.SCREEN_WIDTH - button.width)//2, base)
             if button.full_click:
                 getattr(self, button.next_action)()
+        
+
+        base += 75
+        super().game_reference.screen.blit(self.__font_name.render("Digite seu nome", True, (255, 255, 255)), ((game_constants.SCREEN_WIDTH - self.__render.get_width()/3)//2, base))
+        base += 75
+        super().game_reference.screen.blit(self.__font_name.render(self.__name, True, (255, 255, 255)), ((game_constants.SCREEN_WIDTH - self.__render.get_width()/3)//2, base))
+
+
         super().mouse.show_mouse(super().game_reference.screen)
 
     def exiting(self) -> None:
         pass
     
     def update(self) -> None:
-        pass
+        # criar uma forma do usuario digitar o nome dele
+        for event in pygame.event.get():
+            if event.type == pygame.TEXTINPUT:
+                self.__name += event.text
+
+            if event.type == pygame.KEYDOWN:
+
+                if event.key == pygame.K_BACKSPACE:
+                    self.__name = self.__name[:-1]
+
+                if event.key == pygame.K_RETURN:
+                    self.__DAO.set_name(self.__name)
+                    self.__name = ''
+                    
 
     def change_to_level_state(self) -> None:
         super().game_reference.set_state(level_state.LevelState(super().game_reference))

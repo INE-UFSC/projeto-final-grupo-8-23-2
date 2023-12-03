@@ -29,7 +29,7 @@ class GameOverState(state.State):
 
     def entering(self) -> None:
         self.run_bg_sound()
-        self.__DAO.add_player(f"Jogador {len(self.__DAO.get_players_name()) + 1}", self.__player.score, ((pygame.time.get_ticks() - self.__time_init)//1000))
+        self.__DAO.add_player(self.__player.score, ((pygame.time.get_ticks() - self.__time_init)//1000))
         self.__DAO.dump()
 
     def render(self) -> None:

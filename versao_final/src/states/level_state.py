@@ -2,19 +2,16 @@ from __future__ import annotations
 import pygame
 
 import game
-from persistence.SingletonDAO import SingletonDAO
 from utils.music import Music
-from weapons import gun, earthquaker
+from weapons import gun
 from handlers import bullet_collision_handler, collision_detector
 from utils import seeker_spawner, power_up_generator, pause, utils
 from subjects import seeker_timer_subject, power_up_timer_subject
 from states import state, game_over_state, menu_state
 from datetime import datetime, timedelta
-from utils.utils import get_file_path
-from constants import game_constants, names_musics, weapons_constants, img_names_constants
+from constants import game_constants, names_musics
 from entities import player, seeker
 from powerups import power_up
-from utils.images.ImageGame import ImageGame
 from map import map
 
 
@@ -71,7 +68,7 @@ class LevelState(state.State):
                 Music().run_sound(names_musics.DEATH)
                 self.__date_death_state = datetime.now()
                 self.__date_death_state_increment = self.__date_death_state
-        
+
     def render_powerups(self):
         for powerup in self.__power_ups:
             powerup.draw_at(self.game_reference.screen, self.__paused)
@@ -80,7 +77,7 @@ class LevelState(state.State):
             if powerup.actived and not powerup.hidden_modal:
                 powerup.draw_modal_message(self.game_reference.screen)
             powerup.add_power_up_to_list()
-            
+
     def render(self) -> None:
         self.render_map()
         self.render_player()
@@ -89,7 +86,7 @@ class LevelState(state.State):
         if self.__paused:
             self.pause()
         self.mouse.show_mouse(self.game_reference.screen)
-                
+
     def bullet_seeker_collision(self):
         bullet_seeker_collisions = self.__bullet_seeker_collision_detector.detect_collision()
         self.__bullet_seeker_collision_handler.handle_collision(bullet_seeker_collisions)
@@ -100,12 +97,12 @@ class LevelState(state.State):
                 self.__power_ups.remove(powerup)
                 self.__bullet_seeker_collision_detector = collision_detector.CollisionDetector(self.__player.weapon.bullets, self.__seekers)
                 self.__bullet_seeker_collision_handler = bullet_collision_handler.BulletCollisionHandler(self.__player.weapon, self.__seekers)
-                
+
     def player_act(self):
         self.__player.move()
         self.__player.get_power_up(self.game_reference.screen)
         self.__player.attack(self.game_reference.screen)
-        
+
     def player_death_state(self):
         date_sec = self.__date_death_state + timedelta(seconds=100)
         if not self.__player.alive:
@@ -114,7 +111,7 @@ class LevelState(state.State):
                 self.game_reference.set_state(game_over_state.GameOverState(self.game_reference, self.__player, self.__time_init))
             else:
                 self.__date_death_state_increment = self.__date_death_state_increment + timedelta(seconds=1)
-        
+
     def update(self) -> None:
         if not self.__paused:
             self.bullet_seeker_collision()

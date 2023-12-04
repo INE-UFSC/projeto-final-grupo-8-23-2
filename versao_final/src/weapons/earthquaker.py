@@ -9,8 +9,8 @@ from utils.images.ImageGame import ImageGame
 
 
 class Earthquaker(Weapon):
-    def __init__(self, name, damage, range, sprite, game_ref):
-        super().__init__(name, damage, range, weapons_constants.EARTHQUAKER_RECOVER_TIME, sprite, game_ref)
+    def __init__(self, name, damage, range, sprite):
+        super().__init__(name, damage, range, weapons_constants.EARTHQUAKER_RECOVER_TIME, sprite)
         self.__earthquake = None
 
     def attack(self, player_ref):

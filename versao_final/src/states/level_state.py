@@ -20,11 +20,7 @@ from map import map
 
 class LevelState(state.State):
     def __init__(self, game_ref: game.Game) -> None:
-       # self.__weapon = earthquaker.Earthquaker('Earthquaker', weapons_constants.EARTHQUAKER_DAMAGE,
-       #                                         weapons_constants.EARTHQUAKER_RANGE,
-       #                                         ImageGame().transform_scale(img_names_constants.EARTHQUAKE),
-       #                                         game_ref)
-        self.__weapon = gun.Gun('Pistol', 10, 400, 'pistol.png', game_ref)
+        self.__weapon = gun.Gun('Pistol', 10, 400, 'pistol.png')
         self.__seekers: list[seeker.Seeker] = []
         self.__power_ups: list[power_up.PowerUp] = []
         self.__player: player.Player = player.Player(self.__weapon, game_ref)
@@ -102,6 +98,8 @@ class LevelState(state.State):
         for powerup in self.__power_ups:
             if powerup.finished:
                 self.__power_ups.remove(powerup)
+                self.__bullet_seeker_collision_detector = collision_detector.CollisionDetector(self.__player.weapon.bullets, self.__seekers)
+                self.__bullet_seeker_collision_handler = bullet_collision_handler.BulletCollisionHandler(self.__player.weapon, self.__seekers)
                 
     def player_act(self):
         self.__player.move()

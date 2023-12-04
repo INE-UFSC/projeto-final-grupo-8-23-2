@@ -11,8 +11,8 @@ import game
 
 
 class Gun(Weapon):
-    def __init__(self, name, damage, range, sprite, game_ref: game.Game):
-        super().__init__(name, damage, range, weapons_constants.GUN_RECOVER_TIME, sprite, game_ref)
+    def __init__(self, name, damage, range, sprite):
+        super().__init__(name, damage, range, weapons_constants.GUN_RECOVER_TIME, sprite)
         self.__bullets = []
 
     @property

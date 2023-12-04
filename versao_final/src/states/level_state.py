@@ -20,11 +20,11 @@ from map import map
 
 class LevelState(state.State):
     def __init__(self, game_ref: game.Game) -> None:
-        self.__weapon = earthquaker.Earthquaker('Earthquaker', weapons_constants.EARTHQUAKER_DAMAGE, 
-                                                weapons_constants.EARTHQUAKER_RANGE, 
-                                                ImageGame().transform_scale(img_names_constants.EARTHQUAKE), 
-                                                game_ref)
-        # self.__weapon = gun.Gun('Pistol', 10, 400, 'pistol.png', game_ref)
+       # self.__weapon = earthquaker.Earthquaker('Earthquaker', weapons_constants.EARTHQUAKER_DAMAGE,
+       #                                         weapons_constants.EARTHQUAKER_RANGE,
+       #                                         ImageGame().transform_scale(img_names_constants.EARTHQUAKE),
+       #                                         game_ref)
+        self.__weapon = gun.Gun('Pistol', 10, 400, 'pistol.png', game_ref)
         self.__seekers: list[seeker.Seeker] = []
         self.__power_ups: list[power_up.PowerUp] = []
         self.__player: player.Player = player.Player(self.__weapon, game_ref)
@@ -125,6 +125,8 @@ class LevelState(state.State):
             self.__power_up_time_listener.handle_events()
             self.player_act()
             self.player_death_state()
+            print(self.__player.weapon.name)
+            print(f'seekers: {len(self.__seekers)}, power_ups: {len(self.__power_ups)}, bullets: {len(self.__weapon.bullets)}')
 
     def exiting(self) -> None:
         self.__power_up_time_listener.unsubscribe(self.__power_up_generator.generate)

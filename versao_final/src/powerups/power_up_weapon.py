@@ -14,7 +14,7 @@ class PowerUpWeapon(PowerUp):
         self.__player = player_ref
         game_ref = self.__player.weapon.game_ref
         self.__weapon = random.choice([gun.Gun('Pistol', 10, 400, 'pistol.png', game_ref), earthquaker.Earthquaker('Earthquaker', 50, 200, 'grass.png', game_ref)])
-        super().__init__(player_ref, img_names_constants.WEAPON_SPRITE,message_modal=f"VOCÊ CAPTUROU A ARMA {self.__weapon.name}")
+        super().__init__(player_ref, img_names_constants.WEAPON_SPRITE, message_modal=f"VOCÊ CAPTUROU A ARMA {self.__weapon.name}")
 
         self.color = pygame.Color(utils.red)
 

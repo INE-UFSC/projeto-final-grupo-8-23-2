@@ -1,12 +1,10 @@
 from __future__ import annotations
 
 import pygame
-from abc import ABC, abstractmethod
 
 from weapons.weapon import Weapon
 from weapons.earthquake import Earthquake
-from utils import utils
-from constants import player_constants, game_constants, weapons_constants
+from constants import weapons_constants, img_names_constants
 from utils.images.ImageGame import ImageGame
 
 
@@ -39,6 +37,6 @@ class Earthquaker(Weapon):
     def draw(self, screen:pygame.Surface):
         if self.attacking:
             position = (self.__earthquake.position.x - self.__earthquake.range, self.__earthquake.position.y - self.__earthquake.range)
-            pygame.Surface.blit(screen, self.sprite, position)
-            #pygame.draw.circle(screen, utils.red, position, self.range)
+            image = ImageGame().transform_flip(img_names_constants.EARTHQUAKE)
+            pygame.Surface.blit(screen, image, position)
             self.attacking = False

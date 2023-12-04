@@ -109,6 +109,7 @@ class Player(character.Character):
         self.score += worth_points
 
     def get_power_up(self, screen):
+        powerups_to_remove = []
         for powerup in self.__power_ups:
             # calculo da distancia entre o powerup e o player
             powerup_x = powerup.position.x
@@ -121,7 +122,10 @@ class Player(character.Character):
             # condição para usar o powerup
             if (not powerup.actived) and (distance_formula <= (radius_player + radius_powerup)) :
                 powerup.activate_power_up(screen)
+                powerups_to_remove.append(powerup)
                 Music().run_sound(names_musics.COIN)
+        for powerup in powerups_to_remove:
+            self.__power_ups.remove(powerup)
             
     @property
     def alive(self):

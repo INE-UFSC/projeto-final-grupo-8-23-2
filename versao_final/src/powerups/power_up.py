@@ -21,7 +21,6 @@ class PowerUp(ABC):
         self.__position = self.define_power_up_position()
         self.__color = None
         self.__actived = False
-        self.__width = cons.WIDTH
         self.__timer_start = None
         self.__contains_timer = contains_timer
         self.__max_time_sec = max_timer_start
@@ -31,17 +30,17 @@ class PowerUp(ABC):
         self.__sprite_name = sprite
 
         # tempo que o power up durara na tela
-        self.__timer_draw_start = None
-        self.__current_timer_draw = None
+        self.__timer_draw_start = datetime.now()
+        self.__current_timer_draw = datetime.now()
         self.__max_time_draw_sec = 10
         self.__hidden_draw = False
-        
+
         self.__timer_modal_start = None
         self.__max_time_modal_sec = 2
         self.__hidden_modal = False
-        
+
         self.__message_modal = message_modal
-       
+
     @property
     def contains_timer(self):
         return self.__contains_timer
@@ -49,7 +48,7 @@ class PowerUp(ABC):
     @contains_timer.setter
     def contains_timer(self, val:bool):
         self.__contains_timer = val
-        
+
     @property
     def finished(self):
         return self.__finished
@@ -57,7 +56,7 @@ class PowerUp(ABC):
     @finished.setter
     def finished(self, val:bool):
         self.__finished = val
-        
+
     @property
     def hidden_draw(self):
         return self.__hidden_draw
@@ -65,7 +64,7 @@ class PowerUp(ABC):
     @hidden_draw.setter
     def hidden_draw(self, val:bool):
         self.__hidden_draw = val
-        
+
     @property
     def hidden_modal(self):
         return self.__hidden_modal
@@ -73,7 +72,7 @@ class PowerUp(ABC):
     @hidden_modal.setter
     def hidden_modal(self, val:bool):
         self.__hidden_modal = val
-        
+
     @property
     def finished_time(self):
         return self.__finished_time
@@ -127,13 +126,7 @@ class PowerUp(ABC):
     def draw_at(self, screen: pygame.Surface, pause_game) -> None:
         if not self.actived and not self.hidden_draw:
             image = ImageGame().transform_flip(self.__sprite_name)
-            
-            if self.__timer_draw_start == None:
-                self.__timer_draw_start = datetime.now()
-            
-            if self.__current_timer_draw == None:
-                self.__current_timer_draw = datetime.now()
-               
+
             if not pause_game:
                 if self.__current_timer_draw != None:
                     self.__current_timer_draw = self.update_timer(self.__current_timer_draw, 10000)
@@ -190,7 +183,6 @@ class PowerUp(ABC):
         if self.__timer_start == None:
             self.__timer_start = datetime.now()
         self.__actived = True
-        self.__width = 0
         self.power_up_logic()
 
     @abstractmethod

@@ -11,7 +11,7 @@ class ImageGame(ABC):
             Img(name=img_names_constants.BG_GAME_OVER, path=f"{base_path}/backgrounds/bg_game_over_2.jpg", height=game_constants.SCREEN_HEIGHT, width=game_constants.SCREEN_WIDTH),
             Img(name=img_names_constants.BG_MENU, path=f"{base_path}/backgrounds/menu_background.jpg", height=game_constants.SCREEN_HEIGHT, width=game_constants.SCREEN_WIDTH),
             Img(name=img_names_constants.BG_TUTORIAL, path=f"{base_path}/backgrounds/tutorial_bg.jpg", height=game_constants.SCREEN_HEIGHT, width=game_constants.SCREEN_WIDTH),
-            Img(name=img_names_constants.BULLET_FIREBALL, path=f"{base_path}/bullet/fireball.webp", height=15, width=15),
+            Img(name=img_names_constants.BULLET_FIREBALL, path=f"{base_path}/weapons/fireball.webp", height=15, width=15),
             Img(name=img_names_constants.CHERRY, path=f"{base_path}/powerup_sprites/cherry.webp", height=40, width=40),
             Img(name=img_names_constants.BOOTS, path=f"{base_path}/powerup_sprites/boots.webp", height=40, width=40),
             Img(name=img_names_constants.CURSOR, path=f"{base_path}/cursors/white_cursor.webp", height=18, width=18),
@@ -26,12 +26,13 @@ class ImageGame(ABC):
             Img(name=img_names_constants.YELLOW_TIMER, path=f"{base_path}/components/yellow_timer.webp", height=22, width=22),
             Img(name=img_names_constants.PLAYER, path=f"{base_path}/player/player.webp", height=player_constants.HEIGHT, width=player_constants.WIDTH),
             Img(name=img_names_constants.EARTHQUAKE, path=f"{base_path}/weapons/earthquake2.webp", height=weapons_constants.EARTHQUAKER_RANGE*2, width=weapons_constants.EARTHQUAKER_RANGE*2),
+            Img(name=img_names_constants.WEAPON_SPRITE, path=f"{base_path}/weapons/gun.png", height=40, width=40),
         ]
-        
+
     @property
     def images(self):
         return self.__images
-    
+
     def get_image(self, name):
         if name in list(map(lambda x: x.name, self.images)):
             for img in self.images:

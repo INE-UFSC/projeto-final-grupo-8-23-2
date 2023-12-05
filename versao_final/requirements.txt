@@ -1,0 +1,4 @@
+# rodar <pip install -r requirements.txt> no terminal para instalar os requisitos do jogo
+
+pygame==2.4.0
+tkinter

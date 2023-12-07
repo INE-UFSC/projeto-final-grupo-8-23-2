@@ -5,6 +5,7 @@ from utils.utils import get_file_path
 from utils.images.ImageGame import ImageGame
 from constants import img_names_constants
 
+
 class Map:
     def __init__(self) -> None:
         self.__size = 150

@@ -120,8 +120,6 @@ class LevelState(state.State):
             self.__power_up_time_listener.handle_events()
             self.player_act()
             self.player_death_state()
-            print(self.__player.weapon.name)
-            print(f'seekers: {len(self.__seekers)}, power_ups: {len(self.__power_ups)}, bullets: {len(self.__weapon.bullets)}')
 
     def exiting(self) -> None:
         self.__power_up_time_listener.unsubscribe(self.__power_up_generator.generate)
